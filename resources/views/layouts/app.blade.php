@@ -1,21 +1,23 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard | Emeeds')
+@section('plugins.Datatables', true)
+
+@section('title', 'Dashboard')
 
 @section('content_header')
+    @yield("sub_header")
 @stop
 
-@section('plugins.Datatables', true)
-@section('plugins.Sweetalert2', true)
-
 @section('content')
-    @yield('content')
+    @yield("sub_content")
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/app.css">
+    <script src="https://kit.fontawesome.com/97f87ec59b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 @stop
 
 @section('js')
-    @yield('js')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @yield("sub_js")
 @stop

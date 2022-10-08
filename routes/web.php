@@ -20,3 +20,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Rutas Zoom
+Route::get('/home/account/zoom', [App\Http\Controllers\ZoomController::class, 'index'])->name('zoom');
+Route::post('/home/account/zoom/auth', [App\Http\Controllers\ZoomController::class, 'auth'])->name('authZoom');
+Route::get('/home/account/zoom/user', [App\Http\Controllers\ZoomController::class, 'successAuth'])->name('authSuccess');
+Route::get('/home/account/zoom/desvincular', [App\Http\Controllers\ZoomController::class, 'desvincular'])->name('desZoom');
+Route::get('/home/account/zoom/reautorizar', [App\Http\Controllers\ZoomController::class, 'reautorizar'])->name('reZoom');
+Route::get('/home/account/zoom/meet', [App\Http\Controllers\ZoomController::class, 'meet'])->name('zoomMeet');

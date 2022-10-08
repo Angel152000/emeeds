@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<img src="vendor/adminlte/dist/img/logo-text.png" >',
+    'logo' => '<b>E-MEEDS</b>',
     'logo_img' => 'vendor/adminlte/dist/img/logo-e2.png',
     'logo_img_class' => '',//'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -312,10 +312,10 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
+            'text'        => 'Dashboard',
+            'url'         => '/home',
+            'icon'        => 'fa fa-home',
+            #'label'       => 4,
             'label_color' => 'success',
         ],
         ['header' => 'account_settings'],
@@ -330,41 +330,17 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
+            'text'    => 'Account',
+            'icon'    => 'fas fa-fw fa-user',
             'submenu' => [
                 [
-                    'text' => 'level_one',
+                    'text' => 'Ajustes',
                     'url'  => '#',
                 ],
                 [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
+                    'text'    => 'Zoom',
+                    'url'     => '/home/account/zoom',
+                ]
             ],
         ],
         ['header' => 'labels'],

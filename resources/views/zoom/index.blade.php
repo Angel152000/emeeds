@@ -1,0 +1,56 @@
+@extends('layouts.app')
+
+@section('sub_header')
+    <nav style="background: linear-gradient(90deg, #019df4, #f4f6f9);padding: 1rem;" class="navbar navbar-danger">
+        <div clas="container">
+            <h3 class="text-light font-weight-bold">CONECTA CON TU CUENTA DE ZOOM</h3>
+        </div>
+    </nav>
+@stop
+
+@section('sub_content')
+  <div class="row text-center">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <img src="{{ asset('img/zoomapi.png') }}" width="800" height="600" class="img-fluid" alt="Responsive image">
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+      <form method="POST" id="form" action="{{URL::route('authZoom')}}">
+        {{csrf_field()}}
+        <input type="hidden" id="conect" value="1">
+        <button type="submit" class="btn btn-outline-primary btn-lg" style="width:50%;" >CONECTAR TU CUENTA</button>
+    </div>
+  </div>
+@stop
+
+@section('sub_js')
+  <script>
+    $('#form').submit(function(e) 
+    {
+      e.preventDefault();
+      var url = $(this).attr('action');
+
+      $.ajax({
+      url: url,
+      type: 'post',
+      dataType: 'json',
+      data: $('#form').serialize(),
+      success: function(res) 
+      {
+        if (res.status === 'success') 
+        {
+          $(location).attr('href',res.url);
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) 
+      {
+
+      },
+      complete: function() 
+      {
+
+      }
+      });
+
+    });
+  </script>
+@stop
