@@ -318,6 +318,13 @@ return [
             #'label'       => 4,
             'label_color' => 'success',
         ],
+        [
+            'text'        => 'Calendario',
+            'url'         => '/home/calendario',
+            'icon'        => 'fa fa-calendar',
+            #'label'       => 4,
+            'label_color' => 'success',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
@@ -330,19 +337,27 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
-            'text'    => 'Account',
+            'text'    => 'Perfil',
             'icon'    => 'fas fa-fw fa-user',
             'submenu' => [
                 [
-                    'text' => 'Ajustes',
+                    'text' => 'Cuenta',
                     'url'  => '#',
+                    'icon' => 'fa-regular fa-address-card',
+                ],
+                [
+                    'text' => 'Cambiar Contraseña',
+                    'url'  => '#',
+                    'icon' => 'fas fa-fw fa-lock',
                 ],
                 [
                     'text'    => 'Zoom',
                     'url'     => '/home/account/zoom',
+                    'icon' => 'fa-solid fa-video',
                 ]
             ],
         ],
+        /*
         ['header' => 'labels'],
         [
             'text'       => 'important',
@@ -359,6 +374,7 @@ return [
             'icon_color' => 'cyan',
             'url'        => '#',
         ],
+        */
     ],
 
     /*

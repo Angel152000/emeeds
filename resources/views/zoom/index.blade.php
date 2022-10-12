@@ -10,6 +10,11 @@
 
 @section('sub_content')
   <div class="row text-center">
+    @if ($cuenta == 'NOCONECTADO')
+      <div class="alert alert-danger col-xs-12 col-sm-12 col-md-12 col-lg-12" role="alert">
+        No se pudo conectar con la cuenta de zoom, intente nuevamente si el error persiste por favor contacte a soporte (auth:001).
+      </div>
+    @endif
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <img src="{{ asset('img/zoomapi.png') }}" width="800" height="600" class="img-fluid" alt="Responsive image">
     </div>

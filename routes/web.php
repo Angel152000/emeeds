@@ -28,3 +28,6 @@ Route::get('/home/account/zoom/user', [App\Http\Controllers\ZoomController::clas
 Route::get('/home/account/zoom/desvincular', [App\Http\Controllers\ZoomController::class, 'desvincular'])->name('desZoom');
 Route::get('/home/account/zoom/reautorizar', [App\Http\Controllers\ZoomController::class, 'reautorizar'])->name('reZoom');
 Route::get('/home/account/zoom/meet', [App\Http\Controllers\ZoomController::class, 'meet'])->name('zoomMeet');
+
+//Rutas atenciones
+Route::get('/home/calendario', [App\Http\Controllers\AtencionController::class, 'index'])->name('calendar');

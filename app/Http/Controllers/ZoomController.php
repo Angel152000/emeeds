@@ -42,7 +42,8 @@ class ZoomController extends Controller
         }
         else
         {
-            return view('zoom.index');
+            $this->data['cuenta'] = 'NOCUENTA';
+            return view('zoom.index', $this->data);
         }
     }
 
