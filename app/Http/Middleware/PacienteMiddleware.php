@@ -20,5 +20,9 @@ class PacienteMiddleware
         {
             return $next($request);
         }
+        else
+        {
+            return redirect('/home/404');
+        }
     }
 }

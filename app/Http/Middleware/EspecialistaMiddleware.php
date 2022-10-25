@@ -20,5 +20,9 @@ class EspecialistaMiddleware
         {
             return $next($request);
         }
+        else
+        {
+            return redirect('/home/404');
+        }
     }
 }
