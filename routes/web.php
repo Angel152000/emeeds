@@ -13,15 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-//Routa con errores.
+//Ruta de errores.
 Route::get('/404', [App\Http\Controllers\HomeController::class, 'index'])->name('404');
 
 //Rutas para el establecimiento.
@@ -36,6 +34,9 @@ Route::group([
     'middleware' => 'especialista'
 ], function () {
 
+    //Rutas calendario
+    Route::get('/home/calendario', [App\Http\Controllers\AtencionController::class, 'index'])->name('calendar');
+
     //Rutas Zoom
     Route::get('/home/account/zoom', [App\Http\Controllers\ZoomController::class, 'index'])->name('zoom');
     Route::post('/home/account/zoom/auth', [App\Http\Controllers\ZoomController::class, 'auth'])->name('authZoom');
@@ -43,9 +44,6 @@ Route::group([
     Route::get('/home/account/zoom/desvincular', [App\Http\Controllers\ZoomController::class, 'desvincular'])->name('desZoom');
     Route::get('/home/account/zoom/reautorizar', [App\Http\Controllers\ZoomController::class, 'reautorizar'])->name('reZoom');
     Route::get('/home/account/zoom/meet', [App\Http\Controllers\ZoomController::class, 'meet'])->name('zoomMeet');
-
-    //Rutas atenciones
-    Route::get('/home/calendario', [App\Http\Controllers\AtencionController::class, 'index'])->name('calendar');
 
 });
 

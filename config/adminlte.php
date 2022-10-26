@@ -307,41 +307,42 @@ return [
             'text' => 'search',
         ],
         [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-        [
             'text'        => 'Dashboard',
             'url'         => '/home',
             'icon'        => 'fa fa-home',
             #'label'       => 4,
             'label_color' => 'success',
         ],
+        /*
+        ['header' => 'menu', 'key' => 'menu'],
         [
             'text'        => 'Calendario',
             'url'         => '/home/calendario',
             'icon'        => 'fa fa-calendar',
-            #'label'       => 4,
             'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'key'         => 'calendario',
         ],
         [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'text'        => 'Atenciones',
+            'url'         => '/home/atenciones',
+            'icon'        => 'fa-solid fa-laptop-medical',
+            'label_color' => 'success',
+            'key'         => 'atenciones',
         ],
         [
-            'text'    => 'Perfil',
+            'text'        => 'Pacientes',
+            'url'         => '/home/pacientes',
+            'icon'        => 'fa-solid fa-bed-pulse',
+            'label_color' => 'success',
+            'key'         => 'pacientes',
+        ],
+        [
+            'text'    => 'Cuenta',
             'icon'    => 'fas fa-fw fa-user',
+            'key'     => 'cuenta',
             'submenu' => [
                 [
-                    'text' => 'Cuenta',
+                    'text' => 'Perfil',
                     'url'  => '#',
                     'icon' => 'fa-regular fa-address-card',
                 ],
@@ -357,6 +358,7 @@ return [
                 ]
             ],
         ],
+        */
     ],
 
     /*
