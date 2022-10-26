@@ -35,7 +35,7 @@ Route::group([
 ], function () {
 
     //Rutas calendario
-    Route::get('/home/calendario', [App\Http\Controllers\AtencionController::class, 'index'])->name('calendar');
+    Route::get('/home/calendario', [App\Http\Controllers\EventosController::class, 'index'])->name('calendar');
 
     //Rutas Zoom
     Route::get('/home/account/zoom', [App\Http\Controllers\ZoomController::class, 'index'])->name('zoom');

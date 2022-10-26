@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\atencion;
+use App\Models\Eventos;
 use Illuminate\Http\Request;
 
-class AtencionController extends Controller
+class EventosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class AtencionController extends Controller
      */
     public function index()
     {
-      //  
+        return view('eventos.index');
     }
 
     /**
@@ -41,10 +41,10 @@ class AtencionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\atencion  $atencion
+     * @param  \App\Models\Eventos  $eventos
      * @return \Illuminate\Http\Response
      */
-    public function show(atencion $atencion)
+    public function show(Eventos $eventos)
     {
         //
     }
@@ -52,10 +52,10 @@ class AtencionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\atencion  $atencion
+     * @param  \App\Models\Eventos  $eventos
      * @return \Illuminate\Http\Response
      */
-    public function edit(atencion $atencion)
+    public function edit(Eventos $eventos)
     {
         //
     }
@@ -64,10 +64,10 @@ class AtencionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\atencion  $atencion
+     * @param  \App\Models\Eventos  $eventos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, atencion $atencion)
+    public function update(Request $request, Eventos $eventos)
     {
         //
     }
@@ -75,10 +75,10 @@ class AtencionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\atencion  $atencion
+     * @param  \App\Models\Eventos  $eventos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(atencion $atencion)
+    public function destroy(Eventos $eventos)
     {
         //
     }

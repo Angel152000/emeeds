@@ -313,8 +313,8 @@ return [
             #'label'       => 4,
             'label_color' => 'success',
         ],
-        /*
-        ['header' => 'menu', 'key' => 'menu'],
+        
+        ['header' => 'Menú', 'key' => 'menu'],
         [
             'text'        => 'Calendario',
             'url'         => '/home/calendario',
@@ -322,6 +322,7 @@ return [
             'label_color' => 'success',
             'key'         => 'calendario',
         ],
+        /*
         [
             'text'        => 'Atenciones',
             'url'         => '/home/atenciones',

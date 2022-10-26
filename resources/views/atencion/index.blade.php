@@ -3,7 +3,7 @@
 @section('sub_header')
     <nav style="background: linear-gradient(90deg, #019df4, #f4f6f9);padding: 1rem;" class="navbar navbar-danger">
         <div clas="container">
-            <h3 class="text-light font-weight-bold">CALENDARIO</h3>
+            <h3 class="text-light font-weight-bold">Atenciones</h3>
         </div>
     </nav>
 @stop

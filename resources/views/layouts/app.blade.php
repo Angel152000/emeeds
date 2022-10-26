@@ -15,9 +15,12 @@
 @section('css')
     <script src="https://kit.fontawesome.com/97f87ec59b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="{{ asset('vendor/fullcalendar/main.css') }}" rel='stylesheet' />
 @stop
 
 @section('js')
+    <script src="{{ asset('vendor/fullcalendar/main.js') }}"></script>
+    <script src="{{ asset('vendor/fullcalendar/locales/es.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield("sub_js")
 @stop
