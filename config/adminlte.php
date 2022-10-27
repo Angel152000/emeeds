@@ -310,56 +310,10 @@ return [
             'text'        => 'Dashboard',
             'url'         => '/home',
             'icon'        => 'fa fa-home',
-            #'label'       => 4,
             'label_color' => 'success',
         ],
         
         ['header' => 'Menú', 'key' => 'menu'],
-        [
-            'text'        => 'Calendario',
-            'url'         => '/home/calendario',
-            'icon'        => 'fa fa-calendar',
-            'label_color' => 'success',
-            'key'         => 'calendario',
-        ],
-        /*
-        [
-            'text'        => 'Atenciones',
-            'url'         => '/home/atenciones',
-            'icon'        => 'fa-solid fa-laptop-medical',
-            'label_color' => 'success',
-            'key'         => 'atenciones',
-        ],
-        [
-            'text'        => 'Pacientes',
-            'url'         => '/home/pacientes',
-            'icon'        => 'fa-solid fa-bed-pulse',
-            'label_color' => 'success',
-            'key'         => 'pacientes',
-        ],
-        [
-            'text'    => 'Cuenta',
-            'icon'    => 'fas fa-fw fa-user',
-            'key'     => 'cuenta',
-            'submenu' => [
-                [
-                    'text' => 'Perfil',
-                    'url'  => '#',
-                    'icon' => 'fa-regular fa-address-card',
-                ],
-                [
-                    'text' => 'Cambiar Contraseña',
-                    'url'  => '#',
-                    'icon' => 'fas fa-fw fa-lock',
-                ],
-                [
-                    'text'    => 'Zoom',
-                    'url'     => '/home/account/zoom',
-                    'icon' => 'fa-solid fa-video',
-                ]
-            ],
-        ],
-        */
     ],
 
     /*
