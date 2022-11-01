@@ -66,7 +66,7 @@ class EspecialidadesController extends Controller
             else
             {
                 $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al insertar la especialidad, intente nuevamente.";
+                $this->data['msg'] = "Hubo un error al insertar la Especialidad, intente nuevamente.";
             }
         }
         else 
@@ -79,48 +79,58 @@ class EspecialidadesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Especialidades  $especialidades
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Especialidades $especialidades)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Especialidades  $especialidades
      * @return \Illuminate\Http\Response
      */
-    public function edit(Especialidades $especialidades)
+    public function edit(Request $request)
     {
-        //
-    }
+        $rules = array(
+            'codigo'       => 'required',
+            'nombre'       => 'required',
+            'descripcion'  => 'required|max:500',
+        ); 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Especialidades  $especialidades
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Especialidades $especialidades)
-    {
-        //
+        $msg = array(
+            'codigo.required'       => 'El campo Código es requerido',
+            'nombre.required'       => 'El campo Nombre es requerido',
+            'descripcion.required'  => 'El campo Descripción es requerido',
+            'descripcion.max'       => 'El campo Descripción no puede superar los 500 caracteres',
+        );
+
+        $validador = Validator::make($request->all(), $rules, $msg);
+
+        if ($validador->passes()) 
+        {
+            $objEspecialidades = new Especialidades();
+
+            $data = array(
+                'codigo'      =>  $request->input('codigo'),
+                'nombre'      =>  $request->input('nombre'),
+                'descripcion' =>  $request->input('descripcion'),
+            );
+
+            $response = $objEspecialidades->editarEspecialidad($data);
+
+            if($response)
+            {
+                $this->data['status'] = "success";
+                $this->data['msg'] = "Especialidad Actualizada exitosamente.";
+            }
+            else
+            {
+                $this->data['status'] = "error";
+                $this->data['msg'] = "Hubo un error al Actualizar la Especialidad, intente nuevamente.";
+            }
+        }
+        else 
+        {
+            $this->data['status'] = "error";
+            $this->data['msg'] = $validador->errors()->first();
+        } 
+
+        return json_encode($this->data);
     }
 
     /**
@@ -129,8 +139,22 @@ class EspecialidadesController extends Controller
      * @param  \App\Models\Especialidades  $especialidades
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Especialidades $especialidades)
+    public function destroy(Request $request)
     {
-        //
+        $objEspecialidades = new Especialidades();
+
+        $response = $objEspecialidades->eliminarEspecialidad($request->input('id'));
+
+        if($response)
+        {
+            $this->data['status'] = "success";
+            $this->data['msg'] = "Especialidad Eliminada exitosamente.";
+        }
+        else
+        {
+            $this->data['status'] = "error";
+            $this->data['msg'] = "Hubo un error al Eliminar la Especialidad, intente nuevamente.";
+        }
+        return json_encode($this->data);
     }
 }

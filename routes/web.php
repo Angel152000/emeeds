@@ -30,7 +30,8 @@ Route::group([
     //Rutas Especialidades
     Route::get ('/home/especialidades', [App\Http\Controllers\EspecialidadesController::class, 'index'])->name('especialidades');
     Route::post('/home/especialidades/crear', [App\Http\Controllers\EspecialidadesController::class, 'create'])->name('crear_especialidades');
-    Route::post('/home/especialidades/editar', [App\Http\Controllers\EspecialidadesController::class, 'store'])->name('editar_especialidades');
+    Route::post('/home/especialidades/editar', [App\Http\Controllers\EspecialidadesController::class, 'edit'])->name('editar_especialidades');
+    Route::post ('/home/especialidades/eliminar', [App\Http\Controllers\EspecialidadesController::class, 'destroy'])->name('eliminar_especialidades');
     
 });
 

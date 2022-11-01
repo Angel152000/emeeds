@@ -46,8 +46,7 @@
                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editarEspecialidad">
                                     <i class="fa-solid fa-pencil"></i>
                                 </button>
-                                <a onclick="editarEspecialidad('{{$row->id}}')"   class="btn btn-success" rel-id="" href="#" title="Editar Servicio"><i class="fa-solid fa-pencil"></i></i></a>
-                                <a onclick="eliminarEspecialidad('{{$row->id}}')" class="btn btn-danger"  rel-id="" href="#" title="Eliminar Servicio"><i class="fas fa-trash-alt"></i></a>
+                                <a  onclick="eliminarEspecialidad('{{$row->id}}')" class="btn btn-danger" title="Eliminar Servicio"><i class="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
                         <!-- Modal Edit-->
@@ -71,12 +70,12 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="descripcion" class="col-form-label">Descripción <span style="color:red;">*</span></label>
-                                            <textarea class="form-control" name="descripcion" id="descripcion">{{ $row->descripcion }}</textarea>
+                                            <textarea class="form-control" name="descripcion" id="descripcion_{{$row->id}}">{{ $row->descripcion }}</textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cancelar</button>
-                                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                                        <button type="button" onclick="editarEspecialidad('{{$row->id}}')" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                                     </div>
                                 </div>
                             </div>
@@ -157,13 +156,28 @@
                         showCancelButton: false,
                         confirmButtonText: 'Aceptar',
                         confirmButtonColor: '#019df4',
+                        cancelButtonText: 'Cancelar',
+                        cancelButtonColor: '#dc3545',
                         showClass: {
                             popup: 'animate__animated animate__fadeInDown'
                         },
                         hideClass: {
                             popup: 'animate__animated animate__fadeOutUp'
                         }
-                    });
+                    }).then((result) => {
+                        if (result.isConfirmed) 
+                        {
+                            window.location.reload();
+                        }
+                        else
+                        {
+                            window.location.reload();
+                        }
+                    })
+
+                    $("#codigo").val('');
+                    $("#nombre").val('');
+                    $("#descripcion").val('');
                 }
                 else
                 {
@@ -171,6 +185,123 @@
                 }
             }
         });
-    });  
+    });
+    
+    function editarEspecialidad(id) 
+    {
+        var url = '{{URL::route("editar_especialidades")}}';
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType : 'json',
+            data: {
+                codigo:      $("#codigo_"+id).val(),
+                nombre:      $("#nombre_"+id).val(),
+                descripcion: $("#descripcion_"+id).val()
+            },
+            success: function(res) 
+            {
+                if (res.status === 'success') 
+                {
+                    Swal.fire({
+                        title: res.msg,
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#019df4',
+                        cancelButtonText: 'Cancelar',
+                        cancelButtonColor: '#dc3545',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) 
+                        {
+                            window.location.reload();
+                        }
+                        else
+                        {
+                            window.location.reload();
+                        }
+                    })
+                }
+                else
+                {
+                    Swal.fire('Error!',res.msg,'error');
+                }
+            }
+        });
+    }
+
+    function eliminarEspecialidad(id) 
+    {
+        Swal.fire({
+            title: 'Eliminar Especialidad',
+            text: '¿Estás seguro que deseas eliminar esta especialidad?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#019df4',
+            cancelButtonText: 'Cancelar',
+            cancelButtonColor: '#dc3545',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) 
+            {
+                var url = '{{URL::route("eliminar_especialidades")}}';
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType : 'json',
+                    data: {
+                        id: id,
+                    },
+                    success: function(res) 
+                    {
+                        console.log(res);
+                        if (res.status === 'success') 
+                        {
+                            Swal.fire({
+                                title: res.msg,
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor: '#019df4',
+                                cancelButtonText: 'Cancelar',
+                                cancelButtonColor: '#dc3545',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) 
+                                {
+                                    window.location.reload();
+                                }
+                                else
+                                {
+                                    window.location.reload();
+                                }
+                            })
+                        }
+                        else
+                        {
+                            Swal.fire('Error!',res.msg,'error');
+                        }
+                    }
+                });
+            }
+        })
+    }
 </script>
 @stop

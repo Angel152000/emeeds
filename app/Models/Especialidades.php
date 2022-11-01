@@ -24,4 +24,10 @@ class Especialidades extends Model
         return $especialidad;
     }
 
+    public function eliminarEspecialidad($id)
+    {
+        $especialidad = DB::table($this->table)->where('id', $id)->delete();
+        return $especialidad;
+    }
+
 }

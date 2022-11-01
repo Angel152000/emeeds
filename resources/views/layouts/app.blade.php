@@ -5,6 +5,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     @yield("sub_header")
 @stop
 
@@ -22,5 +23,12 @@
     <script src="{{ asset('vendor/fullcalendar/main.js') }}"></script>
     <script src="{{ asset('vendor/fullcalendar/locales/es.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     @yield("sub_js")
 @stop
