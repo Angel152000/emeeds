@@ -26,6 +26,11 @@ Route::get('/404', [App\Http\Controllers\HomeController::class, 'index'])->name(
 Route::group([
     'middleware' => 'establecimiento'
 ], function () {
+
+    //Rutas Especialidades
+    Route::get ('/home/especialidades', [App\Http\Controllers\EspecialidadesController::class, 'index'])->name('especialidades');
+    Route::post('/home/especialidades/crear', [App\Http\Controllers\EspecialidadesController::class, 'create'])->name('crear_especialidades');
+    Route::post('/home/especialidades/editar', [App\Http\Controllers\EspecialidadesController::class, 'store'])->name('editar_especialidades');
     
 });
 
