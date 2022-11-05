@@ -93,7 +93,7 @@ class EventServiceProvider extends ServiceProvider
 
                     $event->menu->addAfter('especialidades', [
                         'text'        => 'Especialistas',
-                        'url'         => '#',
+                        'url'         => '/home/especialistas',
                         'icon'        => 'fa fa-duotone fa-user-nurse',
                         'label_color' => 'success',
                         'key'         => 'especialistas',
@@ -101,7 +101,7 @@ class EventServiceProvider extends ServiceProvider
 
                     $event->menu->addAfter('especialistas', [
                         'text'        => 'Contabilidad',
-                        'url'         => '#',
+                        'url'         => '/home/contabilidad',
                         'icon'        => 'fa-solid fa-money-bill-transfer',
                         'label_color' => 'success',
                         'key'         => 'contabilidad',
@@ -114,12 +114,12 @@ class EventServiceProvider extends ServiceProvider
                         'submenu' => [
                             [
                                 'text' => 'Ficha',
-                                'url'  => '#',
+                                'url'  => '/home/ficha',
                                 'icon' => 'fa-regular fa-address-card',
                             ],
                             [
                                 'text' => 'Configuración',
-                                'url'  => '#',
+                                'url'  => '/home/configuracion',
                                 'icon' => 'fa-solid fa-gear',
                             ]
                         ]

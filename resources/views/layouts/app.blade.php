@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
 @section('plugins.Datatables', true)
+@section('plugins.Select2', true)
 
 @section('title', 'Dashboard')
 

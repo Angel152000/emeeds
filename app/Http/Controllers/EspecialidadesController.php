@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Especialidades;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class EspecialidadesController extends Controller
 {
@@ -54,6 +54,7 @@ class EspecialidadesController extends Controller
                 'codigo'      =>  $request->input('codigo'),
                 'nombre'      =>  $request->input('nombre'),
                 'descripcion' =>  $request->input('descripcion'),
+                'created_at'  =>  date('Y-m-d h:m:s')
             );
 
             $response = $objEspecialidades->grabarEspecialidad($data);
@@ -109,9 +110,10 @@ class EspecialidadesController extends Controller
                 'codigo'      =>  $request->input('codigo'),
                 'nombre'      =>  $request->input('nombre'),
                 'descripcion' =>  $request->input('descripcion'),
+                'updated_at'  =>  date('Y-m-d h:m:s')
             );
 
-            $response = $objEspecialidades->editarEspecialidad($data);
+            $response = $objEspecialidades->editarEspecialidad($request->input('id'),$data);
 
             if($response)
             {
