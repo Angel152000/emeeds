@@ -109,7 +109,7 @@ class EspecialistasController extends Controller
                     'name'      => $request->input('nombres').' '.$request->input('apellidop'),
                     'email'     => $request->input('email'),
                     'password'  => Hash::make($request->input('clave')),
-                    'tipo_user' => 1,
+                    'tipo_user' => 3,
                 ]);
 
                 if($l_user)
