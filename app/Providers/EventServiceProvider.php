@@ -92,6 +92,14 @@ class EventServiceProvider extends ServiceProvider
                     ]);
 
                     $event->menu->addAfter('especialidades', [
+                        'text'        => 'Horarios',
+                        'url'         => '/home/horarios',
+                        'icon'        => 'fa fa-calendar',
+                        'label_color' => 'success',
+                        'key'         => 'horarios',
+                    ]);
+
+                    $event->menu->addAfter('horarios', [
                         'text'        => 'Especialistas',
                         'url'         => '/home/especialistas',
                         'icon'        => 'fa fa-duotone fa-user-nurse',
@@ -108,21 +116,16 @@ class EventServiceProvider extends ServiceProvider
                     ]);
 
                     $event->menu->addAfter('contabilidad', [
-                        'text'    => 'Cuenta',
-                        'icon'    => 'fas fa-fw fa-user',
-                        'key'     => 'cuenta',
-                        'submenu' => [
-                            [
-                                'text' => 'Ficha',
-                                'url'  => '/home/ficha',
-                                'icon' => 'fa-regular fa-address-card',
-                            ],
-                            [
-                                'text' => 'Configuración',
-                                'url'  => '/home/configuracion',
-                                'icon' => 'fa-solid fa-gear',
-                            ]
-                        ]
+                        'header' => 'Cuenta', 
+                        'key'    => 'cuenta'
+                    ]);
+
+                    $event->menu->addAfter('cuenta', [
+                        'text'        => 'Configuración',
+                        'url'         => '/home/configuracion/establecimiento',
+                        'icon'        => 'fa-solid fa-gear',
+                        'label_color' => 'success',
+                        'key'         => 'contabilidad',
                     ]);
 
                 break;

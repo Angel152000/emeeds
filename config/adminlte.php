@@ -314,6 +314,14 @@ return [
         ],
         
         ['header' => 'Menú', 'key' => 'menu'],
+        ['header' => 'Sesión', 'key' => 'sesion'],
+        [
+            'text'       => 'Cerrar Sesión',
+            'icon'       => 'fa fa-fw fa-power-off',
+            'icon_color' => 'white',
+            'url'        => '#',
+            'classes'    => 'text-bold bg-danger'
+        ],
     ],
 
     /*

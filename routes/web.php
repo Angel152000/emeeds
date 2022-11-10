@@ -41,6 +41,16 @@ Route::group([
     Route::get('/home/especialistas/editar/{id}',[App\Http\Controllers\EspecialistasController::class, 'edit']);
     Route::post('/home/especialistas/actualizar',[App\Http\Controllers\EspecialistasController::class, 'update'])->name('editar_especialistas');
     Route::post('/home/especialistas/eliminar',  [App\Http\Controllers\EspecialistasController::class, 'destroy'])->name('eliminar_especialistas');
+
+    //Rutas Horario
+    Route::get  ('/home/horarios',          [App\Http\Controllers\HorariosController::class, 'index'])->name('horarios');
+    Route::post ('/home/horarios/crear',    [App\Http\Controllers\HorariosController::class, 'create'])->name('crear_horario');
+    Route::post ('/home/horarios/eliminar', [App\Http\Controllers\HorariosController::class, 'create'])->name('eliminar_horario');
+
+    //Rutas Bloques
+    Route::get  ('/home/horarios/bloque/{id}',  [App\Http\Controllers\BloquesController::class, 'index'])->name('bloques');
+    Route::post ('/home/horarios/bloque/crear', [App\Http\Controllers\BloquesController::class, 'create'])->name('crear_bloque');
+    Route::post('/home/horarios/bloque/editar', [App\Http\Controllers\BloquesController::class, 'update'])->name('editar_bloque');
     
 });
 
