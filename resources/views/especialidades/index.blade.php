@@ -54,19 +54,19 @@
                         @if(!empty($especialidades))
                             @foreach($especialidades as $row)
                                 <tr>
-                                    <td>{{ $row->id }}</td>
+                                    <td>{{$loop->iteration}}</td>
                                     <td>{{ $row->codigo }}</td>
                                     <td>{{ $row->nombre }}</td>
                                     <td>{{ $row->descripcion }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editarEspecialidad">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editarEspecialidad_{{$row->id}}">
                                             <i class="fa-solid fa-pencil"></i>
                                         </button>
                                         <a  onclick="eliminarEspecialidad('{{$row->id}}')" class="btn btn-danger" title="Eliminar Servicio"><i class="fas fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
                                 <!-- Modal Edit-->
-                                <div class="modal fade" id="editarEspecialidad" tabindex="-1" aria-labelledby="editarEspecialidad" aria-hidden="true">
+                                <div class="modal fade" id="editarEspecialidad_{{$row->id}}" tabindex="-1" aria-labelledby="editarEspecialidad" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">

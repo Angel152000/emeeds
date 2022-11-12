@@ -45,6 +45,7 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">Número de Bloque</th>
                             <th scope="col">Hora</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Acciones</th>
@@ -54,18 +55,23 @@
                         @if(!empty($bloques))
                             @foreach($bloques as $row)
                                 <tr>
+                                    <td>{{$loop->iteration}}</td>
                                     <td>{{ $row->numero_bloque }}</td>
-                                    <td>{{ date("h:s", strtotime($row->hora_bloque)) }}</td>
+                                    <td>{{ $row->hora_bloque }}</td>
                                     <td>{{ $row->bloque_desc }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editarBloque">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editarBloque_{{ $row->id_bloque }}">
                                             <i class="fa-solid fa-pencil"></i>
                                         </button>
-                                        <a  onclick="eliminarHorario('{{$row->id_horario}}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                        <a  onclick="eliminarBloque('{{$row->id_bloque}}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
+                                <?php
+                                    $hora = explode(':',$row->hora_bloque);
+                                    $hora_final = $hora[0].':'.$hora[1];
+                                ?>
                                 <!-- Modal Edit-->
-                                <div class="modal fade" id="editarBloque" tabindex="-1"  aria-hidden="true">
+                                <div class="modal fade" id="editarBloque_{{ $row->id_bloque }}" tabindex="-1"  aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -77,18 +83,18 @@
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <label>Número de Bloque <span style="color:red;">*</span></label>
-                                                    <input class="form-control" type="text" name="numero_bloque_{{ $row->id_bloque }}" id="numero_bloque" value="{{ $row->numero_bloque }}">
+                                                    <input class="form-control" type="text" id="numero_bloque_{{ $row->id_bloque }}" id="numero_bloque" value="{{ $row->numero_bloque }}" disabled>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Hora <span style="color:red;">*</span></label>
-                                                    <input class="form-control" type="time" name="hora_{{ $row->id_bloque }}" id="hora" value="{{ date('h:s', strtotime($row->hora_bloque)) }}">
+                                                    <label>Hora <span style="color:red;">*</span> (horas : minutos)</label>
+                                                    <input class="form-control" type="time" id="hora_{{ $row->id_bloque }}" id="hora" value="{{ $hora_final }}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Descripción de Bloque <span style="color:red;">*</span></label>
-                                                    <textarea class="form-control" name="bloque_{{ $row->id_bloque }}" id="bloque">{{ $row->bloque_desc }}</textarea>
+                                                    <textarea class="form-control" id="bloque_{{ $row->id_bloque }}" id="bloque">{{ $row->bloque_desc }}</textarea>
                                                 </div>
                                             </div>
-                                            <input class="form-control" type="hidden" name="id_h_{{ $row->id_bloque }}" id="id_h" value="{{ $horarios->id_horario }}">
+                                            <input class="form-control" type="hidden" id="id_h_{{ $row->id_bloque }}" id="id_h" value="{{ $horarios->id_horario }}">
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cancelar</button>
                                                 <button type="button" onclick="editarBloque('{{$row->id_bloque}}')" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
@@ -117,15 +123,15 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Número de Bloque <span style="color:red;">*</span></label>
-                                <input class="form-control" type="text" name="numero_bloque" id="numero_bloque">
+                                <input class="form-control for-bl" type="text" name="numero_bloque" id="numero_bloque">
                             </div>
                             <div class="form-group">
-                                <label>Hora <span style="color:red;">*</span></label>
-                                <input class="form-control" type="time" name="hora" id="hora">
+                                <label>Hora <span style="color:red;">*</span> (horas : minutos)</label>
+                                <input class="form-control for-bl" type="time" name="hora" id="hora">
                             </div>
                             <div class="form-group">
                                 <label>Descripción de Bloque <span style="color:red;">*</span></label>
-                                <textarea class="form-control" name="bloque" id="bloque"></textarea>
+                                <textarea class="form-control for-bl" name="bloque" id="bloque"></textarea>
                             </div>
                         </div>
                         <input class="form-control" type="hidden" name="id_h" id="id_h" value="{{ $horarios->id_horario }}">
@@ -196,6 +202,7 @@
                         }
                     })
 
+                    $('.for-bl').val('');
                 }
                 else
                 {
@@ -214,10 +221,10 @@
             dataType : 'json',
             data: {
                 id:id,
-                numero_bloque:$("#numero_bloque_"+id).val(),
-                hora:$("#hora_"+id).val(),
-                bloque:$("#bloque_"+id).val(),
-                id_h:$("#id_h_"+id).val()
+                numero_bloque: $("#numero_bloque_"+id).val(),
+                hora: $("#hora_"+id).val(),
+                bloque: $("#bloque_"+id).val(),
+                id_h: $("#id_h_"+id).val()
             },
             success: function(res) 
             {
@@ -256,11 +263,11 @@
         });
     }
 
-    function eliminarHorario(id) 
+    function eliminarBloque(id) 
     {
         Swal.fire({
-            title: 'Eliminar Horario',
-            text: '¿Estás seguro que deseas eliminar esta Horario?, Todos los bloques que haya ingresado seran eliminados.',
+            title: 'Eliminar Bloque',
+            text: '¿Estás seguro que deseas eliminar este Bloque?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Aceptar',
@@ -276,7 +283,7 @@
         }).then((result) => {
             if (result.isConfirmed) 
             {
-                var url = '{{URL::route("eliminar_horario")}}';
+                var url = '{{URL::route("eliminar_bloque")}}';
                 $.ajax({
                     url: url,
                     type: 'post',

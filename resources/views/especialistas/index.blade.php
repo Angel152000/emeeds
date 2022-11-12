@@ -55,14 +55,13 @@
                         @if(!empty($especialistas))
                             @foreach($especialistas as $row)
                                 <tr>
-                                    <td>{{$row->id}}</td>
+                                    <td>{{$loop->iteration}}</td>
                                     <td>{{$row->rut}}</td>
                                     <td>{{$row->nombres}} {{$row->apellido_paterno}}</td>
                                     <td>{{$row->especialidad}}</td>
                                     <td>{{$row->email}}</td>
                                     <td>
                                         <a  href="{{ url('/home/especialistas/editar') }}/{{$row->id}}" class="btn btn-success"><i class="fa-solid fa-pencil"></i></a>
-                                        <a  href="{{ url('/home/horario/especialista') }}/{{$row->id}}" class="btn btn-primary"><i class="fa-solid fa-calendar-days"></i></a>
                                         <a  onclick="eliminarEspecialista('{{$row->id}}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                     </td>
                                 </tr>

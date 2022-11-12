@@ -52,7 +52,7 @@
                         @if(!empty($horarios))
                             @foreach($horarios as $row)
                                 <tr>
-                                    <td>{{ $row->dia }}</td>
+                                    <td>{{$loop->iteration}}</td>
                                     <td>{{ $row->dia_desc }}</td>
                                     <td>
                                         <a  href="{{ url('/home/horarios/bloque') }}/{{$row->id_horario}}" class="btn btn-success"><i class="fa fa-calendar"></i></a>

@@ -17,7 +17,7 @@ class BloquesController extends Controller
     public function index($id)
     {
         $horarios = Horarios::where('id_horario',$id)->first();
-        $bloques  = Bloques::where('id_horario',$id)->orderBy('numero_bloque','ASC')->get();
+        $bloques  = Bloques::where('id_horario',$id)->orderBy('hora_bloque','ASC')->get();
 
         $this->data['horarios'] = $horarios;
         $this->data['bloques'] = $bloques;
@@ -33,14 +33,13 @@ class BloquesController extends Controller
     public function create(Request $request)
     {
         $rules = array(
-            'numero_bloque'  => 'required|unique:bloques|numeric',
+            'numero_bloque'  => 'required|numeric',
             'hora'           => 'required',
             'bloque'         => 'required|max:500',
         ); 
 
         $msg = array(
             'numero_bloque.required'  => 'El campo Número de Bloque es requerido.',
-            'numero_bloque.unique'    => 'El Número de Bloque ya fue ingresado.',
             'numero_bloque.numeric'   => 'El campo Número de Bloque solo acepta valores numéricos.',
             'hora.required'           => 'El campo Hora es requerido.',
             'bloque.required'         => 'El campo Descripción de Bloque es requerido.',
@@ -87,17 +86,12 @@ class BloquesController extends Controller
      */
     public function update(Request $request)
     {
-        dd($request->all());
         $rules = array(
-            'numero_bloque'  => 'required|unique:bloques|numeric',
             'hora'           => 'required',
             'bloque'         => 'required|max:500',
         ); 
 
         $msg = array(
-            'numero_bloque.required'  => 'El campo Número de Bloque es requerido.',
-            'numero_bloque.unique'    => 'El Número de Bloque ya fue ingresado.',
-            'numero_bloque.numeric'   => 'El campo Número de Bloque solo acepta valores numéricos.',
             'hora.required'           => 'El campo Hora es requerido.',
             'bloque.required'         => 'El campo Descripción de Bloque es requerido.',
             'bloque.max'              => 'El campo Descripción de Bloque no puede superar los 500 caracteres.',
@@ -108,7 +102,6 @@ class BloquesController extends Controller
         if ($validador->passes()) 
         {
             $response = Bloques::where('id_bloque',$request->input('id'))->update([
-                'numero_bloque' =>  $request->input('numero_bloque'),
                 'hora_bloque'   =>  $request->input('hora'),
                 'bloque_desc'   =>  $request->input('bloque'),
             ]);
@@ -139,8 +132,29 @@ class BloquesController extends Controller
      * @param  \App\Models\Bloques  $bloques
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bloques $bloques)
+    public function destroy(Request $request)
     {
-        //
+        if($request->input('id'))
+        {
+            $response = Bloques::where('id_bloque',$request->input('id'))->delete();
+
+            if($response)
+            {
+                $this->data['status'] = "success";
+                $this->data['msg'] = "Bloque Eliminado exitosamente.";
+            }
+            else
+            {
+                $this->data['status'] = "error";
+                $this->data['msg'] = "Hubo un error al eliminar el Bloque, intente nuevamente.";
+            }
+        }
+        else
+        {
+            $this->data['status'] = "error";
+            $this->data['msg'] = "Faltan parámetros para eliminar el bloque, intente nuevamente.";
+        }
+
+        return json_encode($this->data);
     }
 }

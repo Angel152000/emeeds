@@ -26,7 +26,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{$zoom->id}}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $zoom->user_zoom }}</td>
                             <td>{{ $zoom->email_zoom }}</td>
                             <td>{{ $zoom->expires_in }}</td>

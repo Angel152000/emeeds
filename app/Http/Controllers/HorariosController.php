@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Horarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Bloques;
 
 class HorariosController extends Controller
 {
@@ -92,58 +93,36 @@ class HorariosController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Horarios  $horarios
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Horarios $horarios)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Horarios  $horarios
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Horarios $horarios)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Horarios  $horarios
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Horarios $horarios)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Horarios  $horarios
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Horarios $horarios)
+    public function destroy(Request $request)
     {
-        //
+        if($request->input('id'))
+        {
+            $response  = Horarios::where('id_horario',$request->input('id'))->delete();
+
+            if($response)
+            {
+                Bloques::where('id_horario',$request->input('id'))->delete();
+
+                $this->data['status'] = "success";
+                $this->data['msg'] = "Horario Eliminado exitosamente.";
+            }
+            else
+            {
+                $this->data['status'] = "error";
+                $this->data['msg'] = "Hubo un error al eliminar el Horario, intente nuevamente.";
+            }
+        }
+        else
+        {
+            $this->data['status'] = "error";
+            $this->data['msg'] = "Faltan parámetros para eliminar el Horario, intente nuevamente.";
+        }
+
+        return json_encode($this->data);
     }
 }

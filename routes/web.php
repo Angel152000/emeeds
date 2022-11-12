@@ -29,28 +29,29 @@ Route::group([
 ], function () {
 
     //Rutas Especialidades
-    Route::get ('/home/especialidades',          [App\Http\Controllers\EspecialidadesController::class, 'index'])->name('especialidades');
-    Route::post('/home/especialidades/crear',    [App\Http\Controllers\EspecialidadesController::class, 'create'])->name('crear_especialidades');
-    Route::post('/home/especialidades/editar',   [App\Http\Controllers\EspecialidadesController::class, 'edit'])->name('editar_especialidades');
-    Route::post('/home/especialidades/eliminar', [App\Http\Controllers\EspecialidadesController::class, 'destroy'])->name('eliminar_especialidades');
+    Route::get ('/home/especialidades',            [App\Http\Controllers\EspecialidadesController::class, 'index'])->name('especialidades');
+    Route::post('/home/especialidades/crear',      [App\Http\Controllers\EspecialidadesController::class, 'create'])->name('crear_especialidades');
+    Route::post('/home/especialidades/editar',     [App\Http\Controllers\EspecialidadesController::class, 'edit'])->name('editar_especialidades');
+    Route::post('/home/especialidades/eliminar',   [App\Http\Controllers\EspecialidadesController::class, 'destroy'])->name('eliminar_especialidades');
 
     //Rutas Especialidades
-    Route::get ('/home/especialistas',           [App\Http\Controllers\EspecialistasController::class, 'index'])->name('especialistas');
-    Route::get ('/home/especialistas/crear',     [App\Http\Controllers\EspecialistasController::class, 'create'])->name('crear_especialistas');
-    Route::post('/home/especialistas/guardar',   [App\Http\Controllers\EspecialistasController::class, 'store'])->name('guardar_especialistas');
-    Route::get('/home/especialistas/editar/{id}',[App\Http\Controllers\EspecialistasController::class, 'edit']);
-    Route::post('/home/especialistas/actualizar',[App\Http\Controllers\EspecialistasController::class, 'update'])->name('editar_especialistas');
-    Route::post('/home/especialistas/eliminar',  [App\Http\Controllers\EspecialistasController::class, 'destroy'])->name('eliminar_especialistas');
+    Route::get ('/home/especialistas',             [App\Http\Controllers\EspecialistasController::class, 'index'])->name('especialistas');
+    Route::get ('/home/especialistas/crear',       [App\Http\Controllers\EspecialistasController::class, 'create'])->name('crear_especialistas');
+    Route::post('/home/especialistas/guardar',     [App\Http\Controllers\EspecialistasController::class, 'store'])->name('guardar_especialistas');
+    Route::get('/home/especialistas/editar/{id}',  [App\Http\Controllers\EspecialistasController::class, 'edit']);
+    Route::post('/home/especialistas/actualizar',  [App\Http\Controllers\EspecialistasController::class, 'update'])->name('editar_especialistas');
+    Route::post('/home/especialistas/eliminar',    [App\Http\Controllers\EspecialistasController::class, 'destroy'])->name('eliminar_especialistas');
 
     //Rutas Horario
-    Route::get  ('/home/horarios',          [App\Http\Controllers\HorariosController::class, 'index'])->name('horarios');
-    Route::post ('/home/horarios/crear',    [App\Http\Controllers\HorariosController::class, 'create'])->name('crear_horario');
-    Route::post ('/home/horarios/eliminar', [App\Http\Controllers\HorariosController::class, 'create'])->name('eliminar_horario');
+    Route::get  ('/home/horarios',                 [App\Http\Controllers\HorariosController::class, 'index'])->name('horarios');
+    Route::post ('/home/horarios/crear',           [App\Http\Controllers\HorariosController::class, 'create'])->name('crear_horario');
+    Route::post ('/home/horarios/eliminar',        [App\Http\Controllers\HorariosController::class, 'destroy'])->name('eliminar_horario');
 
     //Rutas Bloques
-    Route::get  ('/home/horarios/bloque/{id}',  [App\Http\Controllers\BloquesController::class, 'index'])->name('bloques');
-    Route::post ('/home/horarios/bloque/crear', [App\Http\Controllers\BloquesController::class, 'create'])->name('crear_bloque');
-    Route::post('/home/horarios/bloque/editar', [App\Http\Controllers\BloquesController::class, 'update'])->name('editar_bloque');
+    Route::get  ('/home/horarios/bloque/{id}',     [App\Http\Controllers\BloquesController::class, 'index'])->name('bloques');
+    Route::post ('/home/horarios/bloque/crear',    [App\Http\Controllers\BloquesController::class, 'create'])->name('crear_bloque');
+    Route::post('/home/horarios/bloque/editar',    [App\Http\Controllers\BloquesController::class, 'update'])->name('editar_bloque');
+    Route::post ('/home/horarios/bloque/eliminar', [App\Http\Controllers\BloquesController::class, 'destroy'])->name('eliminar_bloque');
     
 });
 
