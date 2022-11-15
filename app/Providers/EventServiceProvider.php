@@ -64,11 +64,6 @@ class EventServiceProvider extends ServiceProvider
                         'key'     => 'cuenta',
                         'submenu' => [
                             [
-                                'text' => 'Perfil',
-                                'url'  => '#',
-                                'icon' => 'fa-regular fa-address-card',
-                            ],
-                            [
                                 'text' => 'Configuración',
                                 'url'  => '#',
                                 'icon' => 'fa-solid fa-gear',

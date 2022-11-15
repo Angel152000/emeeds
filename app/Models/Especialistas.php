@@ -11,6 +11,20 @@ class Especialistas extends Model
     use HasFactory;
     protected $table = 'especialistas';
 
+    protected $fillable = [
+        'id',
+        'id_user',
+        'id_especialidad',
+        'rut',
+        'nombres',
+        'apellido_paterno',
+        'apellido_materno',
+        'fecha_nacimiento',
+        'sexo',
+        'email',
+        'telefono'
+    ];
+
     public function getEspecialistas()
     {
         $especialistas = DB::table($this->table)->get();

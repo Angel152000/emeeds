@@ -19,17 +19,15 @@
                             <th scope="col">#</th>
                             <th scope="col">User Zoom</th>
                             <th scope="col">Email Zoom</th>
-                            <th scope="col">Expira En</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $zoom->id }}</td>
                             <td>{{ $zoom->user_zoom }}</td>
                             <td>{{ $zoom->email_zoom }}</td>
-                            <td>{{ $zoom->expires_in }}</td>
                             <td>{{ $zoom->estado }}</td>
                             <td>
                                 <a href="#" onclick="reautorizar()" class="btn btn-outline-success btn-block" role="button" aria-pressed="true">RE-AUTORIZAR</a>

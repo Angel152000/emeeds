@@ -12,6 +12,13 @@ class Especialidades extends Model
 
     protected $table = 'especialidades';
 
+    protected $fillable = [
+        'id',
+        'codigo',
+        'nombre',
+        'descripcion'
+    ];
+
     public function getEspecialidades()
     {
         $especialidad = DB::table($this->table)->get();
