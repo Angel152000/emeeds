@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Especialidades;
+use App\Models\Especialistas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -145,18 +146,29 @@ class EspecialidadesController extends Controller
     {
         $objEspecialidades = new Especialidades();
 
-        $response = $objEspecialidades->eliminarEspecialidad($request->input('id'));
+        $especialistas = Especialistas::where('id_especialidad',$request->input('id'))->count();
 
-        if($response)
+        if($especialistas > 0)
         {
-            $this->data['status'] = "success";
-            $this->data['msg'] = "Especialidad Eliminada exitosamente.";
+            $this->data['status'] = "error";
+            $this->data['msg'] = "No se puede eliminar la especialidad ya que existen especialistas asignados para esta, por favor actualice la especialidad de los especialistas.";
         }
         else
         {
-            $this->data['status'] = "error";
-            $this->data['msg'] = "Hubo un error al Eliminar la Especialidad, intente nuevamente.";
+            $response = $objEspecialidades->eliminarEspecialidad($request->input('id'));
+
+            if($response)
+            {
+                $this->data['status'] = "success";
+                $this->data['msg'] = "Especialidad Eliminada exitosamente.";
+            }
+            else
+            {
+                $this->data['status'] = "error";
+                $this->data['msg'] = "Hubo un error al Eliminar la Especialidad, intente nuevamente.";
+            }
         }
+    
         return json_encode($this->data);
     }
 }

@@ -14,6 +14,13 @@
     @yield("sub_content")
 @stop
 
+@section('footer')
+<div class="float-right d-none d-sm-block">
+    <b>Version</b> 3.0
+</div>
+<strong>Software Potenciado por <a href="https://www.emeeds.cl">Emeeds</a>.</strong> Copyright © 2022 - Todos los derechos son Reservados.
+@stop
+
 @section('css')
     <script src="https://kit.fontawesome.com/97f87ec59b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>

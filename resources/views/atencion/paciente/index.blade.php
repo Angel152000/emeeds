@@ -48,7 +48,7 @@
                             <th scope="col">Especialidad</th>
                             <th scope="col">Especialista</th>
                             <th scope="col">Fecha</th>
-                            <th scope="col">estado</th>
+                            <th scope="col">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
