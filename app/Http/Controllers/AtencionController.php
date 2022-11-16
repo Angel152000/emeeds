@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\atencion;
+use App\Models\Atencion;
 use Illuminate\Http\Request;
 
 class AtencionController extends Controller
@@ -14,7 +14,19 @@ class AtencionController extends Controller
      */
     public function index()
     {
-      //  
+        $objAtencion = new Atencion();
+        switch (auth()->user()->tipo_user) 
+        {
+            case 1:
+            break;
+            case 2:
+            break;
+            case 3:
+                $atenciones = $objAtencion->getAtencionesByIdPaciente(auth()->user()->id);
+                $this->data['atenciones'] = $atenciones;
+                return view('atencion.paciente.index',$this->data);
+            break;
+        }
     }
 
     /**
@@ -24,7 +36,7 @@ class AtencionController extends Controller
      */
     public function create()
     {
-        //
+        return view('atencion.paciente.create');
     }
 
     /**

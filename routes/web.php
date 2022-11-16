@@ -52,7 +52,9 @@ Route::group([
     Route::post ('/home/horarios/bloque/crear',    [App\Http\Controllers\BloquesController::class, 'create'])->name('crear_bloque');
     Route::post('/home/horarios/bloque/editar',    [App\Http\Controllers\BloquesController::class, 'update'])->name('editar_bloque');
     Route::post ('/home/horarios/bloque/eliminar', [App\Http\Controllers\BloquesController::class, 'destroy'])->name('eliminar_bloque');
-    
+
+    //Rutas Atenciones
+    Route::get('/home/atenciones/establecimiento', [App\Http\Controllers\AtencionController::class, 'index'])->name('atenciones_establecimiento');
 });
 
 //Rutas para el especialista.
@@ -60,16 +62,19 @@ Route::group([
     'middleware' => 'especialista'
 ], function () {
 
+    //Rutas atenciones
+    Route::get('/home/atenciones/especialista', [App\Http\Controllers\AtencionController::class, 'index'])->name('atenciones_especialistas');
+
     //Rutas calendario
-    Route::get('/home/calendario', [App\Http\Controllers\EventosController::class, 'index'])->name('calendar');
+    Route::get('/home/calendario',              [App\Http\Controllers\EventosController::class, 'index'])->name('calendar');
 
     //Rutas Zoom
-    Route::get('/home/account/zoom', [App\Http\Controllers\ZoomController::class, 'index'])->name('zoom');
-    Route::post('/home/account/zoom/auth', [App\Http\Controllers\ZoomController::class, 'auth'])->name('authZoom');
-    Route::get('/home/account/zoom/user', [App\Http\Controllers\ZoomController::class, 'successAuth'])->name('authSuccess');
-    Route::get('/home/account/zoom/desvincular', [App\Http\Controllers\ZoomController::class, 'desvincular'])->name('desZoom');
-    Route::get('/home/account/zoom/reautorizar', [App\Http\Controllers\ZoomController::class, 'reautorizar'])->name('reZoom');
-    Route::get('/home/account/zoom/meet', [App\Http\Controllers\ZoomController::class, 'meet'])->name('zoomMeet');
+    Route::get('/home/account/zoom',            [App\Http\Controllers\ZoomController::class, 'index'])->name('zoom');
+    Route::post('/home/account/zoom/auth',      [App\Http\Controllers\ZoomController::class, 'auth'])->name('authZoom');
+    Route::get('/home/account/zoom/user',       [App\Http\Controllers\ZoomController::class, 'successAuth'])->name('authSuccess');
+    Route::get('/home/account/zoom/desvincular',[App\Http\Controllers\ZoomController::class, 'desvincular'])->name('desZoom');
+    Route::get('/home/account/zoom/reautorizar',[App\Http\Controllers\ZoomController::class, 'reautorizar'])->name('reZoom');
+    Route::get('/home/account/zoom/meet',       [App\Http\Controllers\ZoomController::class, 'meet'])->name('zoomMeet');
 
 });
 
@@ -78,4 +83,8 @@ Route::group([
     'middleware' => 'paciente'
 ], function () {
     
+    //Rutas de atenciones.
+    Route::get('/home/atenciones/paciente',          [App\Http\Controllers\AtencionController::class, 'index'])->name('atenciones_pacientes');
+    Route::get('/home/atenciones/paciente/reservar', [App\Http\Controllers\AtencionController::class, 'create'])->name('atenciones_reservar');
+
 });
