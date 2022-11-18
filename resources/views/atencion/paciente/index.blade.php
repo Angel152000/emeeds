@@ -29,7 +29,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col text-left">
-                        <h3 class="card-title">Atenciones</h3>
+                        <h3 class="card-title">Atenciones hechas por ti</h3>
                     </div>
                     <div class="col text-right">
                         <a href="{{URL::route('atenciones_reservar')}}" class="btn btn-success btn-sm">

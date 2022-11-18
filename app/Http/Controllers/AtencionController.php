@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Atencion;
+use App\Models\Especialidades;
 use Illuminate\Http\Request;
 
 class AtencionController extends Controller
@@ -36,7 +37,24 @@ class AtencionController extends Controller
      */
     public function create()
     {
-        return view('atencion.paciente.create');
+        $objEspecialidades = new Especialidades();
+
+        $especialidades = $objEspecialidades->getEspecialidades();
+
+        $this->data['especialidades'] = $especialidades;
+    
+        return view('atencion.paciente.create',$this->data);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create_2(Request $request)
+    {
+        dd('hola');
+        return view('atencion.paciente.create2');
     }
 
     /**

@@ -84,7 +84,8 @@ Route::group([
 ], function () {
     
     //Rutas de atenciones.
-    Route::get('/home/atenciones/paciente',          [App\Http\Controllers\AtencionController::class, 'index'])->name('atenciones_pacientes');
-    Route::get('/home/atenciones/paciente/reservar', [App\Http\Controllers\AtencionController::class, 'create'])->name('atenciones_reservar');
+    Route::get('/home/atenciones/paciente',                    [App\Http\Controllers\AtencionController::class, 'index'])->name('atenciones_pacientes');
+    Route::get('/home/atenciones/paciente/reservar',           [App\Http\Controllers\AtencionController::class, 'create'])->name('atenciones_reservar');
+    Route::post('/home/atenciones/paciente/reservar/atencion', [App\Http\Controllers\AtencionController::class, 'create_2'])->name('atenciones_crear');
 
 });
