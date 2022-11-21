@@ -19,6 +19,8 @@ class Atencion extends Model
         'id_especialista',
         'id_paciente',
         'rut_paciente',
+        'detalle_atencion',
+        'id_horario',
         'id_bloque',
         'fecha',
         'estado'

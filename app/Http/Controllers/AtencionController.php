@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Atencion;
+use App\Models\Bloques;
 use App\Models\Especialidades;
 use App\Models\Especialistas;
+use App\Models\Horarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -94,12 +96,14 @@ class AtencionController extends Controller
             'rut'           => 'required',
             'especialidad'  => 'required',
             'tipo_atencion' => 'required',
+            'detalle'       => 'max:500',
         ); 
 
         $msg = array(
             'rut.required'            => 'El campo Rut es requerido',
             'especialidad.required'   => 'El campo Especialidad es requerido',
             'tipo_atencion.required'  => 'El campo Tipo de atención es requerido',
+            'detalle.max'             => 'El campo Motivo de atención no puede superar los 500 caracteres.',
         );
 
         $validador = Validator::make($request->all(), $rules, $msg);
@@ -123,6 +127,7 @@ class AtencionController extends Controller
                 'id_especialidad' =>  $request->input('especialidad'),
                 'id_paciente'     =>  auth()->user()->id,
                 'rut_paciente'    =>  $request->input('rut'),
+                'detalle_atencion'=>  $request->input('detalle'),
                 'estado'          =>  3
             ]);
 
@@ -154,7 +159,50 @@ class AtencionController extends Controller
      */
     public function show($id)
     {
-        return view('atencion.paciente.create2');
+        
+        $day = date("l");
+
+        switch ($day) {
+            case "Sunday":   $dia = 7;  break; case "Monday":    $dia = 1; break;
+            case "Tuesday":  $dia = 2;  break; case "Wednesday": $dia = 3; break;
+            case "Thursday": $dia = 4;  break; case "Friday":    $dia = 5; break;
+            case "Saturday": $dia = 6;  break;
+        }
+
+        $atentiones    = Atencion::where('codigo_atencion',$id)->first();
+        $especialistas = Especialistas::where('id_especialidad',$atentiones->id_especialidad)->get();
+        $especialidad  = Especialidades::where('id',$atentiones->id_especialidad)->first();
+        $horario       = Horarios::where('dia',$dia)->first();
+
+        if(!empty($horario))
+        {
+            $bloques = Bloques::where('id_horario',$horario->id_horario)->orderBy('hora_bloque','ASC')->get();
+        }
+        else
+        {
+            $bloques = [];
+        }
+        
+        switch ($atentiones->tipo_atencion) 
+        {
+            case 1:
+                $tipo_atencion = 'Atención Reservada';
+            break;
+            case 2:
+                $tipo_atencion = 'Atención Inmediata';
+            break;
+            case 3:
+                $tipo_atencion = 'Sin tipo de atención';
+            break;
+        }
+
+        $this->data['atenciones']    = $atentiones;
+        $this->data['especialistas'] = $especialistas;
+        $this->data['especialidad']  = $especialidad;
+        $this->data['tipo_atencion'] = $tipo_atencion;
+        $this->data['bloques']       = $bloques;
+
+        return view('atencion.paciente.create2',$this->data);
     }
 
     /**

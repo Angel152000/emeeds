@@ -78,7 +78,7 @@
                                         @case(3)
                                             <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
                                             <td>
-                                                <a  href="{{ url('/home/atenciones/paciente/reservar/especialista') }}/{{$row->codigo_atencion}}" class="btn btn-success"><i class="fa-solid fa-pencil"></i></a>
+                                                <a  href="{{ url('/home/atenciones/paciente/reservar/especialista') }}/{{$row->codigo_atencion}}" class="btn btn-success"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                                                 <a  onclick="eliminarAtencion('{{$row->id_atencion}}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                             </td>
                                         @break

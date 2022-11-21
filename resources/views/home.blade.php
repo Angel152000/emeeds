@@ -222,7 +222,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3>{{ $countAtenciones }}</h3>
                             <p>Atenciones</p>
                         </div>
                         <div class="icon">
@@ -231,20 +231,6 @@
                         <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-6">
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3>53</sup></h3>
-                            <p>Reservas</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-calendar"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-
                 <div class="col-lg-4 col-6">
                     <div class="small-box bg-warning">
                         <div class="inner">
@@ -255,6 +241,130 @@
                             <i class="fa-solid fa-hospital-user"></i>
                         </div>
                         <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>Configuración</h3>
+                            <p>de la cuenta</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de atenciones --> 
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col text-left">
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#leyenda">
+                                        <i class="fas fa-search"></i>
+                                        Leyenda de Estados
+                                    </button>
+                                </div>
+                                <div class="col text-right">
+                                    <a href="{{URL::route('atenciones_pacientes')}}" class="btn btn-success btn-sm">
+                                        <i class="fas fa-search"></i>
+                                        Ver Atenciones
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table" id="atenciones">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Código de Atención</th>
+                                        <th scope="col">Especialidad</th>
+                                        <th scope="col">Especialista</th>
+                                        <th scope="col">Tipo de atención</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Estado </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(!empty($atenciones))
+                                        @foreach($atenciones as $row)
+                                            <tr>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{ $row->codigo_atencion }}</td>
+                                                <td>{{ $row->especialidad }}</td>
+                                                <td>{{ $row->especialista }}</td>
+                                                <td>{{ $row->atencion }}</td>
+                                                <td>{{ $row->fecha }}</td>
+                                                @switch($row->estado)
+                                                    @case(1)
+                                                        <td><h3><span class="badge badge-success">Realizada</span></h3></td>
+                                                    @break
+                                                    @case(2)
+                                                        <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
+                                                    @break
+                                                    @case(3)
+                                                        <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
+                                                    @break
+                                                @endswitch
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end atenciones -->
+
+            <!-- Modal leyenda-->
+            <div class="modal fade bd-leyenda-lg" id="leyenda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Leyenda de Estados</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        <table class="table table-responsive">
+                            <caption>Leyenda para los estados de la atención</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td><h3><span class="badge badge-success">Realizada</span></h3></td>
+                                    <td>Consulta/Atención realizada con éxito.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
+                                    <td>Consulta/Atención que se encuentra reservada o en proceso para ser atendido/a.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
+                                    <td>Consulta/Atención que se encuentra incompleta para la reserva o atención inmediata de esta misma.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -281,6 +391,16 @@
             "language": {
                 "lengthMenu": "Mostrar _MENU_ resultados por página",
                 "zeroRecords": "No Existen Especialistas aún.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            }
+        });
+
+        var table = $('#atenciones').DataTable({
+            responsive: true,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "zeroRecords": "No hay atenciones realizadas o por realizar aún.",
                 "info": "Mostrando página _PAGE_ de _PAGES_",
                 "infoFiltered": "(filtered from _MAX_ total records)"
             }

@@ -37,7 +37,7 @@
                 </div>
                 <div class="form-group">
                     <label>Especialidad <span style="color:red;">*</span></label>
-                    <select class="custom-select especialidades for-especialista" id="especialidad" name="especialidad">
+                    <select class="custom-select especialidades for-especialista col" id="especialidad" name="especialidad">
                         <option selected value="">Ingresa la Especialidad</option>
                         @if(!empty($especialidades))
                             @foreach($especialidades as $row)
@@ -49,9 +49,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Seleccione el Tipo de Atención. <span style="color:red;">*</span></label>
+                    <label>Seleccione el Tipo de Atención <span style="color:red;">*</span></label>
                 </div>
-                
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="tipo_atencion" id="tipo_atencion" checked value="1">
                     <label class="form-check-label" for="flexRadioDefault1">
@@ -63,6 +62,11 @@
                     <label class="form-check-label" for="flexRadioDefault2">
                         Atención Inmediata
                     </label>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>Motivo de Atención.</label>
+                    <textarea class="form-control" id="detalle" name="detalle" rows="3"></textarea>
                 </div>
             </div>
             <div class="card-footer text-right">
@@ -152,6 +156,7 @@
                 rut:           $("#rut").val(),
                 especialidad:  $("#especialidad").val(),
                 tipo_atencion: $('input[name="tipo_atencion"]:checked').val(),
+                detalle:       $("#detalle").val(),
             },
             success: function(res) 
             {

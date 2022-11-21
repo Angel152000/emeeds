@@ -50,22 +50,35 @@ class BloquesController extends Controller
 
         if ($validador->passes()) 
         {
-            $response = Bloques::create([
-                'id_horario'    =>  $request->input('id_h'),
-                'numero_bloque' =>  $request->input('numero_bloque'),
-                'hora_bloque'   =>  $request->input('hora'),
-                'bloque_desc'   =>  $request->input('bloque'),
-            ]);
-
-            if($response)
+            $bloq = Bloques::where([
+                ['id_horario', '=', $request->input('id_h')],
+                ['hora_bloque','=', $request->input('hora').':00']
+            ])->get();
+            
+            if(!empty($bloq))
             {
-                $this->data['status'] = "success";
-                $this->data['msg'] = "Bloque Creado exitosamente.";
+                $response = Bloques::create([
+                    'id_horario'    =>  $request->input('id_h'),
+                    'numero_bloque' =>  $request->input('numero_bloque'),
+                    'hora_bloque'   =>  $request->input('hora'),
+                    'bloque_desc'   =>  $request->input('bloque'),
+                ]);
+
+                if($response)
+                {
+                    $this->data['status'] = "success";
+                    $this->data['msg'] = "Bloque Creado exitosamente.";
+                }
+                else
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "Hubo un error al Crear El Bloque, intente nuevamente.";
+                }
             }
             else
             {
                 $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al Crear El Bloque, intente nuevamente.";
+                $this->data['msg'] = "La hora del Bloque ya existe, ingrese uno nuevo o edite el existente.";
             }
         }
         else 
@@ -101,20 +114,45 @@ class BloquesController extends Controller
 
         if ($validador->passes()) 
         {
-            $response = Bloques::where('id_bloque',$request->input('id'))->update([
-                'hora_bloque'   =>  $request->input('hora'),
-                'bloque_desc'   =>  $request->input('bloque'),
-            ]);
+            $bloques = Bloques::where([
+                ['id_horario', '=', $request->input('id_h')],
+                ['hora_bloque','=', $request->input('hora').':00']
+            ])->first();
 
-            if($response)
+            if(!empty($bloques)) { $bloq = $bloques->id_bloque; } else { $bloq = ''; } 
+
+            $bloq2 = Bloques::where('id_bloque',$request->input('id'))->first();
+            
+            if(!empty($bloq2))
             {
-                $this->data['status'] = "success";
-                $this->data['msg'] = "Bloque Actualizado exitosamente.";
+                if($bloq == $bloq2->id_bloque)
+                {
+                    $response = Bloques::where('id_bloque',$request->input('id'))->update([
+                        'hora_bloque'   =>  $request->input('hora'),
+                        'bloque_desc'   =>  $request->input('bloque'),
+                    ]);
+        
+                    if($response)
+                    {
+                        $this->data['status'] = "success";
+                        $this->data['msg'] = "Bloque Actualizado exitosamente.";
+                    }
+                    else
+                    {
+                        $this->data['status'] = "error";
+                        $this->data['msg'] = "Hubo un error al Actualizar El Bloque, intente nuevamente.";
+                    }
+                }
+                else
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "La hora del Bloque ya existe, ingrese uno nuevo o edite el existente.";
+                }
             }
             else
             {
                 $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al Actualizar El Bloque, intente nuevamente.";
+                $this->data['msg'] = "Faltan parámetros para realizar la operación, intente nuevamente.";
             }
         }
         else 
