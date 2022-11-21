@@ -14,9 +14,11 @@ class Atencion extends Model
     protected $fillable = [
         'id_atencion',
         'codigo_atencion',
+        'tipo_atencion',
         'id_especialidad',
         'id_especialista',
         'id_paciente',
+        'rut_paciente',
         'id_bloque',
         'fecha',
         'estado'
@@ -39,5 +41,4 @@ class Atencion extends Model
         $atenciones = DB::table($this->table)->where('id_paciente',$id)->get();
         return $atenciones;
     }
-
 }

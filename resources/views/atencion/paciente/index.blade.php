@@ -29,7 +29,10 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col text-left">
-                        <h3 class="card-title">Atenciones hechas por ti</h3>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#leyenda">
+                            <i class="fas fa-search"></i>
+                            Leyenda de Estados
+                        </button>
                     </div>
                     <div class="col text-right">
                         <a href="{{URL::route('atenciones_reservar')}}" class="btn btn-success btn-sm">
@@ -47,8 +50,10 @@
                             <th scope="col">Código de Atención</th>
                             <th scope="col">Especialidad</th>
                             <th scope="col">Especialista</th>
+                            <th scope="col">Tipo de atención</th>
                             <th scope="col">Fecha</th>
-                            <th scope="col">Estado</th>
+                            <th scope="col">Estado </th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,13 +64,75 @@
                                     <td>{{ $row->codigo_atencion }}</td>
                                     <td>{{ $row->especialidad }}</td>
                                     <td>{{ $row->especialista }}</td>
+                                    <td>{{ $row->atencion }}</td>
                                     <td>{{ $row->fecha }}</td>
-                                    <td>{{ $row->estado }}</td>
+                                    @switch($row->estado)
+                                        @case(1)
+                                            <td><h3><span class="badge badge-success">Realizada</span></h3></td>
+                                            <td></td>
+                                        @break
+                                        @case(2)
+                                            <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
+                                            <td></td>
+                                        @break
+                                        @case(3)
+                                            <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
+                                            <td>
+                                                <a  href="{{ url('/home/atenciones/paciente/reservar/especialista') }}/{{$row->codigo_atencion}}" class="btn btn-success"><i class="fa-solid fa-pencil"></i></a>
+                                                <a  onclick="eliminarAtencion('{{$row->id_atencion}}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        @break
+                                    @endswitch
                                 </tr>
                             @endforeach
                         @endif
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal leyenda-->
+<div class="modal fade bd-leyenda-lg" id="leyenda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Leyenda de Estados</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <table class="table table-responsive">
+                <caption>Leyenda para los estados de la atención</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td><h3><span class="badge badge-success">Realizada</span></h3></td>
+                        <td>Consulta/Atención realizada con éxito.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
+                        <td>Consulta/Atención que se encuentra reservada o en proceso para ser atendido/a.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
+                        <td>Consulta/Atención que se encuentra incompleta para la reserva o atención inmediata de esta misma.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
             </div>
         </div>
     </div>
@@ -85,5 +152,72 @@
             }
         });
     });
+
+    function eliminarAtencion(id) 
+    {
+        Swal.fire({
+            title: 'Eliminar Atención',
+            text: '¿Estás seguro que deseas eliminar esta solicitud de atención?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#019df4',
+            cancelButtonText: 'Cancelar',
+            cancelButtonColor: '#dc3545',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) 
+            {
+                var url = '{{URL::route("atenciones_eliminar")}}';
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType : 'json',
+                    data: {
+                        id: id,
+                    },
+                    success: function(res) 
+                    {
+                        if (res.status === 'success') 
+                        {
+                            Swal.fire({
+                                title: res.msg,
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor: '#019df4',
+                                cancelButtonText: 'Cancelar',
+                                cancelButtonColor: '#dc3545',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) 
+                                {
+                                    window.location.reload();
+                                }
+                                else
+                                {
+                                    window.location.reload();
+                                }
+                            })
+                        }
+                        else
+                        {
+                            Swal.fire('Error!',res.msg,'error');
+                        }
+                    }
+                });
+            }
+        })
+    }
  </script>
 @stop

@@ -30,45 +30,48 @@
             <div class="card-header">
                 <h3 class="card-title">Reserva o Realiza de forma inmediata tu Atención.</h3>
             </div>
-            <form method="POST" id="form" action="{{URL::route('atenciones_crear')}}" accept-charset="UTF-8" enctype="multipart/form-data">
-                <div class="card-body">
-                    <div class="form-group">
-                        <label>Rut <span style="color:red;">*</span></label>
-                        <input type="text" id="rut" name="rut" class="form-control for-especialista" placeholder="Ingrese solo números" onkeypress="return check(event)">
-                    </div>
-                    <div class="form-group">
-                        <label>Especialidad <span style="color:red;">*</span></label>
-                        <select class="custom-select especialidades for-especialista" id="especialidad" name="especialidad">
-                            <option selected>Ingresa la Especialidad</option>
-                            @if(!empty($especialidades))
-                                @foreach($especialidades as $row)
-                                    <option value="{{ $row->id }}">{{ $row->nombre }}</option>
-                                @endforeach
-                            @else
-                                <option>No existen Especialidades Creadas.</option>
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Seleccione el Tipo de Atención. <span style="color:red;">*</span></label>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Rut <span style="color:red;">*</span></label>
+                    <input type="text" id="rut" name="rut" class="form-control for-especialista" placeholder="Ingrese solo números" onkeypress="return check(event)">
+                </div>
+                <div class="form-group">
+                    <label>Especialidad <span style="color:red;">*</span></label>
+                    <select class="custom-select especialidades for-especialista" id="especialidad" name="especialidad">
+                        <option selected value="">Ingresa la Especialidad</option>
+                        @if(!empty($especialidades))
+                            @foreach($especialidades as $row)
+                                <option value="{{ $row->id }}">{{ $row->nombre }}</option>
+                            @endforeach
+                        @else
+                            <option>No existen Especialidades Creadas.</option>
+                        @endif
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Seleccione el Tipo de Atención. <span style="color:red;">*</span></label>
+                </div>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_atencion" id="tipo_atencion" checked value="1">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Reserva de Atención
+                    </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="tipo_atencion" id="flexRadioDefault1" checked>
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            Reserva de Atención
-                        </label>
-                        </div>
-                        <div class="form-check">
-                        <input class="form-check-input" type="radio" name="tipo_atencion" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                            Atención Inmediata
-                        </label>
-                    </div>
+                    <input class="form-check-input" type="radio" name="tipo_atencion" id="tipo_atencion" value="2">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Atención Inmediata
+                    </label>
                 </div>
-                <div class="card-footer text-right">
-                    <button type="submit" class="btn btn-success">Siguiente <i class="fa-solid fa-arrow-right"></i></button>
-                </div>
-            </form>
+            </div>
+            <div class="card-footer text-right">
+                <a href="{{URL::route('atenciones_pacientes')}}" class="btn btn-danger">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Volver
+                </a>
+                <button class="btn btn-success" onclick="crearAtencion()">Siguiente <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
         </div>
     </div>
 </div>
@@ -137,55 +140,31 @@
 
 	});
 
-    $("#form").submit(function(e)
+    function crearAtencion() 
     {
-        e.preventDefault();
-        var url = $(this).attr('action');
+        var url = '{{URL::route("atenciones_crear")}}';
 
         $.ajax({
             url: url,
             type: 'post',
             dataType : 'json',
-            data: new FormData(this),
-            contentType: false,
-            processData: false,
-            success: function (res) 
+            data: {
+                rut:           $("#rut").val(),
+                especialidad:  $("#especialidad").val(),
+                tipo_atencion: $('input[name="tipo_atencion"]:checked').val(),
+            },
+            success: function(res) 
             {
                 if (res.status === 'success') 
                 {
-                    Swal.fire({
-                        title: res.msg,
-                        icon: 'success',
-                        showCancelButton: false,
-                        confirmButtonText: 'Aceptar',
-                        confirmButtonColor: '#019df4',
-                        cancelButtonText: 'Cancelar',
-                        cancelButtonColor: '#dc3545',
-                        showClass: {
-                            popup: 'animate__animated animate__fadeInDown'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__fadeOutUp'
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) 
-                        {
-                            window.location.reload();
-                        }
-                        else
-                        {
-                            window.location.reload();
-                        }
-                    })
-
-                    $(".for-especialista").val('');
+                   window.location.href = "{{ url('/home/atenciones/paciente/reservar/especialista/') }}/"+res.id;
                 }
                 else
                 {
                     Swal.fire('Error!',res.msg,'error');
-                }
+                }  
             }
         });
-    });
+    }
  </script>
 @stop

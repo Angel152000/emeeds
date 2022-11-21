@@ -15,7 +15,6 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{URL::route('home')}}">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="{{URL::route('atenciones_pacientes')}}">Atenciones</a></li>
-                        <li class="breadcrumb-item"><a href="{{URL::route('atenciones_reservar')}}">Reservar Atención</a></li>
                         <li class="breadcrumb-item active">Registrar Atención</li>
                     </ol>
                 </div>

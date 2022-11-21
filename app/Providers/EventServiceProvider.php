@@ -126,14 +126,6 @@ class EventServiceProvider extends ServiceProvider
                 break;
                 case 3:
                     $event->menu->addAfter('menu', [
-                        'text'        => 'Calendario',
-                        'url'         => '#',
-                        'icon'        => 'fa fa-calendar',
-                        'label_color' => 'success',
-                        'key'         => 'calendario',
-                    ]);
-
-                    $event->menu->addAfter('calendario', [
                         'text'        => 'Atenciones',
                         'url'         => '/home/atenciones/paciente',
                         'icon'        => 'fa-solid fa-laptop-medical',
@@ -142,24 +134,26 @@ class EventServiceProvider extends ServiceProvider
                     ]);
 
                     $event->menu->addAfter('atenciones', [
-                        'text'    => 'Cuenta',
-                        'icon'    => 'fas fa-fw fa-user',
-                        'key'     => 'cuenta',
-                        'submenu' => [
-                            [
-                                'text'        => 'Ficha médica',
-                                'url'         => '#',
-                                'icon'        => 'fa-solid fa-hospital-user',
-                                'label_color' => 'success',
-                                'key'         => 'atenciones',
-                            ],
-                            [
-                                'text' => 'Configuración',
-                                'url'  => '#',
-                                'icon' => 'fa-solid fa-gear',
-                            ]
-                        ]
+                        'header' => 'Cuenta', 
+                        'key' => 'cuenta'
                     ]);
+
+                    $event->menu->addAfter('cuenta', [
+                        'text'        => 'Ficha médica',
+                        'url'         => '#',
+                        'icon'        => 'fa-solid fa-hospital-user',
+                        'label_color' => 'success',
+                        'key'         => 'fichamedica',
+                    ]);
+
+                    $event->menu->addAfter('fichamedica', [
+                        'text'        => 'Configuración',
+                        'url'         => '#',
+                        'icon'        => 'fa-solid fa-gear',
+                        'label_color' => 'success',
+                        'key'         => 'config',
+                    ]);
+
                 break;
                 default:
                 break;
