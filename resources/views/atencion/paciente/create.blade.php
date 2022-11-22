@@ -64,6 +64,11 @@
                     </label>
                 </div>
                 <br>
+                <div class="form-group fecha_aten">
+                    <label>Fecha de Atención <span style="color:red;">*</span></label>
+                    <input class="form-control" type="date" name="fecha_atencion" id="fecha_atencion" min=<?php $hoy=date("Y-m-d"); echo $hoy;?> >
+                </div>
+                <br>
                 <div class="form-group">
                     <label>Motivo de Atención.</label>
                     <textarea class="form-control" id="detalle" name="detalle" rows="3"></textarea>
@@ -157,6 +162,7 @@
                 especialidad:  $("#especialidad").val(),
                 tipo_atencion: $('input[name="tipo_atencion"]:checked').val(),
                 detalle:       $("#detalle").val(),
+                fecha_atencion:$("#fecha_atencion").val(),
             },
             success: function(res) 
             {
@@ -171,5 +177,17 @@
             }
         });
     }
+
+    $('input[type=radio][name=tipo_atencion]').change(function() 
+    {
+        if (this.value == '1') 
+        {
+            $('.fecha_aten').show();
+        }
+        else if (this.value == '2') 
+        {
+            $('.fecha_aten').hide();
+        }
+    });
  </script>
 @stop

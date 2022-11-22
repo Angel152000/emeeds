@@ -26,6 +26,7 @@
 @section('sub_content')
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <input type="hidden" id="tipo_aten" value="{{ $atenciones->tipo_atencion }}">
         <div class="card">
             <div class="card-header">
                 <div class="row">
@@ -38,55 +39,98 @@
                             Resumen de tu Atención
                         </button>
                         &nbsp;
-                        <a onclick="" class="btn btn-success btn-sm">
-                            <i class="fa-solid fa-save"></i>
-                            Realizar Atención
+                        <a href="{{URL::route('atenciones_pacientes')}}" class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Volver
+                        </a>
+                        &nbsp;
+                        <a onclick="registrarAtencion('{{$atenciones->id_atencion}}')" class="btn btn-success btn-sm">
+                            Siguiente
+                            <i class="fa-solid fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <table class="table" id="especialistas">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Horarios</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $l_conta = 1; ?> 
-                        @if(!empty($especialistas))
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            @foreach($especialistas as $row)
+                @switch($atenciones->tipo_atencion)
+                    @case(1)
+                        <table class="table" id="especialistas">
+                            <thead>
                                 <tr>
-                                    <td>{{$loop->iteration}}</td>
-                                    <td> Dr/a. {{$row->nombres}} {{$row->apellido_paterno}}</td>
-                                    <td>
-                                    @if(!empty($bloques))
-                                        @foreach($bloques as $row)
-                                            <label class="btn btn-warning btn-sm">
-                                                <input type="radio" name="bloque" id="bloque_{{ $l_conta }}"> {{ $row->hora_bloque }}
-                                            </label>
-                                            &nbsp;
-                                            <?php $l_conta++; ?> 
-                                        @endforeach
-                                    @else
-                                        <p> No hay bloques establecidos para esta especialidad. </p>
-                                    @endif
-                                    </td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Horarios</th>
                                 </tr>
-                            @endforeach
-                        </div>
-                        @else
-                            <tr>
-                                <td colspan="6">
-                                    <h4 class="text-center">No Hay Especialistas disponibles para esta especialidad.</h4>
-                                </td>
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                                <?php $l_conta = 1; ?> 
+                                @if(!empty($especialistas))
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                        @foreach($especialistas as $row)
+                                            <tr>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td> Dr/a. {{$row->nombres}} {{$row->apellido_paterno}}</td>
+                                                <td>
+                                                @if(!empty($bloques))
+                                                    @foreach($bloques as $row2)
+                                                        <label class="btn btn-warning btn-sm">
+                                                            <input type="radio" name="bloque" id="bloque_{{ $l_conta }}" value="{{ $row2->id_bloque }}-{{ $row->id }}"> {{ $row2->hora_bloque }}
+                                                        </label>
+                                                        &nbsp;
+                                                        <?php $l_conta++; ?> 
+                                                    @endforeach
+                                                @else
+                                                    <p> No hay bloques establecidos para esta especialidad. </p>
+                                                @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <tr>
+                                        <td colspan="6">
+                                            <h4 class="text-center">No Hay Especialistas disponibles para esta especialidad.</h4>
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    @break
+                    @case(2)
+                        <table class="table" id="especialistas">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if(!empty($especialistas))
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                        @foreach($especialistas as $row)
+                                            <tr>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td> Dr/a. {{$row->nombres}} {{$row->apellido_paterno}}</td>
+                                                <td>
+                                                    <label class="btn btn-warning btn-sm">
+                                                        <input type="radio" name="especialista" value="{{$row->id}}"> Seleccionar
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <tr>
+                                        <td colspan="6">
+                                            <h4 class="text-center">No Hay Especialistas disponibles para esta especialidad.</h4>
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    @break
+                @endswitch
             </div>
             <div class="card-footer">
                 <div class="row">
@@ -96,9 +140,14 @@
                             Resumen de tu Atención
                         </button>
                         &nbsp;
-                        <a onclick="" class="btn btn-success btn-sm">
-                            <i class="fa-solid fa-save"></i>
-                            Realizar Atención
+                        <a href="{{URL::route('atenciones_pacientes')}}" class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Volver
+                        </a>
+                        &nbsp;
+                        <a onclick="registrarAtencion('{{$atenciones->id_atencion}}')" class="btn btn-success btn-sm">
+                            Siguiente
+                            <i class="fa-solid fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -142,10 +191,20 @@
                                 {{ $especialidad->nombre }}
                             </p>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                             <label class="col-form-label">Motivo de Atención:</label>
                             <p>
                                 {{ $atenciones->detalle_atencion }}
+                            </p>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <label class="col-form-label">Fecha de Atención:</label>
+                            <p>
+                                @if(isset($atenciones->fecha))
+                                    <td>@php echo date("d/m/Y", strtotime($atenciones->fecha)); @endphp</td>
+                                @else
+                                    <td>No aplica.</td>
+                                @endif
                             </p>
                         </div>
                     </div>
@@ -172,5 +231,55 @@
             }
         });
     });
+
+    function registrarAtencion(id) 
+    {
+        var url = '{{URL::route("atenciones_registrar")}}';
+        var tipo = $('#tipo_aten').val();
+
+        if(tipo == 1)
+        {
+            var datos = {
+                bloq: $('input:radio[name=bloque]:checked').val(),
+                tipo: 1,
+                id:  id
+            }
+        }
+        else if(tipo == 2)
+        {
+            var datos = {
+                bloq: $('input:radio[especialista=bloque]:checked').val(),
+                tipo: 2,
+                id:  id
+            }
+        }
+        else
+        {
+            var datos = {
+                tipo: 0,
+            }
+        }
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType : 'json',
+            data: {
+                datos: datos
+            },
+            success: function(res) 
+            {
+                if (res.status === 'success') 
+                {
+                   window.location.href = "{{ url('/home/atenciones/pago/checkout') }}/"+res.id;
+                }
+                else
+                {
+                    Swal.fire('Error!',res.msg,'error');
+                }  
+            }
+        });
+    }
+
 </script>
 @stop

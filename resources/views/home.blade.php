@@ -374,37 +374,41 @@
 @stop
 
 @section('sub_js')
-<script>
-    $(document).ready(function() {
-        var table = $('#especialistas').DataTable({
-            responsive: true,
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ resultados por página",
-                "zeroRecords": "No Existen Especialistas aún.",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoFiltered": "(filtered from _MAX_ total records)"
-            }
+    <script>
+        $(document).ready(function() {
+            var table = $('#especialistas').DataTable({
+                responsive: true,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ resultados por página",
+                    "zeroRecords": "No Existen Especialistas aún.",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                }
+            });
+
+            var table = $('#especialidades').DataTable({
+                responsive: true,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ resultados por página",
+                    "zeroRecords": "No Existen Especialistas aún.",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                }
+            });
+
+            var table = $('#atenciones').DataTable({
+                responsive: true,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ resultados por página",
+                    "zeroRecords": "No hay atenciones realizadas o por realizar aún.",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                }
+            });
         });
 
-        var table = $('#especialidades').DataTable({
-            responsive: true,
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ resultados por página",
-                "zeroRecords": "No Existen Especialistas aún.",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoFiltered": "(filtered from _MAX_ total records)"
-            }
+        $('.cerrar_ses').click(function(){
+            document.getElementById('logout-form').submit();
         });
-
-        var table = $('#atenciones').DataTable({
-            responsive: true,
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ resultados por página",
-                "zeroRecords": "No hay atenciones realizadas o por realizar aún.",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoFiltered": "(filtered from _MAX_ total records)"
-            }
-        });
-    });
-</script>
+    </script>
 @stop

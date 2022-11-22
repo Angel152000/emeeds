@@ -92,18 +92,29 @@ class AtencionController extends Controller
      */
     public function store(Request $request)
     {
+        if(!empty($request->input('tipo_atencion')))
+        {
+            if($request->input('tipo_atencion') == 1) { $fecha = 'required'; } else { $fecha = ''; }
+        }
+        else
+        {
+            $fecha = '';
+        }
+
         $rules = array(
             'rut'           => 'required',
             'especialidad'  => 'required',
             'tipo_atencion' => 'required',
             'detalle'       => 'max:500',
-        ); 
+            'fecha_atencion'=> $fecha,
+        );
 
         $msg = array(
             'rut.required'            => 'El campo Rut es requerido',
             'especialidad.required'   => 'El campo Especialidad es requerido',
             'tipo_atencion.required'  => 'El campo Tipo de atención es requerido',
-            'detalle.max'             => 'El campo Motivo de atención no puede superar los 500 caracteres.',
+            'detalle.max'             => 'El campo Motivo de atención no puede superar los 500 caracteres',
+            'fecha_atencion.required' => 'El campo Fecha de Atención es requerido'
         );
 
         $validador = Validator::make($request->all(), $rules, $msg);
@@ -121,6 +132,15 @@ class AtencionController extends Controller
                 $codigo = 1;
             }
 
+            if($request->input('tipo_atencion') == 1) 
+            { 
+                $fecha_save = $request->input("fecha_atencion"); 
+            } 
+            else 
+            { 
+                $fecha_save = null; 
+            }
+
             $response = Atencion::create([
                 'codigo_atencion' =>  $codigo,
                 'tipo_atencion'   =>  $request->input('tipo_atencion'),
@@ -128,7 +148,8 @@ class AtencionController extends Controller
                 'id_paciente'     =>  auth()->user()->id,
                 'rut_paciente'    =>  $request->input('rut'),
                 'detalle_atencion'=>  $request->input('detalle'),
-                'estado'          =>  3
+                'estado'          =>  3,
+                'fecha'           => $fecha_save
             ]);
 
             if ($response) 
@@ -159,8 +180,23 @@ class AtencionController extends Controller
      */
     public function show($id)
     {
-        
-        $day = date("l");
+        $atentiones    = Atencion::where('codigo_atencion',$id)->first();
+        $especialistas = Especialistas::where('id_especialidad',$atentiones->id_especialidad)->get();
+
+        switch ($atentiones->tipo_atencion) 
+        {
+            case 1:
+                $tipo_atencion = 'Atención Reservada';
+                $day = date("l", strtotime($atentiones->fecha));
+            break;
+            case 2:
+                $tipo_atencion = 'Atención Inmediata';
+                $day = date("l");
+            break;
+            case 3:
+                $tipo_atencion = 'Sin tipo de atención';
+            break;
+        }
 
         switch ($day) {
             case "Sunday":   $dia = 7;  break; case "Monday":    $dia = 1; break;
@@ -169,8 +205,6 @@ class AtencionController extends Controller
             case "Saturday": $dia = 6;  break;
         }
 
-        $atentiones    = Atencion::where('codigo_atencion',$id)->first();
-        $especialistas = Especialistas::where('id_especialidad',$atentiones->id_especialidad)->get();
         $especialidad  = Especialidades::where('id',$atentiones->id_especialidad)->first();
         $horario       = Horarios::where('dia',$dia)->first();
 
@@ -183,19 +217,6 @@ class AtencionController extends Controller
             $bloques = [];
         }
         
-        switch ($atentiones->tipo_atencion) 
-        {
-            case 1:
-                $tipo_atencion = 'Atención Reservada';
-            break;
-            case 2:
-                $tipo_atencion = 'Atención Inmediata';
-            break;
-            case 3:
-                $tipo_atencion = 'Sin tipo de atención';
-            break;
-        }
-
         $this->data['atenciones']    = $atentiones;
         $this->data['especialistas'] = $especialistas;
         $this->data['especialidad']  = $especialidad;
@@ -206,26 +227,53 @@ class AtencionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\atencion  $atencion
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(atencion $atencion)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\atencion  $atencion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, atencion $atencion)
+    public function update(Request $request)
     {
-        //
+        if(!empty($request->input('tipo')))
+        {
+            switch($request->input('tipo'))
+            {
+                case 0:
+                    $this->data['status'] = "error";
+                    $this->data['msg']    = "Faltan parámetros para realizar la Operación, intente nuevamente.";
+                break;
+                case 1:
+                    $rules = array(
+                        'bloq' => 'required',
+                    ); 
+            
+                    $msg = array(
+                        'bloq.required' => 'Debe escoger un Horario',
+                    );
+            
+                    $validador = Validator::make($request->all(), $rules, $msg);
+            
+                    if ($validador->passes()) 
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                break;
+                case 2:
+                break;
+            }
+        }
+        else
+        {
+            $this->data['status'] = "error";
+            $this->data['msg'] = "Faltan parámetros para realizar la Operación, intente nuevamente.";
+        }
+    
+        return json_encode($this->data);
     }
 
     /**

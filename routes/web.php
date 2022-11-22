@@ -89,4 +89,8 @@ Route::group([
     Route::post('/home/atenciones/paciente/crear/reserva',             [App\Http\Controllers\AtencionController::class, 'store'])->name('atenciones_crear');
     Route::get('/home/atenciones/paciente/reservar/especialista/{id}', [App\Http\Controllers\AtencionController::class, 'show']);
     Route::post('/home/atenciones/paciente/reserva/eliminar',          [App\Http\Controllers\AtencionController::class, 'destroy'])->name('atenciones_eliminar');
+    Route::post('/home/atenciones/paciente/reserva/registrar',         [App\Http\Controllers\AtencionController::class, 'update'])->name('atenciones_registrar');
+
+    //Ruta de pagos
+    Route::get('/home/atenciones/pago/checkout/{id}',                  [App\Http\Controllers\PagosController::class, 'index']);
 });

@@ -63,9 +63,17 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{ $row->codigo_atencion }}</td>
                                     <td>{{ $row->especialidad }}</td>
-                                    <td>{{ $row->especialista }}</td>
+                                    @if(!empty($row->especialista))
+                                        <td>{{ $row->especialista }}</td>
+                                    @else
+                                        <td>No elegido.</td>
+                                    @endif
                                     <td>{{ $row->atencion }}</td>
-                                    <td>{{ $row->fecha }}</td>
+                                    @if(isset($row->fecha))
+                                        <td>@php echo date("d/m/Y", strtotime($row->fecha)); @endphp</td>
+                                    @else
+                                        <td>No aplica.</td>
+                                    @endif
                                     @switch($row->estado)
                                         @case(1)
                                             <td><h3><span class="badge badge-success">Realizada</span></h3></td>

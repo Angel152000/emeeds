@@ -320,7 +320,7 @@ return [
             'icon'       => 'fa fa-fw fa-power-off',
             'icon_color' => 'white',
             'url'        => '#',
-            'classes'    => 'text-bold bg-danger'
+            'classes'    => 'text-bold bg-danger cerrar_ses'
         ],
     ],
 
