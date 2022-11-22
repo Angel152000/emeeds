@@ -35,6 +35,7 @@ class HomeController extends Controller
         {
             //Especialista
             case 1:
+                return view('home');
             break;
             //Establecimiento
             case 2:
