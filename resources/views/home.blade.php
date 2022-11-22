@@ -298,9 +298,17 @@
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{ $row->codigo_atencion }}</td>
                                                 <td>{{ $row->especialidad }}</td>
-                                                <td>{{ $row->especialista }}</td>
+                                                @if(!empty($row->especialista))
+                                                    <td>Dr/a. {{ $row->especialista->nombres }} {{ $row->especialista->apellido_paterno }}</td>
+                                                @else
+                                                    <td>No elegido.</td>
+                                                @endif
                                                 <td>{{ $row->atencion }}</td>
-                                                <td>{{ $row->fecha }}</td>
+                                                @if(isset($row->fecha))
+                                                    <td>@php echo date("d/m/Y", strtotime($row->fecha)); @endphp</td>
+                                                @else
+                                                    <td>No aplica.</td>
+                                                @endif
                                                 @switch($row->estado)
                                                     @case(1)
                                                         <td><h3><span class="badge badge-success">Realizada</span></h3></td>
@@ -309,6 +317,9 @@
                                                         <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
                                                     @break
                                                     @case(3)
+                                                        <td><h3><span class="badge badge-info">Pendiente Pago</span></h3></td>
+                                                    @break
+                                                    @case(4)
                                                         <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
                                                     @break
                                                 @endswitch
@@ -356,6 +367,11 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">3</th>
+                                    <td><h3><span class="badge badge-info">Pendiente Pago</span></h3></td>
+                                    <td>Consulta/Atención que se encuentra completa para la reserva o atención inmediata en su defecto, pero que no se ha realizado el pago correspondiente.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">4</th>
                                     <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
                                     <td>Consulta/Atención que se encuentra incompleta para la reserva o atención inmediata de esta misma.</td>
                                 </tr>

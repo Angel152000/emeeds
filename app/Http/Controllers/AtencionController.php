@@ -148,7 +148,7 @@ class AtencionController extends Controller
                 'id_paciente'     =>  auth()->user()->id,
                 'rut_paciente'    =>  $request->input('rut'),
                 'detalle_atencion'=>  $request->input('detalle'),
-                'estado'          =>  3,
+                'estado'          =>  4,
                 'fecha'           => $fecha_save
             ]);
 
@@ -160,7 +160,7 @@ class AtencionController extends Controller
             else 
             {
                 $this->data['status'] = "error";
-                $this->data['msg'] = $validador->errors()->first();
+                $this->data['msg'] = "Hubo un error al crear la Atención, por favor intente nuevamente.";
             } 
         }
         else 
@@ -235,35 +235,77 @@ class AtencionController extends Controller
      */
     public function update(Request $request)
     {
-        if(!empty($request->input('tipo')))
+        if(!empty($request->datos['tipo']))
         {
-            switch($request->input('tipo'))
+            switch($request->datos['tipo'])
             {
                 case 0:
                     $this->data['status'] = "error";
                     $this->data['msg']    = "Faltan parámetros para realizar la Operación, intente nuevamente.";
                 break;
                 case 1:
-                    $rules = array(
-                        'bloq' => 'required',
-                    ); 
-            
-                    $msg = array(
-                        'bloq.required' => 'Debe escoger un Horario',
-                    );
-            
-                    $validador = Validator::make($request->all(), $rules, $msg);
-            
-                    if ($validador->passes()) 
+                    if(!empty($request->datos['bloq']))
                     {
+                        $partes       = explode('-',$request->datos['bloq']);
+                        $bloque       = $partes[0];
+                        $especialista = $partes[1];
+                        $id_atencion  = $request->datos['id'];
+                        
+                        $id_horario = Bloques::where('id_bloque',$bloque)->first();
 
+                        $response = Atencion::where('id_atencion',$id_atencion)->update([
+                            'id_especialista'  =>  $especialista,
+                            'id_horario'       =>  $id_horario->id_horario,
+                            'id_bloque'        =>  $bloque,
+                            'estado'          =>   3,
+                        ]);
+
+                        if ($response) 
+                        {
+                            $atencion = Atencion::where('id_atencion',$id_atencion)->first();
+                            $this->data['status'] = "success";
+                            $this->data['id']     = $atencion->codigo_atencion;
+                        }
+                        else 
+                        {
+                            $this->data['status'] = "error";
+                            $this->data['msg'] = "Hubo un error al crear la Atención, por favor intente nuevamente.";
+                        } 
                     }
                     else
                     {
-
+                        $this->data['status'] = "error";
+                        $this->data['msg'] = "Debe escoger un Horario con algún Especialista.";
                     }
                 break;
                 case 2:
+                    if(!empty($request->datos['bloq']))
+                    {
+                        $especialista = $request->datos['bloq'];
+                        $id_atencion  = $request->datos['id'];
+                        
+                        $response = Atencion::where('id_atencion',$id_atencion)->update([
+                            'id_especialista'  =>  $especialista,
+                            'estado'           =>   3,
+                        ]);
+
+                        if ($response) 
+                        {
+                            $atencion = Atencion::where('id_atencion',$id_atencion)->first();
+                            $this->data['status'] = "success";
+                            $this->data['id']     = $atencion->codigo_atencion;
+                        }
+                        else 
+                        {
+                            $this->data['status'] = "error";
+                            $this->data['msg'] = "Hubo un error al crear la Atención, por favor intente nuevamente.";
+                        } 
+                    }
+                    else
+                    {
+                        $this->data['status'] = "error";
+                        $this->data['msg'] = "Debe escoger un Horario con algún Especialista.";
+                    }
                 break;
             }
         }

@@ -64,7 +64,7 @@
                                     <td>{{ $row->codigo_atencion }}</td>
                                     <td>{{ $row->especialidad }}</td>
                                     @if(!empty($row->especialista))
-                                        <td>{{ $row->especialista }}</td>
+                                        <td>Dr/a. {{ $row->especialista->nombres }} {{ $row->especialista->apellido_paterno }}</td>
                                     @else
                                         <td>No elegido.</td>
                                     @endif
@@ -84,6 +84,13 @@
                                             <td></td>
                                         @break
                                         @case(3)
+                                            <td><h3><span class="badge badge-info">Pendiente Pago</span></h3></td>
+                                            <td>
+                                                <a  href="{{ url('/home/atenciones/pago/checkout') }}/{{$row->codigo_atencion}}" class="btn btn-success"><i class="fa-sharp fa-solid fa-credit-card"></i></a>
+                                                <a  onclick="eliminarAtencion('{{$row->id_atencion}}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        @break
+                                        @case(4)
                                             <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
                                             <td>
                                                 <a  href="{{ url('/home/atenciones/paciente/reservar/especialista') }}/{{$row->codigo_atencion}}" class="btn btn-success"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -133,6 +140,11 @@
                     </tr>
                     <tr>
                         <th scope="row">3</th>
+                        <td><h3><span class="badge badge-info">Pendiente Pago</span></h3></td>
+                        <td>Consulta/Atención que se encuentra completa para la reserva o atención inmediata en su defecto, pero que no se ha realizado el pago correspondiente.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
                         <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
                         <td>Consulta/Atención que se encuentra incompleta para la reserva o atención inmediata de esta misma.</td>
                     </tr>

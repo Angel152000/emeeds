@@ -235,12 +235,13 @@
     function registrarAtencion(id) 
     {
         var url = '{{URL::route("atenciones_registrar")}}';
+
         var tipo = $('#tipo_aten').val();
 
         if(tipo == 1)
         {
             var datos = {
-                bloq: $('input:radio[name=bloque]:checked').val(),
+                bloq: $('input[name="bloque"]:checked').val(),
                 tipo: 1,
                 id:  id
             }
@@ -248,7 +249,7 @@
         else if(tipo == 2)
         {
             var datos = {
-                bloq: $('input:radio[especialista=bloque]:checked').val(),
+                bloq: $('input[name="especialista"]:checked').val(),
                 tipo: 2,
                 id:  id
             }
@@ -259,6 +260,8 @@
                 tipo: 0,
             }
         }
+
+        console.log(datos);
 
         $.ajax({
             url: url,
