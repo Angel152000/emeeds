@@ -71,6 +71,8 @@
                                             &nbsp;
                                             <?php $l_conta++; ?> 
                                         @endforeach
+                                    @else
+                                        <p> No hay bloques establecidos para esta especialidad. </p>
                                     @endif
                                     </td>
                                 </tr>
