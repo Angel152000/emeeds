@@ -73,8 +73,8 @@
                                                 <td>
                                                 @if(!empty($bloques))
                                                     @foreach($bloques as $row2)
-                                                        <label class="btn btn-warning btn-sm">
-                                                            <input type="radio" name="bloque" id="bloque_{{ $l_conta }}" value="{{ $row2->id_bloque }}-{{ $row->id }}"> {{ $row2->hora_bloque }}
+                                                        <label class="btn btn-warning btn-sm" id="bloque_{{ $row2->id_bloque }}-{{ $row->id }}">
+                                                            <input type="radio" name="bloque" id="bloque_{{ $row2->id_bloque }}-{{ $row->id }}" value="{{ $row2->id_bloque }}-{{ $row->id }}"> {{ $row2->hora_bloque }}
                                                         </label>
                                                         &nbsp;
                                                         <?php $l_conta++; ?> 
@@ -95,6 +95,11 @@
                                 @endif
                             </tbody>
                         </table>
+                        @if(!empty($bloques2))
+                            @foreach($bloques2 as $row3)
+                                <?php echo '<style> #bloque_'.$row3->id_bloque.'-'.$row3->id_especialista.'{ display:none; } </style>'; ?>
+                            @endforeach
+                        @endif
                     @break
                     @case(2)
                         <table class="table" id="especialistas">

@@ -3,7 +3,7 @@
 @section('sub_header')
     <nav style="background: linear-gradient(90deg, #019df4, #f4f6f9);padding: 1rem;" class="navbar navbar-danger">
         <div clas="container">
-            <h3 class="text-light font-weight-bold">ATENCIONES</h3>
+            <h3 class="text-light font-weight-bold">CHECKOUT</h3>
         </div>
     </nav>
     <div class="content-header">
@@ -15,7 +15,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{URL::route('home')}}">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="{{URL::route('atenciones_pacientes')}}">Atenciones</a></li>
-                        <li class="breadcrumb-item active">Registrar Atención</li>
+                        <li class="breadcrumb-item active">Checkout</li>
                     </ol>
                 </div>
             </div>

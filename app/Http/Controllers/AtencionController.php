@@ -123,44 +123,42 @@ class AtencionController extends Controller
         {
             $atenciones = Atencion::where('id_paciente',auth()->user()->id)->orderBy('id_atencion','DESC')->first();
 
-            if(!empty($atenciones))
+            if(!empty($atenciones)) { $codigo = $atenciones->id_atencion + 1; } else { $codigo = 1; }
+
+            if($request->input('tipo_atencion') == 1) { $fecha_save = $request->input("fecha_atencion"); } else { $fecha_save = null; }
+
+            $fecha_hoy = date('Y-m-d');
+
+            if(!is_null($fecha_save)) { if($fecha_save < $fecha_hoy) { $l_resp = 1; } else { $l_resp = 0; } } else { $l_resp = 0; }
+
+            if($l_resp == 0)
             {
-                $codigo = $atenciones->id_atencion + 1;
+                $response = Atencion::create([
+                    'codigo_atencion' =>  $codigo,
+                    'tipo_atencion'   =>  $request->input('tipo_atencion'),
+                    'id_especialidad' =>  $request->input('especialidad'),
+                    'id_paciente'     =>  auth()->user()->id,
+                    'rut_paciente'    =>  $request->input('rut'),
+                    'detalle_atencion'=>  $request->input('detalle'),
+                    'estado'          =>  4,
+                    'fecha'           =>  $fecha_save
+                ]);
+
+                if ($response) 
+                {
+                    $this->data['status'] = "success";
+                    $this->data['id']     = $response->codigo_atencion;
+                }
+                else 
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "Hubo un error al crear la Atención, por favor intente nuevamente.";
+                }
             }
             else
             {
-                $codigo = 1;
-            }
-
-            if($request->input('tipo_atencion') == 1) 
-            { 
-                $fecha_save = $request->input("fecha_atencion"); 
-            } 
-            else 
-            { 
-                $fecha_save = null; 
-            }
-
-            $response = Atencion::create([
-                'codigo_atencion' =>  $codigo,
-                'tipo_atencion'   =>  $request->input('tipo_atencion'),
-                'id_especialidad' =>  $request->input('especialidad'),
-                'id_paciente'     =>  auth()->user()->id,
-                'rut_paciente'    =>  $request->input('rut'),
-                'detalle_atencion'=>  $request->input('detalle'),
-                'estado'          =>  4,
-                'fecha'           => $fecha_save
-            ]);
-
-            if ($response) 
-            {
-                $this->data['status'] = "success";
-                $this->data['id']     = $response->codigo_atencion;
-            }
-            else 
-            {
                 $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al crear la Atención, por favor intente nuevamente.";
+                $this->data['msg'] = "No puede ingresar una Fecha de Atención anterior al día actual.";
             } 
         }
         else 
@@ -182,6 +180,7 @@ class AtencionController extends Controller
     {
         $atentiones    = Atencion::where('codigo_atencion',$id)->first();
         $especialistas = Especialistas::where('id_especialidad',$atentiones->id_especialidad)->get();
+        $objBloque = new Bloques();
 
         switch ($atentiones->tipo_atencion) 
         {
@@ -211,17 +210,20 @@ class AtencionController extends Controller
         if(!empty($horario))
         {
             $bloques = Bloques::where('id_horario',$horario->id_horario)->orderBy('hora_bloque','ASC')->get();
+            $bloques2 = $objBloque->getHorarioByAtencion($horario->id_horario,$atentiones->fecha);
         }
         else
         {
-            $bloques = [];
+            $bloques  = [];
+            $bloques2 = [];
         }
-        
+
         $this->data['atenciones']    = $atentiones;
         $this->data['especialistas'] = $especialistas;
         $this->data['especialidad']  = $especialidad;
         $this->data['tipo_atencion'] = $tipo_atencion;
         $this->data['bloques']       = $bloques;
+        $this->data['bloques2']      = $bloques2;
 
         return view('atencion.paciente.create2',$this->data);
     }

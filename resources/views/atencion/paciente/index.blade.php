@@ -108,51 +108,53 @@
     </div>
 </div>
 <!-- Modal leyenda-->
-<div class="modal fade bd-leyenda-lg" id="leyenda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Leyenda de Estados</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            <table class="table table-responsive">
-                <caption>Leyenda para los estados de la atención</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td><h3><span class="badge badge-success">Realizada</span></h3></td>
-                        <td>Consulta/Atención realizada con éxito.</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
-                        <td>Consulta/Atención que se encuentra reservada o en proceso para ser atendido/a.</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td><h3><span class="badge badge-info">Pendiente Pago</span></h3></td>
-                        <td>Consulta/Atención que se encuentra completa para la reserva o atención inmediata en su defecto, pero que no se ha realizado el pago correspondiente.</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
-                        <td>Consulta/Atención que se encuentra incompleta para la reserva o atención inmediata de esta misma.</td>
-                    </tr>
-                </tbody>
-            </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+<div class="row">
+    <div class="modal fade bd-leyenda-lg col-xs-12 col-sm-12 col-md-12 col-lg-12" id="leyenda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Leyenda de Estados</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <table class="table table-responsive">
+                    <caption>Leyenda para los estados de la atención</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td><h3><span class="badge badge-success">Realizada</span></h3></td>
+                            <td>Consulta/Atención realizada con éxito.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
+                            <td>Consulta/Atención que se encuentra reservada o en proceso para ser atendido/a.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td><h3><span class="badge badge-info">Pendiente Pago</span></h3></td>
+                            <td>Consulta/Atención que se encuentra completa para la reserva o atención inmediata en su defecto, pero que no se ha realizado el pago correspondiente.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
+                            <td>Consulta/Atención que se encuentra incompleta para la reserva o atención inmediata de esta misma.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
