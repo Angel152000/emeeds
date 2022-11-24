@@ -16,8 +16,14 @@ class Pagos extends Model
      */
     protected $fillable = [
         'id_pago',
+        'metodo_pago',
+        'payment_id',
+        'estado_mercado_pago',
+        'merchant_order_id',
         'id_atencion',
         'codigo_atencion',
-        'estado'
+        'estado',
+        'monto_pago',
+        'fecha_pago'
     ];
 }

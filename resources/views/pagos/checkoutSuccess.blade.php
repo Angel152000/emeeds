@@ -1,43 +1,9 @@
 @extends('layouts.app')
 
-<?php
-    // SDK de Mercado Pago
-    require base_path('vendor/autoload.php');
-
-    // Agrega credenciales
-    MercadoPago\SDK::setAccessToken(config('services.mercado_pago.token'));
-
-    // Crea un objeto de preferencia
-    $preference = new MercadoPago\Preference();
-
-    $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
-
-    // Crea un ítem en la preferencia
-    $item = new MercadoPago\Item();
-    $item->id = $atencion->codigo_atencion;
-    $item->title = 'Atención Medica';
-    $item->quantity = 1;
-    $item->unit_price = 200;//$atencion->costo;
-    $item->currency_id = "CLP";
-    $preference->items = array($item);
-
-    //Urls direccionamiento.
-    $preference->back_urls = array(
-        "success" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success/pago/".$atencion->codigo_atencion,
-        "failure" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success/pago/".$atencion->codigo_atencion,
-        "pending" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success/pago/".$atencion->codigo_atencion
-    );
-    
-    $preference->auto_return = "approved";
-    $preference->binary_mode = true;
-
-    $preference->save();
-?>
-
 @section('sub_header')
 <nav style="background: linear-gradient(90deg, #019df4, #f4f6f9);padding: 1rem;" class="navbar navbar-danger">
     <div clas="container">
-        <h3 class="text-light font-weight-bold">CHECKOUT</h3>
+        <h3 class="text-light font-weight-bold">COMPROBANTE DE PAGO</h3>
     </div>
 </nav>
 <div class="content-header">
@@ -49,7 +15,7 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{URL::route('home')}}">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{{URL::route('atenciones_pacientes')}}">Atenciones</a></li>
-                    <li class="breadcrumb-item active">Checkout</li>
+                    <li class="breadcrumb-item active">Comprobante de Pago</li>
                 </ol>
             </div>
         </div>
@@ -60,32 +26,9 @@
 @section('sub_content')
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        @switch($opcion)
-            @case(2)
-                <div class="callout callout-danger">
-                    <h5><i class="fa-solid fa-circle-exclamation text-danger"></i></i> Error al recibir el Pago:</h5>
-                    Hubo un error al recibir el pago desde mercado pago, intenta nuevamente. <br> Si este desconto tu saldo te invitamos a contactare con soporte para que podamos resolverlo enviando un correo a (<a class="text-primary" href="mailto:soporte@emeeds.cl">soporte@emeeds.cl</a>) indicando el código de atención.
-                </div>
-            @break
-            @case(3)
-                <div class="callout callout-danger">
-                    <h5><i class="fa-solid fa-circle-exclamation text-danger"></i></i> Error pago no aprobado:</h5>
-                    El pago no fue aprobado por Mercado Pago, intenta nuevamente.
-                </div>
-            @break
-            @case(4)
-                <div class="callout callout-danger">
-                <h5><i class="fa-solid fa-circle-exclamation text-danger"></i></i> Error al recibir el Pago (PG-001):</h5>
-                    Se realizo la compra de la Atención pero hubo un error al recibir el pago. <br> Te invitamos a contactare con soporte para que podamos resolverlo enviando un correo a (<a class="text-primary" href="mailto:soporte@emeeds.cl">soporte@emeeds.cl</a>) indicando el código de atención y comprobante de pago.
-                </div>
-            @break
-            @case(5)
-                <div class="callout callout-danger">
-                <h5><i class="fa-solid fa-circle-exclamation text-danger"></i></i> Error al actualizar la atención (PG-002):</h5>
-                    Hubo un al actualizar el estado de la Atención, intenta nuevamente. <br> Te invitamos a contactare con soporte para que podamos resolverlo enviando un correo a (<a class="text-primary" href="mailto:soporte@emeeds.cl">soporte@emeeds.cl</a>) indicando el código de atención y código de error (PG-002).
-                </div>
-            @break
-        @endswitch
+        <div class="callout callout-success">
+            <h5>Pago Realizado.</h5>
+        </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="invoice p-5 mb-3">
@@ -118,7 +61,9 @@
                     <b>Bol #MA-{{ $atencion->codigo_atencion }}</b><br>
                     <br>
                     <b>Código de Atención: </b> {{ $atencion->codigo_atencion }}<br>
-                    <b>Fecha de pago: </b>{{ date('d/m/Y') }}<br>
+                    <b>ID Pago: </b> {{ $pago->payment_id }}<br>
+                    <b>ID Orden: </b> {{ $pago->merchant_order_id }}<br>
+                    <b>Fecha de pago: </b>{{ date("d/m/Y", strtotime($pago->fecha_pago)) }}<br>
                 </div>
             </div>
             <br>
@@ -165,11 +110,11 @@
                         <table class="table">
                             <tbody>
                                 <tr>
-                                    <th style="width:50%">Subtotal: {{ '$'.number_format($atencion->costo,0,'.','.') }}</th>
+                                    <th style="width:50%">Subtotal: {{ '$'.number_format($pago->monto_pago,0,'.','.') }}</th>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th>Total: {{ '$'.number_format($atencion->costo,0,'.','.') }}</th>
+                                    <th>Total: {{ '$'.number_format($pago->monto_pago,0,'.','.') }}</th>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -191,7 +136,7 @@
                     <div class="col-3 float-left">
                     </div>
                     <div class="col-3 float-right">
-                        <div class="cho-container float-left"></div>
+                        
                     </div>
                 </div>
             </div>
@@ -203,33 +148,4 @@
 @stop
 
 @section('sub_js')
-<script>
-    $(document).ready(function() {
-        var table = $('#especialistas').DataTable({
-            responsive: true,
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ resultados por página",
-                "zeroRecords": "No Hay Especialistas disponibles para esta especialidad.",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoFiltered": "(filtered from _MAX_ total records)"
-            }
-        });
-    });
-</script>
-<script src="https://sdk.mercadopago.com/js/v2"></script>
-<script>
-    const mp = new MercadoPago("{{ config('services.mercado_pago.key') }}", {
-        locale: 'es-CL'
-    });
-
-    mp.checkout({
-        preference: {
-            id: '{{ $preference->id }}'
-        },
-        render: {
-            container: '.cho-container',
-            label: 'Pagar Atención',
-        }
-    });
-</script>
 @stop

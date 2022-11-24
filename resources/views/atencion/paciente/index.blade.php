@@ -77,11 +77,15 @@
                                     @switch($row->estado)
                                         @case(1)
                                             <td><h3><span class="badge badge-success">Realizada</span></h3></td>
-                                            <td></td>
+                                            <td>
+                                                <a  href="{{ url('/home/atenciones/pago/checkout') }}/{{$row->codigo_atencion}}" class="btn btn-info"><i class="fa-sharp fa-solid fa-credit-card"></i></a>
+                                            </td>
                                         @break
                                         @case(2)
                                             <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
-                                            <td></td>
+                                            <td>
+                                                <a  href="{{ url('/home/atenciones/pago/checkout') }}/{{$row->codigo_atencion}}" class="btn btn-info"><i class="fa-sharp fa-solid fa-credit-card"></i></a>
+                                            </td>
                                         @break
                                         @case(3)
                                             <td><h3><span class="badge badge-info">Pendiente Pago</span></h3></td>
