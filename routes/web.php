@@ -94,4 +94,7 @@ Route::group([
     //Ruta de pagos
     Route::get('/home/atenciones/pago/checkout/{id}',                  [App\Http\Controllers\PagosController::class, 'index']);
     Route::get('/home/atenciones/pago/checkout/success/pago/{id}',     [App\Http\Controllers\PagosController::class, 'successPago'])->name('response_pago');
+
+    //Ruta de Pdf
+    //Route::get('/home/imprimir/comprobante/{id}',                      [App\Http\Controllers\PdfController::class, 'index']);
 });

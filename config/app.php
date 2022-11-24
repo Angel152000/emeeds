@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //Librería DOOM PDF
+        Barryvdh\DomPDF\ServiceProvider::class,
+
     ],
 
     /*
