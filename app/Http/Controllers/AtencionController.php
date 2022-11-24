@@ -7,6 +7,7 @@ use App\Models\Bloques;
 use App\Models\Especialidades;
 use App\Models\Especialistas;
 use App\Models\Horarios;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,6 +35,32 @@ class AtencionController extends Controller
         {
             //Especialista
             case 1:
+                $l_especialista = Especialistas::where('id_user',auth()->user()->id)->first();
+                $atenciones = $objAtencion->getAtencionesByIdEspecialista($l_especialista->id);
+                if(!empty($atenciones))
+                {
+                    foreach ($atenciones as $row)
+                    {
+                        $paciente = User::where('id',$row->id_paciente)->first();
+                        $row->nombre_paciente = $paciente->name;
+                         
+                        switch ($row->tipo_atencion) 
+                        {
+                            case 1:
+                                $row->atencion = 'Atención Reservada';
+                            break;
+                            case 2:
+                                $row->atencion = 'Atención Inmediata';
+                            break;
+                            case 3:
+                                $row->atencion = 'Sin tipo de atención';
+                            break;
+                        }
+                        
+                    }
+                }
+                $this->data['atenciones'] = $atenciones;
+                return view('atencion.especialista.index',$this->data);
             break;
             //Establecimiento
             case 2:

@@ -44,7 +44,7 @@ class EventServiceProvider extends ServiceProvider
 
                     $event->menu->addAfter('calendario', [
                         'text'        => 'Atenciones',
-                        'url'         => '#',
+                        'url'         => '/home/atenciones/especialista',
                         'icon'        => 'fa-solid fa-laptop-medical',
                         'label_color' => 'success',
                         'key'         => 'atenciones',

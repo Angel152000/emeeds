@@ -7,6 +7,7 @@ use App\Models\Especialidades;
 use App\Models\Especialistas;
 use App\Models\Atencion;
 use App\Models\Horarios;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -35,7 +36,35 @@ class HomeController extends Controller
         {
             //Especialista
             case 1:
-                return view('home');
+                $l_especialista = Especialistas::where('id_user',auth()->user()->id)->first();
+                $this->data['countAtenciones'] = Atencion::where('id_especialista',$l_especialista->id)->whereIn('estado', [1, 2])->count();
+
+                $atenciones = $objAtencion->getAtencionesByIdEspecialista($l_especialista->id);
+                if(!empty($atenciones))
+                {
+                    foreach ($atenciones as $row)
+                    {
+                        $paciente = User::where('id',$row->id_paciente)->first();
+                        $row->nombre_paciente = $paciente->name;
+                         
+                        switch ($row->tipo_atencion) 
+                        {
+                            case 1:
+                                $row->atencion = 'Atención Reservada';
+                            break;
+                            case 2:
+                                $row->atencion = 'Atención Inmediata';
+                            break;
+                            case 3:
+                                $row->atencion = 'Sin tipo de atención';
+                            break;
+                        }
+                        
+                    }
+                }
+                $this->data['atenciones'] = $atenciones;
+
+                return view('home', $this->data);
             break;
             //Establecimiento
             case 2:
