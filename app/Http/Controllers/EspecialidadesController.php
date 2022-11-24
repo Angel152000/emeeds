@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Validator;
 class EspecialidadesController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -35,12 +45,14 @@ class EspecialidadesController extends Controller
         $rules = array(
             'codigo'       => 'required',
             'nombre'       => 'required',
+            'costo'        => 'required',
             'descripcion'  => 'required|max:500',
         ); 
 
         $msg = array(
             'codigo.required'       => 'El campo Código es requerido',
             'nombre.required'       => 'El campo Nombre es requerido',
+            'costo.required'       => 'El campo Cobro de atención es requerido',
             'descripcion.required'  => 'El campo Descripción es requerido',
             'descripcion.max'       => 'El campo Descripción no puede superar los 500 caracteres',
         );
@@ -54,6 +66,7 @@ class EspecialidadesController extends Controller
             $data = array(
                 'codigo'      =>  $request->input('codigo'),
                 'nombre'      =>  $request->input('nombre'),
+                'costo'       =>  $request->input('costo'),
                 'descripcion' =>  $request->input('descripcion'),
                 'created_at'  =>  date('Y-m-d h:m:s')
             );
@@ -91,12 +104,14 @@ class EspecialidadesController extends Controller
         $rules = array(
             'codigo'       => 'required',
             'nombre'       => 'required',
+            'costo'        => 'required',
             'descripcion'  => 'required|max:500',
         ); 
 
         $msg = array(
             'codigo.required'       => 'El campo Código es requerido',
             'nombre.required'       => 'El campo Nombre es requerido',
+            'costo.required'       => 'El campo Cobro de atención es requerido',
             'descripcion.required'  => 'El campo Descripción es requerido',
             'descripcion.max'       => 'El campo Descripción no puede superar los 500 caracteres',
         );
@@ -110,6 +125,7 @@ class EspecialidadesController extends Controller
             $data = array(
                 'codigo'      =>  $request->input('codigo'),
                 'nombre'      =>  $request->input('nombre'),
+                'costo'       =>  $request->input('costo'),
                 'descripcion' =>  $request->input('descripcion'),
                 'updated_at'  =>  date('Y-m-d h:m:s')
             );

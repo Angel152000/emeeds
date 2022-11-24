@@ -16,6 +16,7 @@ class Especialidades extends Model
         'id',
         'codigo',
         'nombre',
+        'cobro',
         'descripcion'
     ];
 

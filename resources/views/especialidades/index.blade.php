@@ -46,6 +46,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Código</th>
                             <th scope="col">Nombre</th>
+                            <th scope="col">Costo de Atención</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -57,6 +58,7 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{ $row->codigo }}</td>
                                     <td>{{ $row->nombre }}</td>
+                                    <td>{{ '$'.number_format($row->costo,0,'.','.') }}</td>
                                     <td>{{ $row->descripcion }}</td>
                                     <td>
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editarEspecialidad_{{$row->id}}">
@@ -83,6 +85,10 @@
                                                 <div class="form-group">
                                                     <label for="nombre" class="col-form-label">Nombre <span style="color:red;">*</span></label>
                                                     <input type="text" class="form-control" id="nombre_{{$row->id}}" name="nombre" value="{{ $row->nombre }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="costo" class="col-form-label">Costo de Atención <span style="color:red;">*</span></label>
+                                                    <input type="text" class="form-control" id="costo_{{$row->id}}" name="costo" value="{{ str_replace('$.',' ',$row->costo) }}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="descripcion" class="col-form-label">Descripción <span style="color:red;">*</span></label>
@@ -128,6 +134,10 @@
                             <div class="form-group">
                                 <label for="nombre" class="col-form-label">Nombre <span style="color:red;">*</span></label>
                                 <input type="text" class="form-control" id="nombre" name="nombre">
+                            </div>
+                            <div class="form-group">
+                                <label for="costo" class="col-form-label">Costo de Atención <span style="color:red;">*</span></label>
+                                <input type="text" class="form-control" id="costo" name="costo">
                             </div>
                             <div class="form-group">
                                 <label for="descripcion" class="col-form-label">Descripción <span style="color:red;">*</span></label>
@@ -204,6 +214,7 @@
                     $("#codigo").val('');
                     $("#nombre").val('');
                     $("#descripcion").val('');
+                    $("#costo").val('');
                 }
                 else
                 {
@@ -224,6 +235,7 @@
                 id:          id,
                 codigo:      $("#codigo_"+id).val(),
                 nombre:      $("#nombre_"+id).val(),
+                costo:       $("#costo_"+id).val(),
                 descripcion: $("#descripcion_"+id).val()
             },
             success: function(res) 

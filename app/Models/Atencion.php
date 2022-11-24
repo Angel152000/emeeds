@@ -43,4 +43,10 @@ class Atencion extends Model
         $atenciones = DB::table($this->table)->where('id_paciente',$id)->get();
         return $atenciones;
     }
+
+    public function getAtencionesByCodigo($id)
+    {
+        $atenciones = DB::table($this->table)->where('codigo_atencion',$id)->get();
+        return $atenciones;
+    }
 }
