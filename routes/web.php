@@ -93,5 +93,5 @@ Route::group([
 
     //Ruta de pagos
     Route::get('/home/atenciones/pago/checkout/{id}',                  [App\Http\Controllers\PagosController::class, 'index']);
-    Route::get('/home/atenciones/pago/checkout/success/{id}',          [App\Http\Controllers\PagosController::class, 'successPago'])->name('response_pago');
+    Route::get('/home/atenciones/pago/checkout/success/pago/{id}',     [App\Http\Controllers\PagosController::class, 'successPago'])->name('response_pago');
 });

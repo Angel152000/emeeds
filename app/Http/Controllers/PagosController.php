@@ -22,7 +22,7 @@ class PagosController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -65,7 +65,7 @@ class PagosController extends Controller
                 
             }
         }
-        $this->data['atencion'] = $atenciones[0];
+        $this->data['atencion'] = 'd';//$atenciones[0];
         return view('pagos.checkout',$this->data);
     }
 

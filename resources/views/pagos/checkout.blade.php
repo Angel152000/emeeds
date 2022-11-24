@@ -17,15 +17,15 @@
     $item->id = $atencion->codigo_atencion;
     $item->title = 'Atención Medica';
     $item->quantity = 1;
-    $item->unit_price = 300;//$atencion->costo;
+    $item->unit_price = 20;//$atencion->costo;
     $item->currency_id = "CLP";
     $preference->items = array($item);
 
     //Urls direccionamiento.
     $preference->back_urls = array(
-        "success" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success",
-        "failure" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success",
-        "pending" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success"
+        "success" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success/pago/".$atencion->codigo_atencion,
+        "failure" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success/pago/".$atencion->codigo_atencion,
+        "pending" => $protocol.$_SERVER['HTTP_HOST']."/home/atenciones/pago/checkout/success/pago/".$atencion->codigo_atencion
     );
     
     $preference->auto_return = "approved";
