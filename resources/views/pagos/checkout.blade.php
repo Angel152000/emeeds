@@ -63,25 +63,25 @@
         @switch($opcion)
             @case(2)
                 <div class="callout callout-danger">
-                    <h5><i class="fa-solid fa-circle-exclamation text-danger"></i></i> Error al recibir el Pago:</h5>
+                    <h5><i class="fa-solid fa-circle-exclamation text-danger"></i> Error al recibir el Pago:</h5>
                     Hubo un error al recibir el pago desde mercado pago, intenta nuevamente. <br> Si este desconto tu saldo te invitamos a contactare con soporte para que podamos resolverlo enviando un correo a (<a class="text-primary" href="mailto:soporte@emeeds.cl">soporte@emeeds.cl</a>) indicando el código de atención.
                 </div>
             @break
             @case(3)
                 <div class="callout callout-danger">
-                    <h5><i class="fa-solid fa-circle-exclamation text-danger"></i></i> Error pago no aprobado:</h5>
+                    <h5><i class="fa-solid fa-circle-exclamation text-danger"></i> Error pago no aprobado:</h5>
                     El pago no fue aprobado por Mercado Pago, intenta nuevamente.
                 </div>
             @break
             @case(4)
                 <div class="callout callout-danger">
-                <h5><i class="fa-solid fa-circle-exclamation text-danger"></i></i> Error al recibir el Pago (PG-001):</h5>
+                <h5><i class="fa-solid fa-circle-exclamation text-danger"></i> Error al recibir el Pago (PG-001):</h5>
                     Se realizo la compra de la Atención pero hubo un error al recibir el pago. <br> Te invitamos a contactare con soporte para que podamos resolverlo enviando un correo a (<a class="text-primary" href="mailto:soporte@emeeds.cl">soporte@emeeds.cl</a>) indicando el código de atención y comprobante de pago.
                 </div>
             @break
             @case(5)
                 <div class="callout callout-danger">
-                <h5><i class="fa-solid fa-circle-exclamation text-danger"></i></i> Error al actualizar la atención (PG-002):</h5>
+                <h5><i class="fa-solid fa-circle-exclamation text-danger"></i> Error al actualizar la atención (PG-002):</h5>
                     Hubo un al actualizar el estado de la Atención, intenta nuevamente. <br> Te invitamos a contactare con soporte para que podamos resolverlo enviando un correo a (<a class="text-primary" href="mailto:soporte@emeeds.cl">soporte@emeeds.cl</a>) indicando el código de atención y código de error (PG-002).
                 </div>
             @break
@@ -191,7 +191,17 @@
                     <div class="col-3 float-left">
                     </div>
                     <div class="col-3 float-right">
-                        <div class="cho-container float-left"></div>
+                        @if(!empty($atencion->fecha))
+                            @if($atencion->fecha > date('Y-m-d'))
+                                <div class="cho-container float-left"></div>
+                            @else
+                                <div class="alert alert-danger" role="alert">
+                                 <i class="fa-solid fa-circle-exclamation"></i> No puedes pagar en una Fecha posterior a la Fecha de atención.
+                                </div>
+                            @endif
+                        @else
+                            <div class="cho-container float-left"></div>
+                        @endif
                     </div>
                 </div>
             </div>
