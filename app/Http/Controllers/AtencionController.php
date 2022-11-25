@@ -453,9 +453,6 @@ class AtencionController extends Controller
                 'fecha'         => $fecha
             );
 
-            Mail::to($correo_paciente)->send(new ContactarPaciente($data));
-            Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
-
             $response = AtencionZoom::create([
                 'id_atencion'     => $atencion->id_atencion,
                 'codigo_atencion' => $atencion->codigo_atencion,
@@ -464,6 +461,73 @@ class AtencionController extends Controller
 
             if($response)
             {
+                Mail::to($correo_paciente)->send(new ContactarPaciente($data));
+                Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+                
+                $this->data['status'] = "success";
+                $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+            }
+            else
+            {
+                $this->data['status'] = "error";
+                $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+            }
+
+        }
+        else
+        {
+            $this->data['status'] = "error";
+            $this->data['msg']    = "Faltan parámetros para realizar la acción, intente nuevamente.";
+        }
+
+        return json_encode($this->data);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\atencion  $atencion
+     * @return \Illuminate\Http\Request
+     */
+    public function reenviarPaciente(Request $request)
+    {
+        if(!empty($request->input('id')))
+        {
+            $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
+            $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
+            $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
+
+            $corr_pac = User::where('id',$atencion->id_paciente)->first();
+            $corr_esp = User::where('id',$especialista->id_user)->first();
+
+            $correo_paciente     = $corr_pac->email;
+            $correo_especialista = $corr_esp->email;
+
+            switch ($atencion->tipo_atencion) 
+            { 
+                case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
+                case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
+            }
+
+            $data = array(
+                'codigo'        => $atencion->codigo_atencion,
+                'rut'           => $atencion->rut_paciente,
+                'paciente'      => $corr_pac->name,
+                'especialidad'  => $especialidad->nombre,
+                'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
+                'tipo_atencion' => $tipo_atencion,
+                'fecha'         => $fecha
+            );
+
+            $response = AtencionZoom::updated([
+                'link_atencion'   => 'https://emeeds.cl',
+            ]);
+
+            if($response)
+            {
+                Mail::to($correo_paciente)->send(new ContactarPaciente($data));
+                Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+
                 $this->data['status'] = "success";
                 $this->data['msg'] = "Enlace de atención enviado exitosamente.";
             }
