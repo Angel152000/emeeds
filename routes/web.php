@@ -64,6 +64,7 @@ Route::group([
 
     //Rutas atenciones
     Route::get('/home/atenciones/especialista', [App\Http\Controllers\AtencionController::class, 'index'])->name('atenciones_especialistas');
+    Route::post('/home/atenciones/contactar/paciente', [App\Http\Controllers\AtencionController::class, 'contactarPaciente'])->name('atencion_contactar');
 
     //Rutas calendario
     Route::get('/home/calendario',              [App\Http\Controllers\EventosController::class, 'index'])->name('calendar');

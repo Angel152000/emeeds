@@ -85,6 +85,9 @@
                                             <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
                                             <td>
                                                 <a  href="{{ url('/home/atenciones/pago/checkout') }}/{{$row->codigo_atencion}}" class="btn btn-info"><i class="fa-sharp fa-solid fa-credit-card"></i></a>
+                                                @if($row->atencion_zoom == 0)
+                                                    <a  target="_blank" href="{{ $row->link_atencion }}" class="btn btn-info">Unirse a la reunión</a>
+                                                @endif
                                             </td>
                                         @break
                                         @case(3)
