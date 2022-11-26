@@ -15,6 +15,7 @@ use App\Models\Zoom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Carbon;
 
 class AtencionController extends Controller
 {
@@ -431,50 +432,65 @@ class AtencionController extends Controller
             $zoom_account = Zoom::where('id_user',auth()->user()->id)->first();
             if(!empty($zoom_account))
             {
-                $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
-                $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
-                $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
-
-                $corr_pac = User::where('id',$atencion->id_paciente)->first();
-                $corr_esp = User::where('id',$especialista->id_user)->first();
-
-                $correo_paciente     = $corr_pac->email;
-                $correo_especialista = $corr_esp->email;
-
-                switch ($atencion->tipo_atencion) 
-                { 
-                    case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
-                    case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
-                }
-
-                $data = array(
-                    'codigo'        => $atencion->codigo_atencion,
-                    'rut'           => $atencion->rut_paciente,
-                    'paciente'      => $corr_pac->name,
-                    'especialidad'  => $especialidad->nombre,
-                    'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
-                    'tipo_atencion' => $tipo_atencion,
-                    'fecha'         => $fecha
-                );
-
-                $response = AtencionZoom::create([
-                    'id_atencion'     => $atencion->id_atencion,
-                    'codigo_atencion' => $atencion->codigo_atencion,
-                    'link_atencion'   => 'https://emeeds.cl',
-                ]);
-
-                if($response)
+                $reautorizar = $this->reautorizar();
+            
+                if($reautorizar == 'CORRECTO')
                 {
-                    Mail::to($correo_paciente)->send(new ContactarPaciente($data));
-                    Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
-                    
-                    $this->data['status'] = "success";
-                    $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                    $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
+                    $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
+                    $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
+
+                    //aca
+                    $zoom_account = Zoom::where('id_user',auth()->user()->id)->first();
+                    $zoom = $this->create_meeting($zoom_account->id_zoom,$zoom_account->access_token,$especialista->nombres.' '.$especialista->apellido_paterno);
+                    dd($zoom);
+
+                    $corr_pac = User::where('id',$atencion->id_paciente)->first();
+                    $corr_esp = User::where('id',$especialista->id_user)->first();
+
+                    $correo_paciente     = $corr_pac->email;
+                    $correo_especialista = $corr_esp->email;
+
+                    switch ($atencion->tipo_atencion) 
+                    { 
+                        case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
+                        case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
+                    }
+
+                    $data = array(
+                        'codigo'        => $atencion->codigo_atencion,
+                        'rut'           => $atencion->rut_paciente,
+                        'paciente'      => $corr_pac->name,
+                        'especialidad'  => $especialidad->nombre,
+                        'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
+                        'tipo_atencion' => $tipo_atencion,
+                        'fecha'         => $fecha
+                    );
+
+                    $response = AtencionZoom::create([
+                        'id_atencion'     => $atencion->id_atencion,
+                        'codigo_atencion' => $atencion->codigo_atencion,
+                        'link_atencion'   => 'https://emeeds.cl',
+                    ]);
+
+                    if($response)
+                    {
+                        Mail::to($correo_paciente)->send(new ContactarPaciente($data));
+                        Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+                        
+                        $this->data['status'] = "success";
+                        $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                    }
+                    else
+                    {
+                        $this->data['status'] = "error";
+                        $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+                    }
                 }
                 else
                 {
                     $this->data['status'] = "error";
-                    $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+                    $this->data['msg'] = $reautorizar;
                 }
             }
             else
@@ -505,48 +521,63 @@ class AtencionController extends Controller
             $zoom_account = Zoom::where('id_user',auth()->user()->id)->first();
             if(!empty($zoom_account))
             {
-                $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
-                $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
-                $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
+                $reautorizar = $this->reautorizar();
 
-                $corr_pac = User::where('id',$atencion->id_paciente)->first();
-                $corr_esp = User::where('id',$especialista->id_user)->first();
-
-                $correo_paciente     = $corr_pac->email;
-                $correo_especialista = $corr_esp->email;
-
-                switch ($atencion->tipo_atencion) 
-                { 
-                    case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
-                    case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
-                }
-
-                $data = array(
-                    'codigo'        => $atencion->codigo_atencion,
-                    'rut'           => $atencion->rut_paciente,
-                    'paciente'      => $corr_pac->name,
-                    'especialidad'  => $especialidad->nombre,
-                    'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
-                    'tipo_atencion' => $tipo_atencion,
-                    'fecha'         => $fecha
-                );
-
-                $response = AtencionZoom::updated([
-                    'link_atencion'   => 'https://emeeds.cl',
-                ]);
-
-                if($response)
+                if($reautorizar == 'CORRECTO')
                 {
-                    Mail::to($correo_paciente)->send(new ContactarPaciente($data));
-                    Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+                    $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
+                    $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
+                    $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
 
-                    $this->data['status'] = "success";
-                    $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                    //aca
+                    $zoom_account = Zoom::where('id_user',auth()->user()->id)->first();
+                    $zoom = $this->create_meeting($zoom_account->id_zoom,$zoom_account->access_token,$especialista->nombres.' '.$especialista->apellido_paterno);
+                    dd($zoom);
+
+                    $corr_pac = User::where('id',$atencion->id_paciente)->first();
+                    $corr_esp = User::where('id',$especialista->id_user)->first();
+
+                    $correo_paciente     = $corr_pac->email;
+                    $correo_especialista = $corr_esp->email;
+
+                    switch ($atencion->tipo_atencion) 
+                    { 
+                        case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
+                        case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
+                    }
+
+                    $data = array(
+                        'codigo'        => $atencion->codigo_atencion,
+                        'rut'           => $atencion->rut_paciente,
+                        'paciente'      => $corr_pac->name,
+                        'especialidad'  => $especialidad->nombre,
+                        'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
+                        'tipo_atencion' => $tipo_atencion,
+                        'fecha'         => $fecha
+                    );
+
+                    $response = AtencionZoom::updated([
+                        'link_atencion'   => 'https://emeeds.cl',
+                    ]);
+
+                    if($response)
+                    {
+                        Mail::to($correo_paciente)->send(new ContactarPaciente($data));
+                        Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+
+                        $this->data['status'] = "success";
+                        $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                    }
+                    else
+                    {
+                        $this->data['status'] = "error";
+                        $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+                    }
                 }
                 else
                 {
                     $this->data['status'] = "error";
-                    $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+                    $this->data['msg'] = $reautorizar;
                 }
             }
             else
@@ -564,7 +595,159 @@ class AtencionController extends Controller
         return json_encode($this->data);
     }
 
+    /*
+    * Api que crea una reunion en zoom por el id del usuario de zoom.
+    */
+    protected function create_meeting($id,$token,$nombre_especialista) 
+    {
+        $api_url = "https://api.zoom.us/v2/users/".$id."/meetings";
+
+        $post_data = array(
+            "topic"      => "Atención Medica, Dr/a ".$nombre_especialista,
+            "type"       => 2,
+            "duration"   => "45",
+            "password"   => "123456",
+            "enforce_login_domains" => "meeting_authentication"
+        );
+
+        $type = 'post';
+
+        $acces_token = 'Authorization: Bearer '.$token;
+
+        $result = $this->_conecttionM($api_url, $post_data, $type, $acces_token);
+
+        dd(json_decode($result));
+
+    }
+
+    /**
+     * funcion que realiza un refresh del token de la cuenta del usuario en zoom y nuestro sistema.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function reautorizar()
+    {
+        $objZomm = new Zoom();
+
+        $getEstadoCuenta = $objZomm->getUser(auth()->user()->id);
+        
+        if($getEstadoCuenta)
+        {
+            $user = $this->reautorizar_cuenta($getEstadoCuenta->refresh_token);
+
+            if($user->access_token)
+            {
+                $date = Carbon::now();
+
+                $horas = floor($user->expires_in / 3600);
+                $minutos = floor(($user->expires_in - ($horas * 3600)) / 60);
+                $segundos = $user->expires_in - ($horas * 3600) - ($minutos * 60);
+
+                $expira_en = $horas . ':' . $minutos . ":" . $segundos;
+
+                $data = array(
+                    'access_token'  => $user->access_token,
+                    'token_type'    => $user->token_type,
+                    'refresh_token' => $user->refresh_token,
+                    'expires_in'    => $expira_en,
+                    'scope'         => $user->scope,
+                    'estado'        => 'activado',
+                    'updated_at'    => $date,
+                );
+
+                $update = $objZomm->updateUserByZoom(auth()->user()->id,$data);
+
+                if($update)
+                {
+                    $cod = 'CORRECTO';
+                }
+                else
+                {
+                    $cod = 'No se pudo reautorizar la cuenta de zoom, intente nuevamente si el error persiste por favor contacte a soporte (err:003).';
+                }
+            }
+            else
+            {
+                $cod = 'No se pudo reautorizar la cuenta de zoom, intente nuevamente si el error persiste por favor contacte a soporte (err:002).';
+            }
+        }
+        else
+        {
+            $cod = 'No se encuenta la cuenta de zoom, intente nuevamente si el error persiste por favor contacte a soporte (err:001).';
+        }
+
+        return $cod;
+    }
+
+    /*
+    * Api que desvincula la cuenta del usuario que dio permisos a la app de zoom.
+    */
+    protected function reautorizar_cuenta($refresh_token)
+    {
+        $api_url = "https://zoom.us/oauth/token";
+
+        $post_data = array(
+            'grant_type'    => 'refresh_token',
+            'refresh_token' => $refresh_token
+        );
+
+        $type = 'post';
+
+        $code_base64 = base64_encode(env('ZOOM_CLIENT_ID').':'.env('ZOOM_CLIENT_SECRET'));
+        $acces_token = 'Authorization: Basic '.$code_base64;
+
+        $result = $this->_conecttionB($api_url, $post_data, $type, $acces_token);
+
+        return json_decode($result);
+    }
+
     private function _conecttionM($api_url, $post_data, $type, $acces_token)
+    {
+        $headers = [
+            $acces_token,
+            'Content-Type: application/json',
+        ];
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+
+        switch ($type) {
+            case 'post':
+                curl_setopt($curl, CURLOPT_POST, TRUE);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($post_data));
+            break;
+            case 'get':
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            break;
+            case 'delete':
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+            break;
+            case 'put':
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($post_data));
+            break;
+        }
+
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($curl);
+
+        // Comprobar si occurió algún error
+        if (curl_errno($curl)) {
+            dump(curl_error($curl));
+        }
+    
+        curl_close($curl);
+
+        return $result;
+    }
+
+    private function _conecttionB($api_url, $post_data, $type, $acces_token)
     {
         $headers = [
             $acces_token,
