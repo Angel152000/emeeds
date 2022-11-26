@@ -9,7 +9,23 @@ use Illuminate\Support\Facades\DB;
 class Zoom extends Model
 {
     use HasFactory;
+
     protected $table = 'zoom';
+
+    protected $fillable = [
+        'id',
+        'id_user',
+        'id_zoom',
+        'user_zoom',
+        'email_zoom',
+        'code',
+        'access_token',
+        'token_type',
+        'refresh_token',
+        'expires_in',
+        'scope',
+        'estado'
+    ];
     
     public function getUser($id_user)
     {

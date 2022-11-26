@@ -192,12 +192,12 @@
                     </div>
                     <div class="col-3 float-right">
                         @if(!empty($atencion->fecha))
-                            @if($atencion->fecha > date('Y-m-d'))
-                                <div class="cho-container float-left"></div>
-                            @else
+                            @if($atencion->fecha < date('Y-m-d'))
                                 <div class="alert alert-danger" role="alert">
                                  <i class="fa-solid fa-circle-exclamation"></i> No puedes pagar en una Fecha posterior a la Fecha de atención.
                                 </div>
+                            @else
+                                <div class="cho-container float-left"></div>
                             @endif
                         @else
                             <div class="cho-container float-left"></div>

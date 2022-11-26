@@ -11,6 +11,7 @@ use App\Models\Especialidades;
 use App\Models\Especialistas;
 use App\Models\Horarios;
 use App\Models\User;
+use App\Models\Zoom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -427,52 +428,60 @@ class AtencionController extends Controller
     {
         if(!empty($request->input('id')))
         {
-            $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
-            $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
-            $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
-
-            $corr_pac = User::where('id',$atencion->id_paciente)->first();
-            $corr_esp = User::where('id',$especialista->id_user)->first();
-
-            $correo_paciente     = $corr_pac->email;
-            $correo_especialista = $corr_esp->email;
-
-            switch ($atencion->tipo_atencion) 
-            { 
-                case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
-                case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
-            }
-
-            $data = array(
-                'codigo'        => $atencion->codigo_atencion,
-                'rut'           => $atencion->rut_paciente,
-                'paciente'      => $corr_pac->name,
-                'especialidad'  => $especialidad->nombre,
-                'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
-                'tipo_atencion' => $tipo_atencion,
-                'fecha'         => $fecha
-            );
-
-            $response = AtencionZoom::create([
-                'id_atencion'     => $atencion->id_atencion,
-                'codigo_atencion' => $atencion->codigo_atencion,
-                'link_atencion'   => 'https://emeeds.cl',
-            ]);
-
-            if($response)
+            $zoom_account = Zoom::where('id_user',auth()->user()->id)->first();
+            if(!empty($zoom_account))
             {
-                Mail::to($correo_paciente)->send(new ContactarPaciente($data));
-                Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
-                
-                $this->data['status'] = "success";
-                $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
+                $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
+                $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
+
+                $corr_pac = User::where('id',$atencion->id_paciente)->first();
+                $corr_esp = User::where('id',$especialista->id_user)->first();
+
+                $correo_paciente     = $corr_pac->email;
+                $correo_especialista = $corr_esp->email;
+
+                switch ($atencion->tipo_atencion) 
+                { 
+                    case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
+                    case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
+                }
+
+                $data = array(
+                    'codigo'        => $atencion->codigo_atencion,
+                    'rut'           => $atencion->rut_paciente,
+                    'paciente'      => $corr_pac->name,
+                    'especialidad'  => $especialidad->nombre,
+                    'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
+                    'tipo_atencion' => $tipo_atencion,
+                    'fecha'         => $fecha
+                );
+
+                $response = AtencionZoom::create([
+                    'id_atencion'     => $atencion->id_atencion,
+                    'codigo_atencion' => $atencion->codigo_atencion,
+                    'link_atencion'   => 'https://emeeds.cl',
+                ]);
+
+                if($response)
+                {
+                    Mail::to($correo_paciente)->send(new ContactarPaciente($data));
+                    Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+                    
+                    $this->data['status'] = "success";
+                    $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                }
+                else
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+                }
             }
             else
             {
                 $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+                $this->data['msg'] = "No tiene cuenta de zoom vinculada, por favor cree una en la ubicación cuenta > zoom.";
             }
-
         }
         else
         {
@@ -493,50 +502,58 @@ class AtencionController extends Controller
     {
         if(!empty($request->input('id')))
         {
-            $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
-            $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
-            $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
-
-            $corr_pac = User::where('id',$atencion->id_paciente)->first();
-            $corr_esp = User::where('id',$especialista->id_user)->first();
-
-            $correo_paciente     = $corr_pac->email;
-            $correo_especialista = $corr_esp->email;
-
-            switch ($atencion->tipo_atencion) 
-            { 
-                case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
-                case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
-            }
-
-            $data = array(
-                'codigo'        => $atencion->codigo_atencion,
-                'rut'           => $atencion->rut_paciente,
-                'paciente'      => $corr_pac->name,
-                'especialidad'  => $especialidad->nombre,
-                'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
-                'tipo_atencion' => $tipo_atencion,
-                'fecha'         => $fecha
-            );
-
-            $response = AtencionZoom::updated([
-                'link_atencion'   => 'https://emeeds.cl',
-            ]);
-
-            if($response)
+            $zoom_account = Zoom::where('id_user',auth()->user()->id)->first();
+            if(!empty($zoom_account))
             {
-                Mail::to($correo_paciente)->send(new ContactarPaciente($data));
-                Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+                $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
+                $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
+                $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
 
-                $this->data['status'] = "success";
-                $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                $corr_pac = User::where('id',$atencion->id_paciente)->first();
+                $corr_esp = User::where('id',$especialista->id_user)->first();
+
+                $correo_paciente     = $corr_pac->email;
+                $correo_especialista = $corr_esp->email;
+
+                switch ($atencion->tipo_atencion) 
+                { 
+                    case 1: $tipo_atencion = 'Atención Reservada'; $fecha = date("d/m/Y", strtotime($atencion->fecha)); break; 
+                    case 2: $tipo_atencion = 'Atención Inmediata'; $fecha = date("d/m/Y"); break;
+                }
+
+                $data = array(
+                    'codigo'        => $atencion->codigo_atencion,
+                    'rut'           => $atencion->rut_paciente,
+                    'paciente'      => $corr_pac->name,
+                    'especialidad'  => $especialidad->nombre,
+                    'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
+                    'tipo_atencion' => $tipo_atencion,
+                    'fecha'         => $fecha
+                );
+
+                $response = AtencionZoom::updated([
+                    'link_atencion'   => 'https://emeeds.cl',
+                ]);
+
+                if($response)
+                {
+                    Mail::to($correo_paciente)->send(new ContactarPaciente($data));
+                    Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+
+                    $this->data['status'] = "success";
+                    $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                }
+                else
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+                }
             }
             else
             {
                 $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al enviar de atención, intente nuevamente.";
+                $this->data['msg'] = "No tiene cuenta de zoom vinculada, por favor cree una en la ubicación cuenta > zoom.";
             }
-
         }
         else
         {
@@ -545,5 +562,51 @@ class AtencionController extends Controller
         }
 
         return json_encode($this->data);
+    }
+
+    private function _conecttionM($api_url, $post_data, $type, $acces_token)
+    {
+        $headers = [
+            $acces_token,
+            'Content-Type: application/x-www-form-urlencoded',
+        ];
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+
+        switch ($type) {
+            case 'post':
+                curl_setopt($curl, CURLOPT_POST, TRUE);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($post_data));
+            break;
+            case 'get':
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            break;
+            case 'delete':
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+            break;
+            case 'put':
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+            break;
+        }
+
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($curl);
+
+        // Comprobar si occurió algún error
+        if (curl_errno($curl)) {
+            dump(curl_error($curl));
+        }
+    
+        curl_close($curl);
+
+        return $result;
     }
 }
