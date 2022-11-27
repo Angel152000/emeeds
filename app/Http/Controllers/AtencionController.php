@@ -10,6 +10,7 @@ use App\Models\Bloques;
 use App\Models\Especialidades;
 use App\Models\Especialistas;
 use App\Models\Horarios;
+use App\Models\Pagos;
 use App\Models\User;
 use App\Models\Zoom;
 use Illuminate\Http\Request;
@@ -82,6 +83,45 @@ class AtencionController extends Controller
             break;
             //Establecimiento
             case 2:
+                $atenciones = $objAtencion->getAtencionesByAdmin(auth()->user()->id);
+                if(!empty($atenciones))
+                {
+                    foreach ($atenciones as $row)
+                    {
+                        $especialidad = Especialidades::where('id',$row->id_especialidad)->first();
+                        $row->especialidad = $especialidad->nombre;
+
+                        $paciente = User::where('id',$row->id_paciente)->first();
+                        $row->nombre_paciente = $paciente->name;
+
+                        $monto = Pagos::where('id_atencion',$row->id_atencion)->first();
+                        $row->monto_pago = $monto->monto_pago;
+
+                        if(!empty($row->id_especialista))
+                        {
+                            $row->especialista = Especialistas::where('id',$row->id_especialista)->first();
+                        }
+                        else
+                        {
+                            $row->especialista = '';
+                        }
+
+                        switch ($row->tipo_atencion) 
+                        {
+                            case 1:
+                                $row->atencion = 'Atención Reservada';
+                            break;
+                            case 2:
+                                $row->atencion = 'Atención Inmediata';
+                            break;
+                            case 3:
+                                $row->atencion = 'Sin tipo de atención';
+                            break;
+                        }
+                    }
+                }
+                $this->data['atenciones'] = $atenciones;
+                return view('atencion.establecimiento.index',$this->data);
             break;
             //Paciente
             case 3:

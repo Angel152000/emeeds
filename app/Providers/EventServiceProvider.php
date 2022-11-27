@@ -107,14 +107,14 @@ class EventServiceProvider extends ServiceProvider
                         ]);
 
                         $event->menu->addAfter('especialistas', [
-                            'text'        => 'Contabilidad',
-                            'url'         => '/home/contabilidad',
-                            'icon'        => 'fa-solid fa-money-bill-transfer',
+                            'text'        => 'Atenciones',
+                            'url'         => '/home/atenciones/establecimiento',
+                            'icon'        => 'fa-solid fa-laptop-medical',
                             'label_color' => 'success',
-                            'key'         => 'contabilidad',
+                            'key'         => 'atenciones',
                         ]);
 
-                        $event->menu->addAfter('contabilidad', [
+                        $event->menu->addAfter('atenciones', [
                             'header' => 'Cuenta', 
                             'key'    => 'cuenta'
                         ]);
