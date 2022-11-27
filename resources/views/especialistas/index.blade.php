@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table" id="especialistas">
+                <table class="table" id="especialistas" style="width:100%;">
                     <thead>
                         <tr>
                             <th scope="col">#</th>

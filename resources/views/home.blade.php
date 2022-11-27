@@ -5,7 +5,7 @@
 @case(1)
     <!-- Especialista -->
     <div class="row">
-        <div class="col-lg-4 col-6">
+        <div class="col-lg-6 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>{{ $countAtenciones }}</h3>
@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-6">
+        <div class="col-lg-6 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>0<sup style="font-size: 20px">%</sup></h3>
@@ -30,20 +30,7 @@
                 <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
-        <div class="col-lg-4 col-6">
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3>Configuración</h3>
-                    <p>de la cuenta de Zoom</p>
-                </div>
-                <div class="icon">
-                    <i class="fa-solid fa-video "></i>
-                </div>
-                <a href="{{URL::route('zoom')}}" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-
+        
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="card">
                 <div class="card-header">
@@ -63,7 +50,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table" id="atenciones">
+                    <table class="table" id="atenciones" style="width:100%;">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -234,7 +221,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table" id="especialidades">
+                    <table class="table" id="especialidades" style="width:100%;">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -284,7 +271,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table" id="especialistas">
+                    <table class="table" id="especialistas" style="width:100%;">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -320,7 +307,7 @@
 @case(3)
     <!-- Paciente -->
     <div class="row">
-        <div class="col-lg-4 col-6">
+        <div class="col-lg-6 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $countAtenciones }}</h3>
@@ -332,7 +319,7 @@
                 <a href="{{URL::route('atenciones_pacientes')}}" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <div class="col-lg-4 col-6">
+        <div class="col-lg-6 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>Ficha</h3>
@@ -340,19 +327,6 @@
                 </div>
                 <div class="icon">
                     <i class="fa-solid fa-hospital-user"></i>
-                </div>
-                <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-6">
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>Configuración</h3>
-                    <p>de la cuenta</p>
-                </div>
-                <div class="icon">
-                    <i class="fa-solid fa-gear"></i>
                 </div>
                 <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -380,7 +354,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table" id="atenciones">
+                    <table class="table" id="atenciones" style="width:100%;">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -538,10 +512,6 @@
                 "infoFiltered": "(filtered from _MAX_ total records)"
             }
         });
-    });
-
-    $('.cerrar_ses').click(function() {
-        document.getElementById('logout-form').submit();
     });
 </script>
 @stop

@@ -37,6 +37,9 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        $('.cerrar_ses').click(function() {
+            document.getElementById('logout-form').submit();
+        });
     </script>
     @yield("sub_js")
 @stop

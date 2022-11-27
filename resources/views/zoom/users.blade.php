@@ -6,6 +6,20 @@
             <h3 class="text-light font-weight-bold">TU CUENTA DE ZOOM</h3>
         </div>
     </nav>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{URL::route('home')}}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Zoom</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('sub_content')
@@ -13,7 +27,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card">
             <div style="padding:2rem!important;">
-                <table id="table-zoom" class="table">
+                <table id="table-zoom" class="table" style="width:100%;">
                     <thead style="background-color:#019df4;color:white;">
                         <tr>
                             <th scope="col">#</th>
@@ -46,7 +60,15 @@
 <script>
     $(document).ready(function() 
     {
-        $('#table-zoom').DataTable();
+        var table = $('#table-zoom').DataTable({
+            responsive: true,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "zeroRecords": "No hay cuenta de zoom vinculada aún.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            }
+        });
     });
 
     function desvincular() 

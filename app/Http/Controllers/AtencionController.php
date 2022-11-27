@@ -420,6 +420,41 @@ class AtencionController extends Controller
     }
 
     /**
+     * Cambiar estado de atencion.
+     *
+     * @param  \App\Models\atencion  $atencion
+     * @return \Illuminate\Http\Response
+     */
+    public function cambiarEstado(Request $request)
+    {
+        if($request->input('id'))
+        {
+            $response =  Atencion::where('id_atencion',$request->input('id'))->update([
+                'estado' => 1,
+            ]);
+
+            if($response)
+            {
+                $this->data['status'] = "success";
+                $this->data['msg'] = "Estado de la atención actualizado exitosamente.";
+            }
+            else
+            {
+                $this->data['status'] = "error";
+                $this->data['msg'] = "Hubo un error al actualizar el estado de la tención, intente nuevamente.";
+            }
+
+        }
+        else
+        {
+            $this->data['status'] = "error";
+            $this->data['msg'] = "No puede cambiar el estado a realizado, debido a que no ha iniciado la reunión.";
+        }
+
+        return json_encode($this->data);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\atencion  $atencion

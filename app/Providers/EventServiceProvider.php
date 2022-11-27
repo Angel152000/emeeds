@@ -36,6 +36,7 @@ class EventServiceProvider extends ServiceProvider
                 {
                     case 1:
                         
+                        /*
                         $event->menu->addAfter('menu', [
                             'text'        => 'Calendario',
                             'url'         => '/home/calendario',
@@ -43,8 +44,9 @@ class EventServiceProvider extends ServiceProvider
                             'label_color' => 'success',
                             'key'         => 'calendario',
                         ]);
+                        */
 
-                        $event->menu->addAfter('calendario', [
+                        $event->menu->addAfter('menu', [
                             'text'        => 'Atenciones',
                             'url'         => '/home/atenciones/especialista',
                             'icon'        => 'fa-solid fa-laptop-medical',

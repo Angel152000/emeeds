@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table" id="bloques">
+                <table class="table" id="bloques" style="width:100%;">
                     <thead>
                         <tr>
                             <th scope="col">#</th>

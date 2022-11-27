@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table" id="atenciones">
+                <table class="table" id="atenciones" style="width:100%;">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -86,7 +86,7 @@
                                             <td>
                                                 <a  href="{{ url('/home/atenciones/pago/checkout') }}/{{$row->codigo_atencion}}" class="btn btn-info"><i class="fa-sharp fa-solid fa-credit-card"></i></a>
                                                 @if($row->atencion_zoom == 0)
-                                                    <a  target="_blank" href="{{ $row->link_atencion }}" class="btn btn-info">Unirse a la reunión</a>
+                                                    <a  target="_blank" href="{{ $row->link_atencion }}" class="btn btn-primary"><i class="fa-solid fa-video"></i></a>
                                                 @endif
                                             </td>
                                         @break
