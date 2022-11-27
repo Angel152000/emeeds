@@ -20,22 +20,6 @@
             </div>
         </div>
     </div>
-    <style>
-        .loader {
-            border: 10px solid #f3f3f3; 
-            border-top: 10px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
-            }
-
-            @keyframes spin 
-            {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-    </style>
 @stop
 
 @section('sub_content')
@@ -200,8 +184,13 @@
                     {
                         Swal.fire({
                             title: 'Cargando...',
-                            html:'<div class="loader"></div>',
-                            showConfirmButton: false,
+                            html: 'Espere mientras procesamos la solicitud.',
+                            timerProgressBar: true,
+                            showCloseButton: false,
+                            showCancelButton: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            },
                         });
                     },
                     success: function(res) 
@@ -273,8 +262,23 @@
                     data: {
                         id: id,
                     },
+                    beforeSend: function()
+                    {
+                        Swal.fire({
+                            title: 'Cargando...',
+                            html: 'Espere mientras procesamos la solicitud.',
+                            timerProgressBar: true,
+                            showCloseButton: false,
+                            showCancelButton: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            },
+                        });
+                    },
                     success: function(res) 
                     {
+                        swal.close();
+                        
                         if (res.status === 'success') 
                         {
                             Swal.fire({

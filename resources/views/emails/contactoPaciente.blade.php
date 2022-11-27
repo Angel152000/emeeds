@@ -675,7 +675,12 @@
                                                                                 <li>Tipo de Atención: {{ $data['tipo_atencion'] }}</li>
                                                                                 <li>Fecha:  {{ $data['fecha'] }}</li>
                                                                             </ul>
-
+                                                                            <br>
+                                                                            Estos son los datos de la Reunión (Recuerda no compartir estos datos con nadie):
+                                                                            <ul>
+                                                                                <li>link de Atención: {{ $data['link'] }}</li>
+                                                                                <li>Contraseña de Atención: {{ $data['password'] }}</li>
+                                                                            </ul>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -700,7 +705,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td class="mcnButtonContent" style="font-family: Helvetica; font-size: 18px; padding: 18px;" valign="middle" align="center">
-                                                                            <a class="mcnButton " title="Ingresar a la Reunión." href="" target="_blank" style="font-weight: bold;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Ingresar a la Reunión.</a>
+                                                                            <a class="mcnButton " title="Ingresar a la Reunión." href="{{ $data['link'] }}" target="_blank" style="font-weight: bold;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Ingresar a la Reunión.</a>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
