@@ -21,13 +21,13 @@
         <div class="col-lg-6 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>0<sup style="font-size: 20px">%</sup></h3>
+                    <h3>{{ $countPaciente }}</h3>
                     <p>Pacientes Atendidos</p>
                 </div>
                 <div class="icon">
                     <i class="fa-solid fa-bed-pulse "></i>
                 </div>
-                <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{URL::route('atenciones_especialistas')}}" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         
@@ -197,7 +197,7 @@
                 <div class="icon">
                     <i class="fa-solid fa-laptop-medical "></i>
                 </div>
-                <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ URL::route('atenciones_establecimiento') }}" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
     </div>

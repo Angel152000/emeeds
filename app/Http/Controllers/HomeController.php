@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Especialidades;
 use App\Models\Especialistas;
 use App\Models\Atencion;
+use App\Models\Fichas;
 use App\Models\Horarios;
 use App\Models\User;
 
@@ -38,6 +39,7 @@ class HomeController extends Controller
             case 1:
                 $l_especialista = Especialistas::where('id_user',auth()->user()->id)->first();
                 $this->data['countAtenciones'] = Atencion::where('id_especialista',$l_especialista->id)->whereIn('estado', [1, 2])->count();
+                $this->data['countPaciente']   = Fichas::where('id_especialista',$l_especialista->id)->count();
 
                 $atenciones = $objAtencion->getAtencionesByIdEspecialista($l_especialista->id);
                 if(!empty($atenciones))

@@ -9,6 +9,7 @@ use App\Models\AtencionZoom;
 use App\Models\Bloques;
 use App\Models\Especialidades;
 use App\Models\Especialistas;
+use App\Models\Fichas;
 use App\Models\Horarios;
 use App\Models\Pagos;
 use App\Models\User;
@@ -559,9 +560,26 @@ class AtencionController extends Controller
                         {
                             Mail::to($correo_paciente)->send(new ContactarPaciente($data));
                             Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
+
+                            $ficha = Fichas::create([
+                                'id_atencion'     =>  $atencion->id_atencion,
+                                'id_paciente'     =>  $atencion->id_paciente,
+                                'rut_paciente'    =>  $atencion->rut_paciente,
+                                'id_especialista' =>  $atencion->id_especialista,
+                                'id_especialidad' =>  $atencion->id_especialidad,
+                                'fecha_atencion'  =>  $atencion->fecha,
+                            ]);
                             
-                            $this->data['status'] = "success";
-                            $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                            if($ficha)
+                            {
+                                $this->data['status'] = "success";
+                                $this->data['msg'] = "Enlace de atención enviado exitosamente.";
+                            }
+                            else
+                            {
+                                $this->data['status'] = "error";
+                                $this->data['msg'] = "Se envío correctamente la notificación, pero no se pudo crear la ficha médica del paciente, contacte a soporte (err-F001).";
+                            }
                         }
                         else
                         {

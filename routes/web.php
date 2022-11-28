@@ -86,6 +86,9 @@ Route::group([
     //Ruta para configuraciones.
     Route::get('/home/configuracion/especialista',          [App\Http\Controllers\ConfiguracionesController::class, 'especialista'])->name('configuracion_especialista');
     Route::post('/home/configuracion/especialista/cambiar', [App\Http\Controllers\ConfiguracionesController::class, 'cambiarPassword'])->name('pass_especialista');
+
+    //Ruta para pacientes.
+    Route::get('/home/pacientes', [App\Http\Controllers\FichasController::class, 'index'])->name('pacientes');
 });
 
 //Rutas para el paciente.

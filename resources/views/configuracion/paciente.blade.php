@@ -29,7 +29,7 @@
             <div class="card-header">
                 <h3 class="card-title">Cambiar Contraseña</h3>
             </div>
-            <form method="POST" id="form" action="{{URL::route('pass_establecimiento')}}" accept-charset="UTF-8" enctype="multipart/form-data">
+            <form method="POST" id="form" action="{{URL::route('pass_paciente')}}" accept-charset="UTF-8" enctype="multipart/form-data">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">

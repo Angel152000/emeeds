@@ -56,7 +56,7 @@ class EventServiceProvider extends ServiceProvider
 
                         $event->menu->addAfter('atenciones', [
                             'text'        => 'Pacientes',
-                            'url'         => '#',
+                            'url'         => '/home/pacientes',
                             'icon'        => 'fa-solid fa-bed-pulse',
                             'label_color' => 'success',
                             'key'         => 'pacientes',
@@ -69,7 +69,7 @@ class EventServiceProvider extends ServiceProvider
                             'submenu' => [
                                 [
                                     'text' => 'Configuración',
-                                    'url'  => '#',
+                                    'url'  => '/home/configuracion/especialista',
                                     'icon' => 'fa-solid fa-gear',
                                 ],
                                 [
@@ -152,7 +152,7 @@ class EventServiceProvider extends ServiceProvider
 
                         $event->menu->addAfter('fichamedica', [
                             'text'        => 'Configuración',
-                            'url'         => '#',
+                            'url'         => '/home/configuracion/paciente',
                             'icon'        => 'fa-solid fa-gear',
                             'label_color' => 'success',
                             'key'         => 'config',
