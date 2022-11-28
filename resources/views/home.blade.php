@@ -191,8 +191,8 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>0</h3>
-                    <p>Atenciones Realizadas</p>
+                    <h3>{{ $countAtenciones }}</h3>
+                    <p>Atenciones</p>
                 </div>
                 <div class="icon">
                     <i class="fa-solid fa-laptop-medical "></i>

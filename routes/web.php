@@ -55,6 +55,10 @@ Route::group([
 
     //Rutas Atenciones
     Route::get('/home/atenciones/establecimiento', [App\Http\Controllers\AtencionController::class, 'index'])->name('atenciones_establecimiento');
+
+    //Ruta para configuraciones.
+    Route::get('/home/configuracion/establecimiento',          [App\Http\Controllers\ConfiguracionesController::class, 'establecimiento'])->name('configuracion_establecimiento');
+    Route::post('/home/configuracion/establecimiento/cambiar', [App\Http\Controllers\ConfiguracionesController::class, 'cambiarPassword'])->name('pass_establecimiento');
 });
 
 //Rutas para el especialista.
@@ -79,6 +83,9 @@ Route::group([
     Route::get('/home/account/zoom/reautorizar',[App\Http\Controllers\ZoomController::class, 'reautorizar'])->name('reZoom');
     Route::get('/home/account/zoom/meet',       [App\Http\Controllers\ZoomController::class, 'meet'])->name('zoomMeet');
 
+    //Ruta para configuraciones.
+    Route::get('/home/configuracion/especialista',          [App\Http\Controllers\ConfiguracionesController::class, 'especialista'])->name('configuracion_especialista');
+    Route::post('/home/configuracion/especialista/cambiar', [App\Http\Controllers\ConfiguracionesController::class, 'cambiarPassword'])->name('pass_especialista');
 });
 
 //Rutas para el paciente.
@@ -99,5 +106,9 @@ Route::group([
     Route::get('/home/atenciones/pago/checkout/success/pago/{id}',     [App\Http\Controllers\PagosController::class, 'successPago'])->name('response_pago');
 
     //Ruta de Pdf
-    //Route::get('/home/imprimir/comprobante/{id}',                      [App\Http\Controllers\PdfController::class, 'index']);
+    //Route::get('/home/imprimir/comprobante/{id}',                    [App\Http\Controllers\PdfController::class, 'index']);
+
+    //Ruta para configuraciones.
+    Route::get('/home/configuracion/paciente',                         [App\Http\Controllers\ConfiguracionesController::class, 'paciente'])->name('configuracion_paciente');
+    Route::post('/home/configuracion/paciente/cambiar',                 [App\Http\Controllers\ConfiguracionesController::class, 'cambiarPassword'])->name('pass_paciente');
 });
