@@ -426,8 +426,23 @@
                     data: {
                         id: id,
                     },
+                    beforeSend: function()
+                    {
+                        Swal.fire({
+                            title: 'Cargando...',
+                            html: 'Espere mientras procesamos la solicitud.',
+                            timerProgressBar: true,
+                            showCloseButton: false,
+                            showCancelButton: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            },
+                        });
+                    },
                     success: function(res) 
                     {
+                        swal.close();
+                        
                         if (res.status === 'success') 
                         {
                             Swal.fire({
