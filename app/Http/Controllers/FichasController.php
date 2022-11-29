@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Atencion;
+use App\Models\Especialistas;
 use App\Models\Fichas;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class FichasController extends Controller
@@ -15,8 +17,10 @@ class FichasController extends Controller
      */
     public function index()
     {
-        $objAtencion = new Atencion();
-        $especialidades = $objAtencion->getEspecialidades();
+        $objFichas = new Fichas();
+        $especialista = Especialistas::where('id_user',)->first();
+        
+        $fichas = $objFichas->getFichasByEspecialista();
 
         return view('ficha.index');
     }

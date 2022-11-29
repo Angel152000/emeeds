@@ -78,6 +78,7 @@ class EspecialistasController extends Controller
             'email'          => 'required|email|max:500|unique:users',
             'telefono'       => 'required|max:9',
             'especialidad'   => 'required',
+            'tipo_atencion'  => 'required',
             'clave'          => 'required',
             'rep_clave'      => 'required',
         ); 
@@ -92,6 +93,7 @@ class EspecialistasController extends Controller
             'email.required'          => 'El campo Email es requerido',
             'telefono.required'       => 'El campo Teléfono es requerido',
             'especialidad.required'   => 'El campo Especialidad es requerido',
+            'tipo_atencion.required'  => 'El campo Tipo de Atención es requerido',
             'clave.required'          => 'El campo Contraseña es requerido',
             'rep_clave.required'      => 'El campo Repetir Contraseña es requerido',
             'rut.max'                 => 'El campo Rut no puede superar los 15 caracteres',
@@ -128,6 +130,7 @@ class EspecialistasController extends Controller
 
                     $data = array(
                         'id_especialidad'  => $request->input('especialidad'),
+                        'tipo_atencion'    => $request->input('tipo_atencion'),
                         'id_user'          => $l_user->id,
                         'rut'              => $request->input('rut'),
                         'nombres'          => $request->input('nombres'),
@@ -226,6 +229,7 @@ class EspecialistasController extends Controller
                 'sexo'           => 'required',
                 'telefono'       => 'required|max:9',
                 'especialidad'   => 'required',
+                'tipo_atencion'  => 'required',
             ); 
 
             $msg = array(
@@ -237,6 +241,7 @@ class EspecialistasController extends Controller
                 'sexo.required'           => 'El campo Sexo es requerido',
                 'telefono.required'       => 'El campo Teléfono es requerido',
                 'especialidad.required'   => 'El campo Especialidad es requerido',
+                'tipo_atencion.required'  => 'El campo Tipo de Atención es requerido',
                 'rut.max'                 => 'El campo Rut no puede superar los 15 caracteres',
                 'telefono.max'            => 'El campo Teléfono no puede superar los 9 digitos',
                 'nombres.max'             => 'El campo Nombres no puede superar los 300 caracteres',
@@ -258,6 +263,7 @@ class EspecialistasController extends Controller
                 {
                     $data = array(
                         'id_especialidad'  => $request->input('especialidad'),
+                        'tipo_atencion'    => $request->input('tipo_atencion'),
                         'rut'              => $request->input('rut'),
                         'nombres'          => $request->input('nombres'),
                         'apellido_paterno' => $request->input('apellidop'),

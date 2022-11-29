@@ -47,6 +47,7 @@
                             <th scope="col">Rut</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Especialidad</th>
+                            <th scope="col">Tipo de Atención</th>
                             <th scope="col">Email</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -59,6 +60,13 @@
                                     <td>{{$row->rut}}</td>
                                     <td>{{$row->nombres}} {{$row->apellido_paterno}}</td>
                                     <td>{{$row->especialidad}}</td>
+                                    <td>
+                                        @if($row->tipo_atencion == 1)
+                                            Atención con reserva
+                                        @else
+                                            Atención Inmediata.
+                                        @endif
+                                    </td>
                                     <td>{{$row->email}}</td>
                                     <td>
                                         <a  href="{{ url('/home/especialistas/editar') }}/{{$row->id}}" class="btn btn-success"><i class="fa-solid fa-pencil"></i></a>

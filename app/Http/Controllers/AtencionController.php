@@ -287,7 +287,7 @@ class AtencionController extends Controller
     public function show($id)
     {
         $atentiones    = Atencion::where('codigo_atencion',$id)->first();
-        $especialistas = Especialistas::where('id_especialidad',$atentiones->id_especialidad)->get();
+        $especialistas = Especialistas::where('id_especialidad',$atentiones->id_especialidad)->where('tipo_atencion',$atentiones->tipo_atencion)->get();
         $objBloque = new Bloques();
 
         switch ($atentiones->tipo_atencion) 

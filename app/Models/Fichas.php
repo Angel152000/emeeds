@@ -9,6 +9,8 @@ class Fichas extends Model
 {
     use HasFactory;
 
+    protected $table = 'fichas';
+
     protected $fillable = [
         'id_ficha',
         'id_atencion',
@@ -19,5 +21,11 @@ class Fichas extends Model
         'fecha_atencion',
         'nota',
     ];
+
+    public function getFichasByEspecialista($id)
+    {
+        $fichas = DB::table($this->table)->where('id_especialista',$id)->get();
+        return $fichas;
+    }
 
 }

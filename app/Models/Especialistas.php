@@ -15,6 +15,7 @@ class Especialistas extends Model
         'id',
         'id_user',
         'id_especialidad',
+        'tipo_atencion',
         'rut',
         'nombres',
         'apellido_paterno',

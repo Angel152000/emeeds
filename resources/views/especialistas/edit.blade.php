@@ -73,7 +73,7 @@
                             <div class="form-group">
                                 <label>Sexo <span style="color:red;">*</span></label>
                                 <select class="custom-select for-especialista" id="sexo" name="sexo">
-                                    <option selected>- Selecciona -</option>
+                                    <option selected value="">- Selecciona -</option>
                                     <option value="1">Masculino</option>
                                     <option value="2">Femenino</option>
                                     <option value="3">Otro</option>
@@ -90,6 +90,32 @@
                             <div class="form-group">
                                 <label>Teléfono <span style="color:red;">*</span></label>
                                 <input type="text" id="telefono" name="telefono" class="form-control for-especialista" placeholder="999999999" onkeypress="return check(event)" value="{{ $especialista->telefono }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card card-default">
+                <div class="card-header"  data-card-widget="collapse">
+                    <h3 class="card-title">Atención</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <label>Seleccione el tipo de Atención. <span style="color:red;">*</span></label>
+                                <select class="form-select form-control" id="tipo_atencion" name="tipo_atencion">
+                                    <option selected value="">- Selecciona -</option>
+                                    <option value="1">Atención con reserva</option>
+                                    <option value="2">Atención Inmediata</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -138,6 +164,7 @@
     </form>
     <input type="hidden" id="sexoval" value="{{ $especialista->sexo }}">
     <input type="hidden" id="espeval" value="{{ $especialista->id_especialidad }}">
+    <input type="hidden" id="tipval"  value="{{ $especialista->tipo_atencion }}">
 </div>
 @stop
 
@@ -150,6 +177,9 @@
 
     var espe = $("#espeval").val();
     $('#especialidad').val(espe).trigger('change.select2');
+
+    var tipo = $("#tipval").val();
+    $("#tipo_atencion option[value="+tipo+"]").attr("selected",true);
 
     $("#form").submit(function(e)
     {

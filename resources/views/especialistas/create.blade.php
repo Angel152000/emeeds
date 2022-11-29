@@ -98,6 +98,32 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="card card-default">
                 <div class="card-header"  data-card-widget="collapse">
+                    <h3 class="card-title">Atención</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <label>Seleccione el tipo de Atención. <span style="color:red;">*</span></label>
+                                <select class="form-select form-control" id="tipo_atencion" name="tipo_atencion">
+                                    <option selected value="">- Selecciona -</option>
+                                    <option value="1">Atención con reserva</option>
+                                    <option value="2">Atención Inmediata</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card card-default">
+                <div class="card-header"  data-card-widget="collapse">
                     <h3 class="card-title">Especialidad</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">

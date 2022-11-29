@@ -35,7 +35,7 @@ class ZoomController extends Controller
 
         $getEstadoCuenta = $objZomm->getUser(auth()->user()->id);
 
-        if($getEstadoCuenta)
+        if(!empty($getEstadoCuenta))
         {
             $this->data['zoom'] = $getEstadoCuenta;
             return view('zoom.users', $this->data);

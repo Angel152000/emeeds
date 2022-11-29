@@ -497,7 +497,7 @@
             responsive: true,
             "language": {
                 "lengthMenu": "Mostrar _MENU_ resultados por página",
-                "zeroRecords": "No Existen Especialistas aún.",
+                "zeroRecords": "No Existen Especialidades aún.",
                 "info": "Mostrando página _PAGE_ de _PAGES_",
                 "infoFiltered": "(filtered from _MAX_ total records)"
             }
