@@ -81,7 +81,14 @@
                                                     <a  onclick="cambiarEstado('{{ $row->id_atencion }}')" class="btn btn-success"><i class="fa-solid fa-laptop-medical "></i></a>
                                                 @else
                                                     <a  onclick="contactarPaciente('{{ $row->id_atencion }}')" class="btn btn-primary"><i class="fa-solid fa-video "></i></a>
+                                                    <a  onclick="cancelarAtencion('{{ $row->id_atencion }}')" class="btn btn-danger"><i class="fa-solid fa-laptop-medical "></i></a>
                                                 @endif
+                                            </td>
+                                        @break
+                                        @case(5)
+                                            <td><h3><span class="badge badge-danger">Cancelada</span></h3></td>
+                                            <td>
+
                                             </td>
                                         @break
                                     @endswitch
@@ -126,6 +133,13 @@
                             <th scope="row">2</th>
                             <td><h3><span class="badge badge-primary">Reservada</span></h3></td>
                             <td>Consulta/Atención que se encuentra cancelada por el paciente.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>
+                                <h3><span class="badge badge-danger">Cancelada</span></h3>
+                            </td>
+                            <td>Consulta/Atención que se encuentra cancelada por el especialista, este estado se presenta a través de posibles inconvenientes para la realización de la misma.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -338,6 +352,73 @@
             if (result.isConfirmed) 
             {
                 var url = '{{URL::route("atencion_estado")}}';
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType : 'json',
+                    data: {
+                        id: id,
+                    },
+                    success: function(res) 
+                    {
+                        if (res.status === 'success') 
+                        {
+                            Swal.fire({
+                                title: res.msg,
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor: '#019df4',
+                                cancelButtonText: 'Cancelar',
+                                cancelButtonColor: '#dc3545',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) 
+                                {
+                                    window.location.reload();
+                                }
+                                else
+                                {
+                                    window.location.reload();
+                                }
+                            })
+                        }
+                        else
+                        {
+                            Swal.fire('Error!',res.msg,'error');
+                        }
+                    }
+                });
+            }
+        })
+    }
+
+    function cancelarAtencion(id) 
+    {
+        Swal.fire({
+            title: '¿Estás seguro que deseas cancelar la atención?',
+            text: 'Esta acción es irreversible, se le notificará al paciente vía correo de la cancelación de la reunión.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#019df4',
+            cancelButtonText: 'Cancelar',
+            cancelButtonColor: '#dc3545',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) 
+            {
+                var url = '{{URL::route("atencion_cancelar")}}';
                 $.ajax({
                     url: url,
                     type: 'post',

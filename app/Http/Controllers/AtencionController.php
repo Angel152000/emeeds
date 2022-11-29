@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CancelarAtencion;
 use App\Mail\ContactarEspecialista;
 use App\Mail\ContactarPaciente;
 use App\Models\Atencion;
@@ -718,6 +719,61 @@ class AtencionController extends Controller
             $this->data['msg']    = "Faltan parámetros para realizar la acción, intente nuevamente.";
         }
 
+        return json_encode($this->data);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\atencion  $atencion
+     * @return \Illuminate\Http\Request
+     */
+    public function cancelarAtencion(Request $request)
+    {
+        if(!empty($request->input('id')))
+        {
+            $response = Atencion::where('id_atencion',$request->input('id'))->update([
+                'estado' => '5'
+            ]);
+
+            if($response)
+            {
+                $atencion     = Atencion::where('id_atencion',$request->input('id'))->first();
+                $pago         = Pagos::where('id_atencion',$request->input('id'))->first();
+                $paciente     = User::where('id',$atencion->id_paciente)->first();
+                $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
+                $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
+
+                if($atencion->tipo_atencion == 1){ $tipo_atencion = 'Atención Reservada'; } else { $tipo_atencion = 'Atención Inmediata'; } 
+
+                $data = array(
+                    'codigo'        => $atencion->codigo_atencion,
+                    'paciente'      => $paciente->name,
+                    'especialidad'  => $especialidad->nombre,
+                    'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
+                    'tipo_atencion' => $tipo_atencion,
+                    'fecha'         => date('d-m-Y'),
+                    'id_pago'       => $pago->payment_id,
+                    'id_orden'      => $pago->merchant_order_id,
+                    'monto'         => '$'.number_format($pago->monto_pago,0,'.','.'),
+                );
+
+                Mail::to($paciente->email)->send(new CancelarAtencion($data));
+
+                $this->data['status'] = "success";
+                $this->data['msg'] = "Se ha cancelado la atención exitosamente.";
+            }
+            else
+            {
+                $this->data['status'] = "error";
+                $this->data['msg'] = "Hubo un error al cancelar la atención, intente nuevamente.";
+            }
+        }
+        else
+        {
+            $this->data['status'] = "error";
+            $this->data['msg']    = "Faltan parámetros para realizar la acción, intente nuevamente.";
+        }
         return json_encode($this->data);
     }
 

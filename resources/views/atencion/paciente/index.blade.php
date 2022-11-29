@@ -104,6 +104,12 @@
                                                 <a  onclick="eliminarAtencion('{{$row->id_atencion}}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                             </td>
                                         @break
+                                        @case(5)
+                                            <td><h3><span class="badge badge-danger">Cancelada</span></h3></td>
+                                            <td>
+                                                
+                                            </td>
+                                        @break
                                     @endswitch
                                 </tr>
                             @endforeach
@@ -155,6 +161,13 @@
                             <th scope="row">4</th>
                             <td><h3><span class="badge badge-warning">Pendiente</span></h3></td>
                             <td>Consulta/Atención que se encuentra incompleta para la reserva o atención inmediata de esta misma.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td>
+                                <h3><span class="badge badge-danger">Cancelada</span></h3>
+                            </td>
+                            <td>Consulta/Atención que se encuentra cancelada por el especialista, este estado se presenta a través de posibles inconvenientes para la realización de la misma.</td>
                         </tr>
                     </tbody>
                 </table>

@@ -89,6 +89,9 @@
                                             <h3><span class="badge badge-primary">Reservada</span></h3>
                                         </td>
                                     @break
+                                    @case(5)
+                                        <td><h3><span class="badge badge-danger">Cancelada</span></h3></td>
+                                    @break
                                 @endswitch
                             </tr>
                             @endforeach
@@ -133,6 +136,13 @@
                                             <h3><span class="badge badge-primary">Reservada</span></h3>
                                         </td>
                                         <td>Consulta/Atención que se encuentra cancelada por el paciente.</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>
+                                            <h3><span class="badge badge-danger">Cancelada</span></h3>
+                                        </td>
+                                        <td>Consulta/Atención que se encuentra cancelada por el especialista, este estado se presenta a través de posibles inconvenientes para la realización de la misma.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -405,6 +415,9 @@
                                     <h3><span class="badge badge-warning">Pendiente</span></h3>
                                 </td>
                                 @break
+                                @case(5)
+                                    <td><h3><span class="badge badge-danger">Cancelada</span></h3></td>
+                                @break
                                 @endswitch
                             </tr>
                             @endforeach
@@ -465,6 +478,13 @@
                                     <h3><span class="badge badge-warning">Pendiente</span></h3>
                                 </td>
                                 <td>Consulta/Atención que se encuentra incompleta para la reserva o atención inmediata de esta misma.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>
+                                    <h3><span class="badge badge-danger">Cancelada</span></h3>
+                                </td>
+                                <td>Consulta/Atención que se encuentra cancelada por el especialista, este estado se presenta a través de posibles inconvenientes para la realización de la misma.</td>
                             </tr>
                         </tbody>
                     </table>

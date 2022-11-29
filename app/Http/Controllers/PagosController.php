@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PagoPaciente;
 use App\Models\Pagos;
 use App\Models\Atencion;
 use App\Models\Bloques;
@@ -10,6 +11,7 @@ use App\Models\Especialistas;
 use App\Models\Horarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class PagosController extends Controller
 {
@@ -78,6 +80,7 @@ class PagosController extends Controller
                 if ($validador->passes()) 
                 {
                     $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
+                    $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
                     $monto = $especialidad->costo;
 
                     $response = Pagos::create([
@@ -94,6 +97,23 @@ class PagosController extends Controller
 
                     if($response)
                     {
+                        
+                        if($atencion->tipo_atencion == 1){ $tipo_atencion = 'Atención Reservada'; } else { $tipo_atencion = 'Atención Inmediata'; } 
+
+                        $data = array(
+                            'codigo'        => $atencion->codigo_atencion,
+                            'paciente'      => auth()->user()->name,
+                            'especialidad'  => $especialidad->nombre,
+                            'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
+                            'tipo_atencion' => $tipo_atencion,
+                            'fecha'         => date('d-m-Y'),
+                            'id_pago'       => $req->payment_id,
+                            'id_orden'      => $req->merchant_order_id,
+                            'monto'         => '$'.number_format($monto,0,'.','.'),
+                        );
+
+                        Mail::to(auth()->user()->email)->send(new PagoPaciente($data));
+
                         $response2 =  Atencion::where('id_atencion',$atencion->id_atencion)->update([ 'estado' =>  2 ]);
 
                         if($response2)

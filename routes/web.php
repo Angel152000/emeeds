@@ -71,6 +71,7 @@ Route::group([
     Route::post('/home/atenciones/contactar/paciente', [App\Http\Controllers\AtencionController::class, 'contactarPaciente'])->name('atencion_contactar');
     Route::post('/home/atenciones/reenviar/paciente',  [App\Http\Controllers\AtencionController::class, 'reenviarPaciente'])->name('atencion_reenviar');
     Route::post('/home/atenciones/estado/cambiar',     [App\Http\Controllers\AtencionController::class, 'cambiarEstado'])->name('atencion_estado');
+    Route::post('/home/atenciones/cancelar',           [App\Http\Controllers\AtencionController::class, 'cancelarAtencion'])->name('atencion_cancelar');
 
     //Rutas calendario
     Route::get('/home/calendario',              [App\Http\Controllers\EventosController::class, 'index'])->name('calendar');

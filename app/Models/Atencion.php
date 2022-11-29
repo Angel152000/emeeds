@@ -34,7 +34,7 @@ class Atencion extends Model
 
     public function getAtencionesByIdEspecialista($id)
     {
-        $atenciones = DB::table($this->table)->where('id_especialista',$id)->whereIn('estado', [1, 2])->get();
+        $atenciones = DB::table($this->table)->where('id_especialista',$id)->whereIn('estado', [1, 2, 5])->get();
         return $atenciones;
     }
 
