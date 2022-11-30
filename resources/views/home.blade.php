@@ -27,7 +27,7 @@
                 <div class="icon">
                     <i class="fa-solid fa-bed-pulse "></i>
                 </div>
-                <a href="{{URL::route('atenciones_especialistas')}}" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{URL::route('pacientes')}}" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         
@@ -338,7 +338,7 @@
                 <div class="icon">
                     <i class="fa-solid fa-hospital-user"></i>
                 </div>
-                <a href="#" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{URL::route('ficha_medica')}}" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
     </div>
