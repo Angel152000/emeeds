@@ -52,6 +52,17 @@ class AtencionController extends Controller
                     {
                         $paciente = User::where('id',$row->id_paciente)->first();
                         $row->nombre_paciente = $paciente->name;
+
+                        $ficha = Fichas::where('id_atencion',$row->id_atencion)->first();
+    
+                        if(!empty($ficha))
+                        {
+                            $row->notas = $ficha->nota;
+                        }
+                        else
+                        {
+                            $row->notas = '';
+                        }
                          
                         switch ($row->tipo_atencion) 
                         {
@@ -570,13 +581,23 @@ class AtencionController extends Controller
                             Mail::to($correo_paciente)->send(new ContactarPaciente($data));
                             Mail::to($correo_especialista)->send(new ContactarEspecialista($data));
 
+
+                            if($atencion->tipo_atencion == 1)
+                            {
+                                $fecha = $atencion->tipo_atencion;
+                            }
+                            else
+                            {
+                                $fecha = date('Y-m-d');
+                            }
+
                             $ficha = Fichas::create([
                                 'id_atencion'     =>  $atencion->id_atencion,
                                 'id_paciente'     =>  $atencion->id_paciente,
                                 'rut_paciente'    =>  $atencion->rut_paciente,
                                 'id_especialista' =>  $atencion->id_especialista,
                                 'id_especialidad' =>  $atencion->id_especialidad,
-                                'fecha_atencion'  =>  $atencion->fecha,
+                                'fecha_atencion'  =>  $fecha,
                             ]);
                             
                             if($ficha)

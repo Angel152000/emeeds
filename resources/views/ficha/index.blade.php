@@ -46,14 +46,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(!empty($horarios))
-                            @foreach($horarios as $row)
+                        @if(!empty($pacientes))
+                            @foreach($pacientes as $row)
                                 <tr>
                                     <td>{{ $loop->iteration      }}</td>
                                     <td>{{ $row->rut_paciente    }}</td>
-                                    <td>{{ $row->nombre_paciente }}</td>
+                                    <td>{{ $row->paciente        }}</td>
                                     <td>
-                                        <a  href="{{ url('/home/horarios/bloque') }}/{{$row->id_horario}}" class="btn btn-success"><i class="fa-regular fa-id-card"></i></a>
+                                        <a  href="{{ url('/home/paciente') }}/{{$row->id_paciente}}" class="btn btn-success"><i class="fa-regular fa-id-card"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -89,7 +89,9 @@ Route::group([
     Route::post('/home/configuracion/especialista/cambiar', [App\Http\Controllers\ConfiguracionesController::class, 'cambiarPassword'])->name('pass_especialista');
 
     //Ruta para pacientes.
-    Route::get('/home/pacientes', [App\Http\Controllers\FichasController::class, 'index'])->name('pacientes');
+    Route::get('/home/pacientes',     [App\Http\Controllers\FichasController::class, 'index'])->name('pacientes');
+    Route::get('/home/paciente/{id}', [App\Http\Controllers\FichasController::class, 'store']);
+    Route::post('/home/paciente/nota', [App\Http\Controllers\FichasController::class, 'update'])->name('editar_nota');
 });
 
 //Rutas para el paciente.

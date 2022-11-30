@@ -17,7 +17,7 @@
     $item->id = $atencion->codigo_atencion;
     $item->title = 'Atención Medica';
     $item->quantity = 1;
-    $item->unit_price = 200;//$atencion->costo;
+    $item->unit_price = 300;//$atencion->costo;
     $item->currency_id = "CLP";
     $preference->items = array($item);
 

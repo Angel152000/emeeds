@@ -28,6 +28,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="callout callout-success">
             <h5>Pago Realizado.</h5>
+            <p>Espera que el especialista se contacte contigo, se te envíara el link de tele-consulta vía email.</p>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
