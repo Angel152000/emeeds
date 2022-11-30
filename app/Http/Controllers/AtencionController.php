@@ -584,7 +584,7 @@ class AtencionController extends Controller
 
                             if($atencion->tipo_atencion == 1)
                             {
-                                $fecha = $atencion->tipo_atencion;
+                                $fecha = $atencion->fecha;
                             }
                             else
                             {
