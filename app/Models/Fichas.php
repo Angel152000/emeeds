@@ -29,4 +29,10 @@ class Fichas extends Model
         return $fichas;
     }
 
+    public function getFichasByPaciente($id)
+    {
+        $fichas = DB::table($this->table)->where('id_paciente',$id)->get();
+        return $fichas;
+    }
+
 }

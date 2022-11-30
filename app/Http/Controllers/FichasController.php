@@ -35,6 +35,48 @@ class FichasController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function paciente()
+    {
+        $objFichas    = new Fichas();
+        $fichas       = $objFichas->getFichasByPaciente(auth()->user()->id);
+
+        foreach ($fichas as $row)
+        {
+            $atencion     = Atencion::where('id_atencion',$row->id_atencion)->first();
+            $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
+            $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
+            $row->especialidad = $especialidad->nombre;
+
+            $row->especialista = 'Dr/a '.$especialista->nombres.' '. $especialista->apellido_paterno;
+
+            switch ($atencion->tipo_atencion) 
+            {
+                case 1:
+                    $row->atencion = 'Atención Reservada';
+                    $row->fecha_at = date("d/m/Y", strtotime($atencion->fecha));
+                break;
+                case 2:
+                    $row->atencion = 'Atención Inmediata';
+                    $row->fecha_at = 'No aplica.';
+                break;
+                case 3:
+                    $row->atencion = 'Sin tipo de atención';
+                    $row->fecha_at = 'No aplica.';
+                break;
+            }
+
+        }
+
+        $this->data['fichas'] = $fichas;
+
+        return view('ficha.ficha',$this->data);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

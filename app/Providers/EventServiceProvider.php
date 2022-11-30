@@ -144,7 +144,7 @@ class EventServiceProvider extends ServiceProvider
 
                         $event->menu->addAfter('cuenta', [
                             'text'        => 'Ficha médica',
-                            'url'         => '#',
+                            'url'         => '/home/ficha/medica',
                             'icon'        => 'fa-solid fa-hospital-user',
                             'label_color' => 'success',
                             'key'         => 'fichamedica',

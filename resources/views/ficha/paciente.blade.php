@@ -91,6 +91,7 @@
                                                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cancelar</button>
                                                     <button type="button" onclick="guardarNota('{{ $row->id_atencion }}')" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                                                 @else
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
                                                 @endif
                                             </div>
                                         </div>

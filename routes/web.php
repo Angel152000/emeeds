@@ -116,5 +116,8 @@ Route::group([
 
     //Ruta para configuraciones.
     Route::get('/home/configuracion/paciente',                         [App\Http\Controllers\ConfiguracionesController::class, 'paciente'])->name('configuracion_paciente');
-    Route::post('/home/configuracion/paciente/cambiar',                 [App\Http\Controllers\ConfiguracionesController::class, 'cambiarPassword'])->name('pass_paciente');
+    Route::post('/home/configuracion/paciente/cambiar',                [App\Http\Controllers\ConfiguracionesController::class, 'cambiarPassword'])->name('pass_paciente');
+
+    //Ruta para ficha medica.
+    Route::get('/home/ficha/medica',                                   [App\Http\Controllers\FichasController::class, 'paciente'])->name('ficha_medica');
 });
