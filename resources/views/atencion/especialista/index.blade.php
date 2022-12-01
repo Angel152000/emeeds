@@ -48,6 +48,7 @@
                             <th scope="col">Nombre Paciente</th>
                             <th scope="col">Motivo de Atención</th>
                             <th scope="col">Fecha</th>
+                            <th scope="col">Bloque</th>
                             <th scope="col">Estado </th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -67,6 +68,7 @@
                                     @else
                                         <td>No aplica.</td>
                                     @endif
+                                    <td>{{ $row->nom_bloq }}</td>
                                     @switch($row->estado)
                                         @case(1)
                                             <td><h3><span class="badge badge-success">Realizada</span></h3></td>

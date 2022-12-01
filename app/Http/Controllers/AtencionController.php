@@ -88,6 +88,16 @@ class AtencionController extends Controller
                         {
                             $row->atencion_zoom = 1;
                         }
+
+                        $bloque = Bloques::where('id_bloque',$row->id_bloque)->where('id_horario',$row->id_bloque)->first();
+                        if(!empty($bloque))
+                        {
+                            $row->nom_bloq = $bloque->hora_bloque;
+                        }
+                        else
+                        {
+                            $row->nom_bloq = 'No aplica.';
+                        }
                         
                     }
                 }
