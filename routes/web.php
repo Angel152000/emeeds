@@ -1,5 +1,6 @@
 <?php
 
+use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,6 +23,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Ruta de errores.
 Route::get('/404', [App\Http\Controllers\HomeController::class, 'index'])->name('404');
+
+Route::get('/terminos', function () {
+    return view('terminos');
+})->name('terminos');
+
 
 //Rutas para el establecimiento.
 Route::group([
