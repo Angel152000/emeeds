@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NotificarEspecialista;
 use App\Mail\PagoPaciente;
 use App\Models\Pagos;
 use App\Models\Atencion;
@@ -9,6 +10,7 @@ use App\Models\Bloques;
 use App\Models\Especialidades;
 use App\Models\Especialistas;
 use App\Models\Horarios;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -61,33 +63,61 @@ class PagosController extends Controller
 
         if(!empty($req->payment_id))
         {
-            if($req->status == 'approved')
+            if($req->status == 'approved' || $req->payment_status == 'approved')
             {
                 $atencion = Atencion::where('codigo_atencion',$req->id)->first();
 
-                $rules = array(
-                    'payment_id'        => 'unique:pagos',
-                    'merchant_order_id' => 'unique:pagos',
-                );
-        
-                $msg = array(
-                    'payment_id'        => 'unique:pagos',
-                    'merchant_order_id' => 'unique:pagos',
-                );
+                if(!empty($req->status))
+                {
+                    $rules = array(
+                        'payment_id'        => 'unique:pagos',
+                        'merchant_order_id' => 'unique:pagos',
+                    );
+            
+                    $msg = array(
+                        'payment_id'        => 'unique:pagos',
+                        'merchant_order_id' => 'unique:pagos',
+                    );
+                }
+                else
+                {
+                    $rules = array(
+                        'payment_id'        => 'unique:pagos',
+                    );
+            
+                    $msg = array(
+                        'payment_id'        => 'unique:pagos',
+                    );
+                }
         
                 $validador = Validator::make($req->all(), $rules, $msg);
-        
+
                 if ($validador->passes()) 
                 {
                     $especialidad = Especialidades::where('id',$atencion->id_especialidad)->first();
                     $especialista = Especialistas::where('id',$atencion->id_especialista)->first();
                     $monto = $especialidad->costo;
+                    
+                    if(!empty($req->status))
+                    {
+                        $metodo_pago         = $req->payment_type;
+                        $pago_id             = $req->payment_id;
+                        $estado_mercado_pago = $req->status;
+                        $merchant_order_id   = $req->merchant_order_id;
+                    }
+                    else
+                    {
+                        $metodo_pago         = $req->payment_method_id;
+                        $pago_id             = $req->payment_id;
+                        $estado_mercado_pago = $req->payment_status;
+                        $merchant_order_id   = $req->payment_id.'-wp';
+                    }
 
                     $response = Pagos::create([
-                        'metodo_pago'           => $req->payment_type,
-                        'payment_id'            => $req->payment_id,
-                        'estado_mercado_pago'   => $req->status,
-                        'merchant_order_id'     => $req->merchant_order_id,
+                        'metodo_pago'           => $metodo_pago,
+                        'payment_id'            => $pago_id,
+                        'estado_mercado_pago'   => $estado_mercado_pago,
+                        'merchant_order_id'     => $merchant_order_id,
                         'id_atencion'           => $atencion->id_atencion,
                         'codigo_atencion'       => $atencion->codigo_atencion,
                         'estado'                => 1,
@@ -97,7 +127,6 @@ class PagosController extends Controller
 
                     if($response)
                     {
-                        
                         if($atencion->tipo_atencion == 1){ $tipo_atencion = 'Atención Reservada'; } else { $tipo_atencion = 'Atención Inmediata'; } 
 
                         $data = array(
@@ -107,12 +136,32 @@ class PagosController extends Controller
                             'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
                             'tipo_atencion' => $tipo_atencion,
                             'fecha'         => date('d-m-Y'),
-                            'id_pago'       => $req->payment_id,
-                            'id_orden'      => $req->merchant_order_id,
+                            'id_pago'       => $pago_id,
+                            'id_orden'      => $merchant_order_id,
                             'monto'         => '$'.number_format($monto,0,'.','.'),
                         );
 
+                        if($atencion->tipo_atencion == 1){ $fecha = date("d/m/Y", strtotime($atencion->fecha)); } else { $fecha = date("d/m/Y"); } 
+
+                        $bloque = Bloques::Where('id_bloque',$atencion->id_bloque)->first();
+                        
+                        if(!empty($bloque)) { $hora_bloq = $bloque->hora_bloque; } else { $hora_bloq = 'No Aplica'; } 
+                        
+                        $data2 = array(
+                            'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
+                            'codigo'        => $atencion->codigo_atencion,
+                            'rut'           => $atencion->rut_paciente,
+                            'paciente'      => auth()->user()->name,
+                            'tipo_atencion' => $tipo_atencion,
+                            'fecha'         => $fecha,
+                            'bloque'        => $hora_bloq,
+                        );
+
+                        $espe              = User::where('id',$especialista->id_user)->first();
+                        $mail_especialista = $espe->email;  
+
                         Mail::to(auth()->user()->email)->send(new PagoPaciente($data));
+                        Mail::to($mail_especialista)->send(new NotificarEspecialista($data2));
 
                         $response2 =  Atencion::where('id_atencion',$atencion->id_atencion)->update([ 'estado' =>  2 ]);
 
