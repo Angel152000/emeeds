@@ -50,9 +50,6 @@ class AtencionController extends Controller
                 {
                     foreach ($atenciones as $row)
                     {
-                        $paciente = User::where('id',$row->id_paciente)->first();
-                        $row->nombre_paciente = $paciente->name;
-
                         $ficha = Fichas::where('id_atencion',$row->id_atencion)->first();
     
                         if(!empty($ficha))
@@ -89,7 +86,8 @@ class AtencionController extends Controller
                             $row->atencion_zoom = 1;
                         }
 
-                        $bloque = Bloques::where('id_bloque',$row->id_bloque)->where('id_horario',$row->id_bloque)->first();
+                        $bloque = Bloques::where('id_bloque',$row->id_bloque)->where('id_horario',$row->id_horario)->first();
+                        
                         if(!empty($bloque))
                         {
                             $row->nom_bloq = $bloque->hora_bloque;
@@ -113,9 +111,6 @@ class AtencionController extends Controller
                     {
                         $especialidad = Especialidades::where('id',$row->id_especialidad)->first();
                         $row->especialidad = $especialidad->nombre;
-
-                        $paciente = User::where('id',$row->id_paciente)->first();
-                        $row->nombre_paciente = $paciente->name;
 
                         $monto = Pagos::where('id_atencion',$row->id_atencion)->first();
                         $row->monto_pago = $monto->monto_pago;
@@ -233,6 +228,7 @@ class AtencionController extends Controller
 
         $rules = array(
             'rut'           => 'required',
+            'nombre'        => 'required',
             'especialidad'  => 'required',
             'tipo_atencion' => 'required',
             'detalle'       => 'max:500',
@@ -241,6 +237,7 @@ class AtencionController extends Controller
 
         $msg = array(
             'rut.required'            => 'El campo Rut es requerido',
+            'nombre.required'         => 'El campo Nombre es requerido',
             'especialidad.required'   => 'El campo Especialidad es requerido',
             'tipo_atencion.required'  => 'El campo Tipo de atención es requerido',
             'detalle.max'             => 'El campo Motivo de atención no puede superar los 500 caracteres',
@@ -269,6 +266,7 @@ class AtencionController extends Controller
                     'id_especialidad' =>  $request->input('especialidad'),
                     'id_paciente'     =>  auth()->user()->id,
                     'rut_paciente'    =>  $request->input('rut'),
+                    'nombre_paciente' =>  $request->input('nombre'),
                     'detalle_atencion'=>  $request->input('detalle'),
                     'estado'          =>  4,
                     'fecha'           =>  $fecha_save
@@ -569,7 +567,7 @@ class AtencionController extends Controller
                         $data = array(
                             'codigo'        => $atencion->codigo_atencion,
                             'rut'           => $atencion->rut_paciente,
-                            'paciente'      => $corr_pac->name,
+                            'paciente'      => $atencion->nombre_paciente,
                             'especialidad'  => $especialidad->nombre,
                             'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
                             'tipo_atencion' => $tipo_atencion,
@@ -697,7 +695,7 @@ class AtencionController extends Controller
                         $data = array(
                             'codigo'        => $atencion->codigo_atencion,
                             'rut'           => $atencion->rut_paciente,
-                            'paciente'      => $corr_pac->name,
+                            'paciente'      => $atencion->nombre_paciente,
                             'especialidad'  => $especialidad->nombre,
                             'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
                             'tipo_atencion' => $tipo_atencion,
@@ -779,7 +777,7 @@ class AtencionController extends Controller
 
                 $data = array(
                     'codigo'        => $atencion->codigo_atencion,
-                    'paciente'      => $paciente->name,
+                    'paciente'      => $atencion->nombre_paciente,
                     'especialidad'  => $especialidad->nombre,
                     'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
                     'tipo_atencion' => $tipo_atencion,

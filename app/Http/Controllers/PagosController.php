@@ -131,7 +131,7 @@ class PagosController extends Controller
 
                         $data = array(
                             'codigo'        => $atencion->codigo_atencion,
-                            'paciente'      => auth()->user()->name,
+                            'paciente'      =>  $atencion->nombre_paciente,
                             'especialidad'  => $especialidad->nombre,
                             'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
                             'tipo_atencion' => $tipo_atencion,
@@ -151,7 +151,7 @@ class PagosController extends Controller
                             'especialista'  => 'Dr/a '.$especialista->nombres.' '.$especialista->apellido_paterno,
                             'codigo'        => $atencion->codigo_atencion,
                             'rut'           => $atencion->rut_paciente,
-                            'paciente'      => auth()->user()->name,
+                            'paciente'      => $atencion->nombre_paciente,
                             'tipo_atencion' => $tipo_atencion,
                             'fecha'         => $fecha,
                             'bloque'        => $hora_bloq,
@@ -266,10 +266,12 @@ class PagosController extends Controller
                 if(!empty($row->id_especialista))
                 {
                     $row->especialista = Especialistas::where('id',$row->id_especialista)->first();
+                    $row->rut_espe     = $row->especialista->rut;
                 }
                 else
                 {
                     $row->especialista = '';
+                    $row->rut_espe     = '';
                 }
 
                 switch ($row->tipo_atencion) 

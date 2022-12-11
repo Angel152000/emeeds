@@ -36,6 +36,10 @@
                     <input type="text" id="rut" name="rut" class="form-control for-especialista" placeholder="Ingrese solo números" onkeypress="return check(event)">
                 </div>
                 <div class="form-group">
+                    <label>Nombre <span style="color:red;">*</span></label>
+                    <input type="text" id="name" name="name" class="form-control for-especialista" placeholder="Ingrese el nombre">
+                </div>
+                <div class="form-group">
                     <label>Especialidad <span style="color:red;">*</span></label>
                     <select class="custom-select especialidades for-especialista col" id="especialidad" name="especialidad">
                         <option selected value="">Ingresa la Especialidad</option>
@@ -159,6 +163,7 @@
             dataType : 'json',
             data: {
                 rut:           $("#rut").val(),
+                nombre:        $("#name").val(),
                 especialidad:  $("#especialidad").val(),
                 tipo_atencion: $('input[name="tipo_atencion"]:checked').val(),
                 detalle:       $("#detalle").val(),

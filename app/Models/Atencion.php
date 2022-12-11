@@ -19,6 +19,7 @@ class Atencion extends Model
         'id_especialista',
         'id_paciente',
         'rut_paciente',
+        'nombre_paciente',
         'detalle_atencion',
         'id_horario',
         'id_bloque',
@@ -58,7 +59,7 @@ class Atencion extends Model
 
     public function getAtencionesByAdmin()
     {
-        $atenciones = DB::table($this->table)->whereIn('estado',[1,2])->get();
+        $atenciones = DB::table($this->table)->whereIn('estado',[1,2,5])->get();
         return $atenciones;
     }
 }

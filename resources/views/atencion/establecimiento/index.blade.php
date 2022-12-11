@@ -80,6 +80,9 @@
                                         @case(2)
                                             <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
                                         @break
+                                        @case(5)
+                                            <td><h3><span class="badge badge-danger">Cancelada</span></h3></td>
+                                        @break
                                     @endswitch
                                 </tr>
                             @endforeach
@@ -121,6 +124,11 @@
                             <th scope="row">2</th>
                             <td><h3><span class="badge badge-primary">En Proceso</span></h3></td>
                             <td>Consulta/Atención que se encuentra reservada o en proceso para ser atendido/a.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td><h3><span class="badge badge-danger">Cancelada</span></h3></td>
+                            <td>Consulta/Atención que se encuentra cancelada por el especialista.</td>
                         </tr>
                     </tbody>
                 </table>

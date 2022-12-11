@@ -17,7 +17,7 @@
     $item->id = $atencion->codigo_atencion;
     $item->title = 'Atención Medica';
     $item->quantity = 1;
-    $item->unit_price = 300;//$atencion->costo;
+    $item->unit_price = $atencion->costo;
     $item->currency_id = "CLP";
     $preference->items = array($item);
 
@@ -132,8 +132,10 @@
                                 <th>Tipo de Atención</th>
                                 <th>Fecha de Atención</th>
                                 <th>Especialidad</th>
+                                <th>Rut Especialista</th>
                                 <th>Especialista</th>
                                 <th>Rut Paciente</th>
+                                <th>Nombre Paciente</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -142,8 +144,10 @@
                                 <td>{{ $atencion->atencion }}</td>
                                 <td>{{ date("d/m/Y", strtotime($atencion->fecha)) }}</td>
                                 <td>{{ $atencion->especialidad }}</td>
+                                <td>{{ $atencion->rut_espe }} </td>
                                 <td>Dr/a. {{ $atencion->especialista->nombres }} {{ $atencion->especialista->apellido_paterno }}</td>
                                 <td>{{ $atencion->rut_paciente }}</td>
+                                <td>{{ $atencion->nombre_paciente }}</td>
                             </tr>
                         </tbody>
                     </table>

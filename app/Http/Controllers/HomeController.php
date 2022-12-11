@@ -85,7 +85,7 @@ class HomeController extends Controller
                 $this->data['countHorarios']      = Horarios::count();
                 $this->data['countEspecialidad']  = Especialidades::count();
                 $this->data['countEspecialistas'] = Especialistas::count();
-                $this->data['countAtenciones']    = Atencion::whereIn('estado',[1,2])->count();
+                $this->data['countAtenciones']    = Atencion::whereIn('estado',[1,2,5])->count();
 
                 return view('home', $this->data);
             break;

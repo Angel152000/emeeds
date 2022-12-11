@@ -25,8 +25,8 @@ class FichasController extends Controller
 
         foreach ($fichas as $row)
         {
-            $paciente      = User::where('id',$row->id_paciente)->first();
-            $row->paciente = $paciente->name;
+            $atencion  = Atencion::where('id_atencion',$row->id_atencion)->first();
+            $row->paciente  = $atencion->nombre_paciente;
         }
 
         $this->data['pacientes'] = $fichas;
@@ -116,11 +116,13 @@ class FichasController extends Controller
             }            
         }
 
-        $paciente = User::where('id',$id)->first();
+        $atencion  = Atencion::where('id_atencion',$row->id_atencion)->first();
+        $paciente  = $atencion->nombre_paciente;
+
         $espe     = Especialistas::where('id_user',auth()->user()->id)->first();
 
         $this->data['atenciones']      = $atenciones;
-        $this->data['paciente']        = $paciente->name;
+        $this->data['paciente']        = $paciente;
         $this->data['id_especialista'] = $espe->id;
         return view('ficha.paciente',$this->data);
     }

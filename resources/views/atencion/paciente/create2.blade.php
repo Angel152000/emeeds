@@ -65,28 +65,26 @@
                             <tbody>
                                 <?php $l_conta = 1; ?> 
                                 @if(!empty($especialistas))
-                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                        @foreach($especialistas as $row)
-                                            <tr>
-                                                <td>{{$loop->iteration}}</td>
-                                                <td> Dr/a. {{$row->nombres}} {{$row->apellido_paterno}}</td>
-                                                <td>
-                                                @if(!empty($bloques))
-                                                    @foreach($bloques as $row2)
-                                                        <label class="btn btn-warning btn-sm" id="bloque_{{ $row2->id_bloque }}-{{ $row->id }}">
-                                                            <input type="radio" name="bloque" id="bloque_{{ $row2->id_bloque }}-{{ $row->id }}" value="{{ $row2->id_bloque }}-{{ $row->id }}"> {{ $row2->hora_bloque }}
-                                                        </label>
-                                                        &nbsp;
-                                                        <p id="info_{{ $row2->id_bloque }}-{{ $row->id }}" style="display:none;"> No hay horas disponibles.</p>
-                                                        <?php $l_conta++; ?> 
-                                                    @endforeach
-                                                @else
-                                                    <p> No hay bloques establecidos para esta especialidad. </p>
-                                                @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </div>
+                                    @foreach($especialistas as $row)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td> Dr/a. {{$row->nombres}} {{$row->apellido_paterno}}</td>
+                                            <td>
+                                            @if(!empty($bloques))
+                                                @foreach($bloques as $row2)
+                                                    <label class="btn btn-warning btn-sm" id="bloque_{{ $row2->id_bloque }}-{{ $row->id }}">
+                                                        <input type="radio" name="bloque" id="bloque_{{ $row2->id_bloque }}-{{ $row->id }}" value="{{ $row2->id_bloque }}-{{ $row->id }}"> {{ $row2->hora_bloque }}
+                                                    </label>
+                                                    &nbsp;
+                                                    <p id="info_{{ $row2->id_bloque }}-{{ $row->id }}" style="display:none;"> No hay horas disponibles.</p>
+                                                    <?php $l_conta++; ?> 
+                                                @endforeach
+                                            @else
+                                                <p> No hay bloques establecidos para esta especialidad. </p>
+                                            @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @else
                                     <tr>
                                         <td colspan="6">
