@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Atencion;
 use App\Models\Bloques;
 use App\Models\Horarios;
 use Illuminate\Http\Request;
@@ -184,17 +185,31 @@ class BloquesController extends Controller
     {
         if($request->input('id'))
         {
-            $response = Bloques::where('id_bloque',$request->input('id'))->delete();
+            $atencion = Atencion::where('id_bloque',$request->input('id'))->first();
 
-            if($response)
+            if($atencion)
             {
-                $this->data['status'] = "success";
-                $this->data['msg'] = "Bloque Eliminado exitosamente.";
+                $this->data['status'] = "error";
+                $this->data['msg']    = "No se puede eliminar el bloque ya que existen atenciones hechas para este bloque.";
             }
             else
             {
                 $this->data['status'] = "error";
                 $this->data['msg'] = "Hubo un error al eliminar el Bloque, intente nuevamente.";
+            
+
+                $response = Bloques::where('id_bloque',$request->input('id'))->delete();
+
+                if($response)
+                {
+                    $this->data['status'] = "success";
+                    $this->data['msg'] = "Bloque Eliminado exitosamente.";
+                }
+                else
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "Hubo un error al eliminar el Bloque, intente nuevamente.";
+                }
             }
         }
         else

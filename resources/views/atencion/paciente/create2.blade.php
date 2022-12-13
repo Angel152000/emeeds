@@ -75,8 +75,6 @@
                                                     <label class="btn btn-warning btn-sm" id="bloque_{{ $row2->id_bloque }}-{{ $row->id }}">
                                                         <input type="radio" name="bloque" id="bloque_{{ $row2->id_bloque }}-{{ $row->id }}" value="{{ $row2->id_bloque }}-{{ $row->id }}"> {{ $row2->hora_bloque }}
                                                     </label>
-                                                    &nbsp;
-                                                    <p id="info_{{ $row2->id_bloque }}-{{ $row->id }}" style="display:none;"> No hay horas disponibles.</p>
                                                     <?php $l_conta++; ?> 
                                                 @endforeach
                                             @else
@@ -97,7 +95,6 @@
                         @if(!empty($bloques2))
                             @foreach($bloques2 as $row3)
                                 <?php echo '<style> #bloque_'.$row3->id_bloque.'-'.$row3->id_especialista.'{ display:none; } </style>'; ?>
-                                <?php echo '<style> #info_'.$row3->id_bloque.'-'.$row3->id_especialista.'{ display:initial !important; } </style>'; ?>
                             @endforeach
                         @endif
                     @break

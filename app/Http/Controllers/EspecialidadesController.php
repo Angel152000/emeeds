@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Atencion;
 use App\Models\Especialidades;
 use App\Models\Especialistas;
 use Illuminate\Http\Request;
@@ -162,26 +163,37 @@ class EspecialidadesController extends Controller
     {
         $objEspecialidades = new Especialidades();
 
-        $especialistas = Especialistas::where('id_especialidad',$request->input('id'))->count();
+        $atencion = Atencion::where('id_especialidad',$request->input('id'))->first();
 
-        if($especialistas > 0)
+        if($atencion)
         {
             $this->data['status'] = "error";
-            $this->data['msg'] = "No se puede eliminar la especialidad ya que existen especialistas asignados para esta, por favor actualice la especialidad de los especialistas.";
+            $this->data['msg']    = "No se puede eliminar la especialidad ya que existen atenciones hechas para este misma.";
         }
         else
         {
-            $response = $objEspecialidades->eliminarEspecialidad($request->input('id'));
 
-            if($response)
+            $especialistas = Especialistas::where('id_especialidad',$request->input('id'))->count();
+
+            if($especialistas > 0)
             {
-                $this->data['status'] = "success";
-                $this->data['msg'] = "Especialidad Eliminada exitosamente.";
+                $this->data['status'] = "error";
+                $this->data['msg'] = "No se puede eliminar la especialidad ya que existen especialistas asignados para esta, por favor actualice la especialidad de los especialistas.";
             }
             else
             {
-                $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al Eliminar la Especialidad, intente nuevamente.";
+                $response = $objEspecialidades->eliminarEspecialidad($request->input('id'));
+
+                if($response)
+                {
+                    $this->data['status'] = "success";
+                    $this->data['msg'] = "Especialidad Eliminada exitosamente.";
+                }
+                else
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "Hubo un error al Eliminar la Especialidad, intente nuevamente.";
+                }
             }
         }
     

@@ -248,7 +248,7 @@ class AtencionController extends Controller
 
         if ($validador->passes()) 
         {
-            $atenciones = Atencion::where('id_paciente',auth()->user()->id)->orderBy('id_atencion','DESC')->first();
+            $atenciones = Atencion::orderBy('id_atencion','DESC')->first();
 
             if(!empty($atenciones)) { $codigo = $atenciones->id_atencion + 1; } else { $codigo = 1; }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Atencion;
 use App\Models\Especialistas;
 use App\Models\Especialidades;
 use Illuminate\Http\Request;
@@ -306,28 +307,39 @@ class EspecialistasController extends Controller
      */
     public function destroy(Request $request)
     {
-        $objEspecialistas = new Especialistas();
-        $especialistas = $objEspecialistas->getEspecialistasById($request->input('id'));
-        $deleteEspe    = $objEspecialistas->eliminarEspecialistas($request->input('id'));
+        $atencion = Atencion::where('id_especialista',$request->input('id'))->first();
 
-        if($deleteEspe)
+        if($atencion)
         {
-            $user = User::where('id',$especialistas->id_user)->delete();
-            if($user) 
+            $this->data['status'] = "error";
+            $this->data['msg']    = "No se puede eliminar al especialista ya que tiene atenciones realizadas con pacientes.";
+        }
+        else
+        {
+
+            $objEspecialistas = new Especialistas();
+            $especialistas = $objEspecialistas->getEspecialistasById($request->input('id'));
+            $deleteEspe    = $objEspecialistas->eliminarEspecialistas($request->input('id'));
+
+            if($deleteEspe)
             {
-                $this->data['status'] = "success";
-                $this->data['msg'] = "Especialista Eliminado exitosamente.";
+                $user = User::where('id',$especialistas->id_user)->delete();
+                if($user) 
+                {
+                    $this->data['status'] = "success";
+                    $this->data['msg'] = "Especialista Eliminado exitosamente.";
+                }
+                else
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "Hubo un error al eliminar al Especialista del Sistema, intente nuevamente.";
+                }
             }
             else
             {
                 $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al eliminar al Especialista del Sistema, intente nuevamente.";
+                $this->data['msg'] = "Hubo un error al eliminar al Especialista, intente nuevamente.";
             }
-        }
-        else
-        {
-            $this->data['status'] = "error";
-            $this->data['msg'] = "Hubo un error al eliminar al Especialista, intente nuevamente.";
         }
 
         return json_encode($this->data);
