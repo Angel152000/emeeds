@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Atencion;
 use App\Models\Horarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -112,19 +113,29 @@ class HorariosController extends Controller
     {
         if($request->input('id'))
         {
-            $response  = Horarios::where('id_horario',$request->input('id'))->delete();
+            $atencion = Atencion::where('id_horario',$request->input('id'))->first();
 
-            if($response)
+            if($atencion)
             {
-                Bloques::where('id_horario',$request->input('id'))->delete();
-
-                $this->data['status'] = "success";
-                $this->data['msg'] = "Horario Eliminado exitosamente.";
+                $this->data['status'] = "error";
+                $this->data['msg']    = "No se puede eliminar el horario ya que existen atenciones realizadas para este.";
             }
             else
             {
-                $this->data['status'] = "error";
-                $this->data['msg'] = "Hubo un error al eliminar el Horario, intente nuevamente.";
+                $response  = Horarios::where('id_horario',$request->input('id'))->delete();
+
+                if($response)
+                {
+                    Bloques::where('id_horario',$request->input('id'))->delete();
+
+                    $this->data['status'] = "success";
+                    $this->data['msg'] = "Horario Eliminado exitosamente.";
+                }
+                else
+                {
+                    $this->data['status'] = "error";
+                    $this->data['msg'] = "Hubo un error al eliminar el Horario, intente nuevamente.";
+                }
             }
         }
         else
