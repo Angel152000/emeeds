@@ -383,10 +383,36 @@ class AtencionController extends Controller
                         
                         $id_horario = Bloques::where('id_bloque',$bloque)->first();
 
-                        if($id_horario->hora_bloque < date('H:i:s'))
+                        $aten = Atencion::where('id_atencion',$id_atencion)->first();
+
+                        if($aten->fecha == date('Y-m-d'))
                         {
-                            $this->data['status'] = "error";
-                            $this->data['msg'] = "No puede ingresar en una hora posterior a reservar el horario de atención elegido.";
+                            if($id_horario->hora_bloque < date('H:i:s'))
+                            {
+                                $this->data['status'] = "error";
+                                $this->data['msg'] = "No puede ingresar en una hora posterior a reservar el horario de atención elegido.";
+                            }
+                            else
+                            {
+                                $response = Atencion::where('id_atencion',$id_atencion)->update([
+                                    'id_especialista'  =>  $especialista,
+                                    'id_horario'       =>  $id_horario->id_horario,
+                                    'id_bloque'        =>  $bloque,
+                                    'estado'          =>   3,
+                                ]);
+
+                                if ($response) 
+                                {
+                                    $atencion = Atencion::where('id_atencion',$id_atencion)->first();
+                                    $this->data['status'] = "success";
+                                    $this->data['id']     = $atencion->codigo_atencion;
+                                }
+                                else 
+                                {
+                                    $this->data['status'] = "error";
+                                    $this->data['msg'] = "Hubo un error al crear la Atención, por favor intente nuevamente.";
+                                }
+                            }
                         }
                         else
                         {
